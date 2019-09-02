@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzTGWebApp", "AzTGWebApp\AzTGWebApp.csproj", "{53846CA5-432B-4BAE-9915-072CE44E5A74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzTGWebAppTest", "AzTGWebAppTest\AzTGWebAppTest.csproj", "{CC37E6C8-1C54-40BA-8898-7E0FE642BCB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzTGWebAppBL", "AzTGWebAppBL\AzTGWebAppBL.csproj", "{ABE0D941-4C19-44FC-90E2-1BFEE122B0B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzTGWebAppEntities", "AzTGWebAppEntities\AzTGWebAppEntities.csproj", "{5B3D742D-A0AF-4E9E-85C3-749BD5A40F8F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53846CA5-432B-4BAE-9915-072CE44E5A74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53846CA5-432B-4BAE-9915-072CE44E5A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53846CA5-432B-4BAE-9915-072CE44E5A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53846CA5-432B-4BAE-9915-072CE44E5A74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC37E6C8-1C54-40BA-8898-7E0FE642BCB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC37E6C8-1C54-40BA-8898-7E0FE642BCB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC37E6C8-1C54-40BA-8898-7E0FE642BCB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC37E6C8-1C54-40BA-8898-7E0FE642BCB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABE0D941-4C19-44FC-90E2-1BFEE122B0B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABE0D941-4C19-44FC-90E2-1BFEE122B0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABE0D941-4C19-44FC-90E2-1BFEE122B0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABE0D941-4C19-44FC-90E2-1BFEE122B0B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B3D742D-A0AF-4E9E-85C3-749BD5A40F8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B3D742D-A0AF-4E9E-85C3-749BD5A40F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B3D742D-A0AF-4E9E-85C3-749BD5A40F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B3D742D-A0AF-4E9E-85C3-749BD5A40F8F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {240B5072-6E8D-444A-82F5-2F911C234B5E}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://ingeniousthinker.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AzTGWebApp\\AzTGWebApp.csproj
+		SccProjectName1 = AzTGWebApp
+		SccLocalPath1 = AzTGWebApp
+		SccProjectUniqueName2 = AzTGWebAppTest\\AzTGWebAppTest.csproj
+		SccProjectName2 = AzTGWebAppTest
+		SccLocalPath2 = AzTGWebAppTest
+		SccProjectUniqueName3 = AzTGWebAppBL\\AzTGWebAppBL.csproj
+		SccProjectName3 = AzTGWebAppBL
+		SccLocalPath3 = AzTGWebAppBL
+		SccProjectUniqueName4 = AzTGWebAppEntities\\AzTGWebAppEntities.csproj
+		SccProjectName4 = AzTGWebAppEntities
+		SccLocalPath4 = AzTGWebAppEntities
+	EndGlobalSection
+EndGlobal

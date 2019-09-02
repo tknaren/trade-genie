@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" name="viewport">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @*@Styles.Render("~/Content/app")*@
+    <link rel="stylesheet" href="~/Content/modules/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/modules/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/Content/modules/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="~/Content/modules/summernote/summernote-lite.css">
+    <link rel="stylesheet" href="~/Content/modules/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="~/Content/demo.css">
+    <link rel="stylesheet" href="~/Content/style.css">
+    
+
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div id="app">
+        <div class="main-wrapper">
+            <div class="navbar-bg"></div>
+            @Html.Partial("_Header")
+            @Html.Partial("_SideBar")
+            @RenderBody()
+            @Html.Partial("_Footer")
+        </div>
+    </div>
+
+
+    <script src="~/Content/modules/jquery.min.js"></script>
+    <script src="~/Content/modules/popper.js"></script>
+    <script src="~/Content/modules/tooltip.js"></script>
+    <script src="~/Content/modules/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/modules/nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="~/Content/modules/scroll-up-bar/dist/scroll-up-bar.min.js"></script>
+    <script src="~/Scripts/sa-functions.js"></script>
+    <script src="~/Content/modules/chart.min.js"></script>
+    <script src="~/Content/modules/summernote/summernote-lite.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.0/mustache.min.js"></script>
+    @Scripts.Render("~/bundles/app")
+    @RenderSection("scripts", required: true)
+</body>
+</html>

@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "News";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    <section class="section">
+        <h1 class="section-header">Latest News</h1>
+        <div class="row">
+            <div class="col-12 col-sm-12 col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-pills" id="news" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="business" data-toggle="tab" href="#businessTab" role="tab" aria-controls="business" aria-selected="true">Business</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="health" data-toggle="tab" href="#healthTab" role="tab" aria-controls="health" aria-selected="false">Health</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="science" data-toggle="tab" href="#scienceTab" role="tab" aria-controls="science" aria-selected="false">Science</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="sports" data-toggle="tab" href="#sportsTab" role="tab" aria-controls="sports" aria-selected="false">Sports</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="technology" data-toggle="tab" href="#technologyTab" role="tab" aria-controls="technology" aria-selected="false">Technology</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="newsContent">
+                            <div class="tab-pane fade show active" id="businessTab" role="tabpanel" aria-labelledby="business">
+                                
+                            </div>
+                            <div class="tab-pane fade" id="healthTab" role="tabpanel" aria-labelledby="health">
+
+                            </div>
+                            <div class="tab-pane fade" id="scienceTab" role="tabpanel" aria-labelledby="science">
+
+                            </div>
+                            <div class="tab-pane fade" id="sportsTab" role="tabpanel" aria-labelledby="sports">
+
+                            </div>
+                            <div class="tab-pane fade" id="technologyTab" role="tabpanel" aria-labelledby="technology">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts{
+    <script id="news_template" type="text/template">
+        <div class='media'>
+            <img src="~/Content/img/browsers/chrome.png" class="align-self-center mr-3" alt="Chrome">
+            <div class='media-body'>
+                <h5 class="mt-0">{{title}}</h5>
+                <p>{{description}}</p>
+            </div>
+        </div>
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("a.nav-link").click(function () {
+                var control = $(this).attr('id');
+                var uri = 'https://newsapi.org/v2/top-headlines?country=in&category='
+                    + $(this).attr('id')
+                    + '&apiKey=dc7a3fa09e834e95a9f888c57dc834e0';
+
+                var newsHtml = '';
+
+                $.getJSON(uri).done(function (data) {
+                    $.each(data.articles, function () {
+                        var template = $("#news_template").html();
+                        newsHtml = newsHtml + Mustache.render(template, this);
+                    });
+
+                    $('#' + control + 'Tab').html(newsHtml);
+
+                });
+
+            });
+        });
+    </script>
+}
+
+@*             <img src='{{url}}' class='mr-3' alt='{{source.name}}'> *@    
