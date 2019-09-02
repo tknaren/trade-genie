@@ -29,8 +29,10 @@ namespace AzTGWebApp.Controllers
             return View();
         }
 
+      
         public ActionResult News()
         {
+            // Commented as news api is not functioning as expected.
             //NewsInterfaceBL newsInterfaceBL = new NewsInterfaceBL();
 
             //string[] categories = { "Business", "Sports", "Health", "Science", "Technology" };
