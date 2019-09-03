@@ -15,8 +15,8 @@ namespace AzTGWebAppBL
 
         public UpstoxInterfaceBL()
         {
-            upstox = new Upstox();
-            loginLogoutStatus = new UpstoxLoginLogoutStatus();
+            //upstox = new Upstox();
+            //loginLogoutStatus = new UpstoxLoginLogoutStatus();
         }
 
         private void SetAPIKeySecret()
@@ -27,6 +27,11 @@ namespace AzTGWebAppBL
 
         public void LoginToUpstox()
         {
+            upstox = new Upstox();
+            loginLogoutStatus = new UpstoxLoginLogoutStatus();
+
+            SetAPIKeySecret();
+
             upstox.Login();
 
             loginLogoutStatus.LoginResponse = upstox.Login_Response;

@@ -43,5 +43,18 @@ namespace AzTGWebApp.Controllers
 
             return View();
         }
+
+        public ActionResult AuthCallBack()
+        {
+            return View();
+        }
+
+        public ActionResult UpstoxLogin()
+        {
+            UpstoxInterfaceBL upstoxInterface = new UpstoxInterfaceBL();
+            upstoxInterface.LoginToUpstox();
+
+            return View();
+        }
     }
 }
