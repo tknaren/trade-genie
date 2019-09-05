@@ -1122,3 +1122,8 @@ where timeperiod = 30 and TickerDateTime = '2019-08-02 13:15:00.000'
 order by prevdayrankhigh
 
 select * from TickerMinEMAHA
+
+select * from UserLogins
+
+truncate table UserLogins
+

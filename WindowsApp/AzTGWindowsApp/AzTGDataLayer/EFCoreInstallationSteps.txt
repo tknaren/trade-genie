@@ -1,0 +1,8 @@
+﻿1. Move to the project directory
+2. Run both the commands and install EFCore 
+	dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+	dotnet add package Microsoft.EntityFrameworkCore.Design
+	dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+	dotnet add package Microsoft.EntityFrameworkCore.Tools
+3. Scaffold-DbContext "Server=tcp:aztgsqlserver.database.windows.net,1433;Initial Catalog=aztgsqldb;Persist Security Info=False;User ID=aztgsqlserver;Password=N@ren123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+4. To enable the lazy loading, you can make navigation properties virtual

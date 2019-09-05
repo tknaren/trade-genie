@@ -1,0 +1,20 @@
+﻿Upstox OAuth 
+1. GET /index/dialog/authorize?apiKey=ar8VJeMwIW54Ya4cbvTr48KEP9obrSBd993kvaaC&redirect_uri=http://aztgwebapp.azurewebsites.net/Home/AuthCallBack&response_type=code
+2. GET /index/login
+3. POST /index/login 
+	-- Request -- apiKey=&username=363488&password=N@ren123&password2fa=1980
+
+4. GET /index/dialog/authorize/?apiKey=ar8VJeMwIW54Ya4cbvTr48KEP9obrSBd993kvaaC&response_type=code&redirect_uri=http://aztgwebapp.azurewebsites.net/Home/AuthCallBack
+
+5. POST /index/dialog/authorize/decision 
+	-- Response -- Upstox Login Page
+
+6. GET /Home/AuthCallBack?code=725c1467540bf99b15ce6ed0a5c08ad4c6a3761c
+
+7. POST /index/oauth/token  
+	-- Header -- {"code":"725c1467540bf99b15ce6ed0a5c08ad4c6a3761c","grant_type":"authorization_code","redirect_uri":"http://aztgwebapp.azurewebsites.net/Home/AuthCallBack"} 
+	-- Response -- {"access_token":"205987bf854b3512def23fc4af04ec29f3398b17","expires_in":86400000,"token_type":"Bearer"}
+
+8. GET /index/profile 
+	-- Header -- Authorization: Bearer 205987bf854b3512def23fc4af04ec29f3398b17 
+	-- Response -- {"code":200,"status":"OK","timestamp":"2019-09-05T14:15:56+05:30","message":"success","data":{"client_id":"363488","name":"NAREN TEKMALLA  KRISHNAMURTHY","email":"tknaren@gmail.com","phone":"8056147212","is_active":true,"exchanges_enabled":["NSE_FO","NSE_EQ","BSE_EQ","NSE_INDEX","BSE_INDEX"],"products_enabled":["I","D","OCO","CO"],"bank_name":"ICICI BANK LTD","bank_account":"000101555437"}}
