@@ -885,9 +885,9 @@ Public Class MainForm
                 Exit Sub
             End If
 
-            Upstox.Logout()
-
             AzDbMethods.InsertUserLoggedOutInfo(Upstox.Access_Token)
+
+            Upstox.Logout()
 
             KryptonButton2.Enabled = False
         Catch ex As Exception
@@ -1549,7 +1549,8 @@ Public Class MainForm
             Dim ToDate As Date = Today
             Dim FromDate As Date = ToDate.AddDays(-NoOfDays)
 
-            Dim StrInput As String = String.Join(vbNewLine, Upstox.GetHistData(Exch, TrdSym, Interval, FromDate, ToDate))
+            Dim StrInput As String = String.Join(",", Upstox.GetHistData(Exch, TrdSym, Interval, FromDate, ToDate))
+            'Dim StrInput As String = String.Join(vbNewLine, Upstox.GetHistData(Exch, TrdSym, Interval, FromDate, ToDate))
             Dim Frm As New DataTable()
             Frm.FormTitle = TrdSym
             Frm.CsvData = StrInput

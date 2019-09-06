@@ -21,6 +21,7 @@ namespace AzTGDataLayer
                     AccessToken = accessToken,
                     RequestToken = accessCode,
                     LoginDateTime = DateTime.Now,
+                    LogoutDateTime = DateTime.Now,
                     Status = "IN"
                 });
 

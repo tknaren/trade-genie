@@ -1123,7 +1123,7 @@ order by prevdayrankhigh
 
 select * from TickerMinEMAHA
 
-select * from UserLogins
+select count(1) from UserLogins
 
 truncate table UserLogins
 
