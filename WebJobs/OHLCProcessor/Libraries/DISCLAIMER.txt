@@ -1,0 +1,41 @@
+SOFTWARE DISCLAIMER
+
+The software, applications, programs and scripts (collectively, the ‘Software’)
+developed by Howutrade Software Solutions LLP (‘Howutrade’) are using
+the publicly available API of trading member.
+
+An application program interface (API) is a set of routines, protocols, and
+tools for building software applications. API allows two software programs or 
+applications to communicate with each other. The API defines the correct way 
+for a developer to write a program that requests services from an operating 
+system (OS) or other application.
+
+The software developed by Howutrade are solely for informational & 
+educational purposes only. Howutrade is not responsible for any losses incurred 
+as a result of using any of the software. All the software are 
+used at your own risk. It should not be assumed that the methods, techniques, 
+or indicators presented in the software will be profitable, or that they will 
+not result in losses.
+
+None of the software developed by Howutrade constitutes a recommendation that 
+any particular security, portfolio of securities, transaction or investment 
+strategy is suitable for any specific person. The software should not be 
+relied upon as advice or construed as providing recommendations of any kind. 
+The software developed by Howutrade do not provide, imply, or otherwise 
+constitute a guarantee of performance.
+
+You should take necessary regulatory approvals if any, required to use the 
+software for trading or investment in stock markets. For any and all 
+compliance related queries, you can contact your trading member.
+
+Howutrade is not a stock broker or trading member,is not an investment advisor 
+and has no access to non-public information about publicly traded companies. 
+Howutrade is not giving or receiving of financial advice, advice concerning 
+investment decisions or tax or legal advice. Consult with a licensed investment 
+advisor and a tax advisor to determine the suitability of any investment. You 
+are advised to conduct your own independent research into individual stocks 
+before making a purchase decision. In addition, you are advised that past stock 
+performance is not indicative of future price action and it should not be 
+assumed that future results will be profitable or will equal past performance, 
+real, indicated or implied. You should be aware of the risks involved in stock 
+investments.
