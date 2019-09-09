@@ -56,5 +56,19 @@ namespace APIInterfaceLayer
 
             return isSuccessful;
         }
+
+        public void GetMasterContract()
+        {
+            //upstox.GetMasterContract();
+        }
+
+        public string GetHistory()
+        {
+            string historyInfo = string.Empty;
+
+            //string[] historyData = upstox.GetHistData("NSE_EQ","")
+
+            return historyInfo;
+        }
     }
 }
