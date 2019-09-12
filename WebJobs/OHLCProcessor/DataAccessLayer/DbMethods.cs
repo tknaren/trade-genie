@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CoreLayer;
 
 namespace DataAccessLayer
 {
+    public interface IDBMethods
+    {
+        string GetLatestAccessToken();
+
+        List<MasterStockList> GetMasterStockList();
+    }
+
     public class DBMethods : IDBMethods
     {
         public string GetLatestAccessToken()
@@ -38,6 +42,22 @@ namespace DataAccessLayer
             }
 
             return accessToken;
+        }
+
+        public List<MasterStockList> GetMasterStockList()
+        {
+            List<MasterStockList> mslist = null;
+
+            using (aztgsqldbEntities db = new aztgsqldbEntities())
+            {
+                var masterStockList = from msl in db.MasterStockLists
+                                      where msl.IsIncluded == true
+                                      select msl;
+
+                mslist = masterStockList.ToList();
+            }
+
+            return mslist;
         }
     }
 }

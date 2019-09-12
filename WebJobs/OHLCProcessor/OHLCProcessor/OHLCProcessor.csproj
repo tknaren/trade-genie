@@ -69,10 +69,6 @@
       <Project>{0465910f-24a8-4024-aef9-25bb2f03c592}</Project>
       <Name>BusinessLogicLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CoreLayer\CoreLayer.csproj">
-      <Project>{b256bff5-2f9d-4825-906d-c222628a0260}</Project>
-      <Name>CoreLayer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
       <Project>{a776681d-aa48-4a50-b325-0c0315a4819d}</Project>
       <Name>DataAccessLayer</Name>

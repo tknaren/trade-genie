@@ -1,20 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UpstoxNet;
-using CoreLayer;
+using Utilities;
 
 namespace APIInterfaceLayer
 {
+    public interface IUpstoxInterface
+    {
+        bool InitializeUpstox(string apiKey, string apiSecret, string redirectUrl);
+        bool SetUpstoxAccessToken(string accesToken);
+        string BuildHistoryUri(string stockCode);
+        string GetHistory(string accesToken, string uri);
+    }
+
     public class UpstoxInterface : IUpstoxInterface
     {
-        Upstox upstox;
+        Upstox _upstox;
+        IConfigSettings _configSettings;
+        WebClientInterface _webClient;
 
-        public UpstoxInterface()
+        string _separator = "/";
+        string _param = "?";
+        string _paramSeparator = "&";
+
+
+        public UpstoxInterface(IConfigSettings configSettings)
         {
-            upstox = new Upstox();
+            _upstox = new Upstox();
+            _webClient = new WebClientInterface(configSettings);
+            _configSettings = configSettings;
         }
 
         public bool InitializeUpstox(string apiKey, string apiSecret, string redirectUrl)
@@ -23,9 +37,9 @@ namespace APIInterfaceLayer
 
             try
             {
-                upstox.Api_Key = apiKey;
-                upstox.Api_Secret = apiSecret;
-                upstox.Redirect_Url = redirectUrl;
+                _upstox.Api_Key = apiKey;
+                _upstox.Api_Secret = apiSecret;
+                _upstox.Redirect_Url = redirectUrl;
 
                 isInitialized = true;
             }
@@ -45,7 +59,7 @@ namespace APIInterfaceLayer
 
             try
             {
-                isSuccessful = upstox.SetAccessToken(accesToken);
+                isSuccessful = _upstox.SetAccessToken(accesToken);
             }
             catch (Exception ex)
             {
@@ -57,16 +71,31 @@ namespace APIInterfaceLayer
             return isSuccessful;
         }
 
-        public void GetMasterContract()
+        public string BuildHistoryUri(string stockCode)
         {
-            //upstox.GetMasterContract();
+            StringBuilder uri = new StringBuilder();
+            uri.Append(_configSettings.HistoricalAPI);
+            uri.Append(_separator);
+            uri.Append(_configSettings.Exchange);
+            uri.Append(_separator);
+            uri.Append(stockCode);
+            uri.Append(_separator);
+            uri.Append(_configSettings.IntervalInMin);
+            uri.Append(_param);
+            uri.Append("start_date=" + _configSettings.StartDate);
+            uri.Append(_paramSeparator);
+            uri.Append("end_date=" + _configSettings.EndDate);
+
+            return uri.ToString();
         }
 
-        public string GetHistory()
+        public string GetHistory(string accesToken, string uri)
         {
             string historyInfo = string.Empty;
 
-            //string[] historyData = upstox.GetHistData("NSE_EQ","")
+            var task = _webClient.CallHistoricalAPIAsync(accesToken, uri);
+
+            task.Wait();
 
             return historyInfo;
         }

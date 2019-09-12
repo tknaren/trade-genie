@@ -9,5 +9,7 @@ namespace CoreLayer
     public interface IDBMethods
     {
         string GetLatestAccessToken();
+
+        
     }
 }

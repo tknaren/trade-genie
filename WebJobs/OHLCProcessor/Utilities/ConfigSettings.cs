@@ -63,5 +63,30 @@ namespace Utilities
         {
             get { return ConfigurationManager.AppSettings["Redirect_Url"].ToString(); }
         }
+
+        public string UpstoxBaseUri
+        {
+            get { return ConfigurationManager.AppSettings["UpstoxBaseUri"].ToString(); }
+        }
+
+        public string HistoricalAPI
+        {
+            get { return ConfigurationManager.AppSettings["HistoricalAPI"].ToString(); }
+        }
+
+        public string UserAgent
+        {
+            get { return ConfigurationManager.AppSettings["UserAgent"].ToString(); }
+        }
+
+        public string StartDate
+        {
+            get { return ConfigurationManager.AppSettings["StartDate"].ToString(); }
+        }
+
+        public string EndDate
+        {
+            get { return ConfigurationManager.AppSettings["EndDate"].ToString(); }
+        }
     }
 }

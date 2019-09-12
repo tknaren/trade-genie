@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities;
-using CoreLayer;
 using APIInterfaceLayer;
 using DataAccessLayer;
 
@@ -17,7 +11,7 @@ namespace OHLCProcessor
             // The code provided will print ‘Hello World’ to the console.
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
             IConfigSettings configSettings = new ConfigSettings();
-            IUpstoxInterface upstoxInterface = new UpstoxInterface();
+            IUpstoxInterface upstoxInterface = new UpstoxInterface(configSettings);
             IDBMethods dBMethods = new DBMethods();
 
             ProcessOHLC processOHLC = new ProcessOHLC(configSettings, upstoxInterface, dBMethods);

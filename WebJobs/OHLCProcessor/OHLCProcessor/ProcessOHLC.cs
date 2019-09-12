@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CoreLayer;
+using APIInterfaceLayer;
+using DataAccessLayer;
 using Utilities;
 
 namespace OHLCProcessor
@@ -36,6 +34,7 @@ namespace OHLCProcessor
             string accessToken = string.Empty;
             bool isSuccessfulLogin = false;
             bool isAccessTokenSuccessfullySet = false;
+            List<MasterStockList> masterStockLists = null;
 
             try
             {
@@ -49,6 +48,15 @@ namespace OHLCProcessor
 
                     if (isSuccessfulLogin)
                         isAccessTokenSuccessfullySet = _upstoxInterface.SetUpstoxAccessToken(accessToken);
+                }
+
+                masterStockLists = _dBMethods.GetMasterStockList();
+
+                foreach (MasterStockList stock in masterStockLists)
+                {
+                    string uri = _upstoxInterface.BuildHistoryUri(stock.TradingSymbol);
+
+                    _upstoxInterface.GetHistory(accessToken, uri);
                 }
 
                 Console.WriteLine("Is Login Successful: {0}", isAccessTokenSuccessfullySet.ToString());

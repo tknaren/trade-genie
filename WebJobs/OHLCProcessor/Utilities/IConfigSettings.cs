@@ -19,5 +19,10 @@ namespace Utilities
         string APIKey { get; }
         string APISecret { get; }
         string RedirectUrl { get; }
+        string UpstoxBaseUri { get; }
+        string HistoricalAPI { get; }
+        string UserAgent { get; }
+        string StartDate { get; }
+        string EndDate { get; }
     }
 }

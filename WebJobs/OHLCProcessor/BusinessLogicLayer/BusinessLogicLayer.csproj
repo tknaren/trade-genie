@@ -46,10 +46,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoreLayer\CoreLayer.csproj">
-      <Project>{b256bff5-2f9d-4825-906d-c222628a0260}</Project>
-      <Name>CoreLayer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{e74cd4bb-7f1f-494b-8ad4-b6d82f0d919d}</Project>
       <Name>Utilities</Name>
