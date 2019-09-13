@@ -1,6 +1,10 @@
-﻿using System;
+﻿using DataAccessLayer.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using Utilities;
 
 namespace DataAccessLayer
 {
@@ -9,10 +13,18 @@ namespace DataAccessLayer
         string GetLatestAccessToken();
 
         List<MasterStockList> GetMasterStockList();
+
+        void InsertTickerDataTable(TickerMinDataTable dtTicker);
     }
 
     public class DBMethods : IDBMethods
     {
+        IConfigSettings _configSettings;
+        public DBMethods(IConfigSettings configSettings)
+        {
+            _configSettings = configSettings;
+        }
+
         public string GetLatestAccessToken()
         {
             string accessToken = string.Empty;
@@ -58,6 +70,29 @@ namespace DataAccessLayer
             }
 
             return mslist;
+        }
+
+        public void InsertTickerDataTable(TickerMinDataTable dtTicker)
+        {
+            using (SqlConnection sqlConn = new SqlConnection(_configSettings.AzSQLConString))
+            {
+                using (SqlCommand sqlComm = new SqlCommand("spUpdateTicker"))
+                {
+                    sqlComm.Connection = sqlConn;
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.CommandTimeout = 240;
+                    //sqlComm.Parameters.AddWithValue("@tblTicker", dtTicker);
+
+                    SqlParameter tblParam = new SqlParameter("@tblTicker", SqlDbType.Structured);
+                    tblParam.Value = dtTicker;
+
+                    sqlComm.Parameters.Add(tblParam);
+
+                    sqlConn.Open();
+                    int ret = sqlComm.ExecuteNonQuery();
+                    sqlConn.Close();
+                }
+            }
         }
     }
 }

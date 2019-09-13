@@ -66,6 +66,9 @@
     <Compile Include="MasterStockList.cs">
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TickerMinDataTable.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MorningBreakout.cs">
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>

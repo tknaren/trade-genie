@@ -1123,7 +1123,9 @@ order by prevdayrankhigh
 
 select * from TickerMinEMAHA
 
-select count(1) from UserLogins
+select * from UserLogins
 
-truncate table UserLogins
+select * from MasterStockList
+
+--truncate table UserLogins
 

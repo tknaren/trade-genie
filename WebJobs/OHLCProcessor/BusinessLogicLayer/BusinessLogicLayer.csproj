@@ -44,8 +44,17 @@
     <Compile Include="ConsolidatorEngine.cs" />
     <Compile Include="IndicatorEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="HistoryLoaderEngine.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\APIInterfaceLayer\APIInterfaceLayer.csproj">
+      <Project>{D78BEF03-E445-405B-A3AB-56749F74E488}</Project>
+      <Name>APIInterfaceLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <Project>{A776681D-AA48-4A50-B325-0C0315A4819D}</Project>
+      <Name>DataAccessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{e74cd4bb-7f1f-494b-8ad4-b6d82f0d919d}</Project>
       <Name>Utilities</Name>

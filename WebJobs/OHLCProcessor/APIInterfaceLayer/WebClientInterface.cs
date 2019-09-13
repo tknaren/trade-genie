@@ -19,23 +19,28 @@ namespace APIInterfaceLayer
             _configSettings = configSettings;
         }
 
-        public async Task CallHistoricalAPIAsync(string accessToken, string uri)
+        public Historical CallHistoricalAPI(string accessToken, string uri)
         {
             using (var client = new HttpClient())
             {
                 //Send HTTP requests from here.  
                 doClientAPISettings(client, accessToken);
 
-                HttpResponseMessage response = await client.GetAsync(uri);
+                //Task.Run(async () => await UploadInvoiceAsync("assessment1", "filename")); task.Wait();
 
-                if (response.IsSuccessStatusCode)
+                Task<HttpResponseMessage> responseTask = Task.Run(async() => await client.GetAsync(uri));
+                responseTask.Wait();
+                HttpResponseMessage httpResponse = responseTask.Result;
+
+                if (httpResponse.IsSuccessStatusCode)
                 {
-                    var historical = await response.Content.ReadAsAsync<Historical>();
-                    Console.WriteLine(historical.data.Capacity);
+                    Task<Historical> historicalTask = httpResponse.Content.ReadAsAsync<Historical>();
+                    historicalTask.Wait();
+                    return historicalTask.Result;
                 }
                 else
                 {
-                    throw new HttpRequestException(string.Format("Status Code: {0}, Reason: {1}", response.StatusCode, response.ReasonPhrase));
+                    throw new HttpRequestException(string.Format("Status Code: {0}, Reason: {1}", httpResponse.StatusCode, httpResponse.ReasonPhrase));
                 }
             }
         }

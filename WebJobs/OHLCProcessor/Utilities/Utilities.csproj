@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuxiliaryMethods.cs" />
     <Compile Include="ConfigSettings.cs" />
     <Compile Include="IConfigSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

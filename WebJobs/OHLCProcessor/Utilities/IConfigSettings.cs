@@ -24,5 +24,6 @@ namespace Utilities
         string UserAgent { get; }
         string StartDate { get; }
         string EndDate { get; }
+        string AzSQLConString { get; }
     }
 }

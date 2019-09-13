@@ -2,7 +2,20 @@
 <SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="AzTGSQLScripts">
   <Items>
     <LogicalFolder Name="Connections" Type="2" Sorted="true">
-      <Items />
+      <Items>
+        <ConnectionNode Name="tcp:aztgsqlserver.database.windows.net,1433:aztgsqlserver">
+          <Created>2019-09-12T12:18:35.9515843+05:30</Created>
+          <Type>SQL</Type>
+          <Server>tcp:aztgsqlserver.database.windows.net,1433</Server>
+          <UserName>aztgsqlserver</UserName>
+          <Authentication>SQL</Authentication>
+          <InitialDB />
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
@@ -25,9 +38,9 @@
           <FullPath>financial market.sql</FullPath>
         </FileNode>
         <FileNode Name="FinancialMarket.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
-          <AssociatedConnUserName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:tcp:aztgsqlserver.database.windows.net,1433:False:aztgsqlserver</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>tcp:aztgsqlserver.database.windows.net,1433</AssociatedConnSrvName>
+          <AssociatedConnUserName>aztgsqlserver</AssociatedConnUserName>
           <FullPath>FinancialMarket.sql</FullPath>
         </FileNode>
         <FileNode Name="spGetScriptsForBackTest.sql">

@@ -88,5 +88,10 @@ namespace Utilities
         {
             get { return ConfigurationManager.AppSettings["EndDate"].ToString(); }
         }
+
+        public string AzSQLConString
+        {
+            get { return ConfigurationManager.ConnectionStrings["aztgsqldb"].ToString(); }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using APIInterfaceLayer.Models;
+using System;
 using System.Text;
 using UpstoxNet;
 using Utilities;
@@ -10,7 +11,7 @@ namespace APIInterfaceLayer
         bool InitializeUpstox(string apiKey, string apiSecret, string redirectUrl);
         bool SetUpstoxAccessToken(string accesToken);
         string BuildHistoryUri(string stockCode);
-        string GetHistory(string accesToken, string uri);
+        Historical GetHistory(string accesToken, string uri);
     }
 
     public class UpstoxInterface : IUpstoxInterface
@@ -89,15 +90,11 @@ namespace APIInterfaceLayer
             return uri.ToString();
         }
 
-        public string GetHistory(string accesToken, string uri)
+        public Historical GetHistory(string accesToken, string uri)
         {
-            string historyInfo = string.Empty;
+            Historical historical = _webClient.CallHistoricalAPI(accesToken, uri);
 
-            var task = _webClient.CallHistoricalAPIAsync(accesToken, uri);
-
-            task.Wait();
-
-            return historyInfo;
+            return historical;
         }
     }
 }
