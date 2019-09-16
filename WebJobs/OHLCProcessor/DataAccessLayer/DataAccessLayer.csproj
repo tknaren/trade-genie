@@ -66,6 +66,7 @@
     <Compile Include="MasterStockList.cs">
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TickerElderIndicatorsModel.cs" />
     <Compile Include="Models\TickerMinDataTable.cs">
       <SubType>Component</SubType>
     </Compile>

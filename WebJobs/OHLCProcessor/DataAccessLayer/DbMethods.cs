@@ -15,6 +15,12 @@ namespace DataAccessLayer
         List<MasterStockList> GetMasterStockList();
 
         void InsertTickerDataTable(TickerMinDataTable dtTicker);
+
+        void GenerateOHLC(string dateTime, int minuteBar);
+
+        List<TickerElderIndicatorsModel> GetTickerDataForIndicators(string instrumentList, string timePeriodList);
+
+        void UpdateTickerElderDataTable(DataTable dtTickerElderData);
     }
 
     public class DBMethods : IDBMethods
@@ -85,6 +91,154 @@ namespace DataAccessLayer
 
                     SqlParameter tblParam = new SqlParameter("@tblTicker", SqlDbType.Structured);
                     tblParam.Value = dtTicker;
+
+                    sqlComm.Parameters.Add(tblParam);
+
+                    sqlConn.Open();
+                    int ret = sqlComm.ExecuteNonQuery();
+                    sqlConn.Close();
+                }
+            }
+        }
+
+        public void GenerateOHLC(string dateTime, int minuteBar)
+        {
+            string commandText = "EXEC spGenerateOHLC '" + dateTime + "', " + minuteBar.ToString();
+
+            using (SqlConnection sqlConn = new SqlConnection(_configSettings.AzSQLConString))
+            {
+                using (SqlCommand sqlComm = new SqlCommand(commandText))
+                {
+                    sqlComm.Connection = sqlConn;
+
+                    sqlConn.Open();
+
+                    int ret = sqlComm.ExecuteNonQuery();
+
+                    sqlConn.Close();
+                }
+            }
+        }
+
+        public List<TickerElderIndicatorsModel> GetTickerDataForIndicators(string instrumentList, string timePeriodList)
+        {
+            List<spGetTickerDataForIndicators_Result> tickerResult = new List<spGetTickerDataForIndicators_Result>();
+
+            List<TickerElderIndicatorsModel> tickerElderData = new List<TickerElderIndicatorsModel>();
+
+            using (aztgsqldbEntities db = new aztgsqldbEntities())
+            {
+                tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList).ToList();
+
+                foreach (spGetTickerDataForIndicators_Result tickItem in tickerResult)
+                {
+                    TickerElderIndicatorsModel model = new TickerElderIndicatorsModel();
+
+                    model.AG1 = tickItem.AG1;
+                    model.AG2 = tickItem.AG2;
+                    model.AL1 = tickItem.AL1;
+                    model.AL2 = tickItem.AL2;
+                    model.EMA1 = tickItem.EMA1;
+                    model.EMA2 = tickItem.EMA2;
+                    model.EMA3 = tickItem.EMA3;
+                    model.EMA4 = tickItem.EMA4;
+                    model.EMA1Dev = tickItem.EMA1Dev;
+                    model.EMA2Dev = tickItem.EMA2Dev;
+                    model.ForceIndex1 = tickItem.ForceIndex1;
+                    model.ForceIndex2 = tickItem.ForceIndex2;
+                    model.Histogram = tickItem.Histogram;
+                    model.HistIncDec = tickItem.HistIncDec;
+                    model.Impulse = tickItem.Impulse;
+                    model.MACD = tickItem.MACD;
+                    model.PriceClose = tickItem.PriceClose;
+                    model.PriceHigh = tickItem.PriceHigh;
+                    model.PriceLow = tickItem.PriceLow;
+                    model.PriceOpen = tickItem.PriceOpen;
+                    model.RSI1 = tickItem.RSI1;
+                    model.RSI2 = tickItem.RSI2;
+                    model.Signal = tickItem.Signal;
+                    model.StockCode = tickItem.StockCode;
+                    model.TickerDateTime = tickItem.TickerDateTime;
+                    model.TimePeriod = tickItem.TimePeriod;
+                    model.Volume = tickItem.Volume;
+                    model.Change = tickItem.Change;
+                    model.ChangePercent = tickItem.ChangePercent;
+                    model.TradedValue = tickItem.TradedValue;
+                    model.TrueRange = tickItem.TrueRange;
+                    model.ATR1 = tickItem.ATR1;
+                    model.ATR2 = tickItem.ATR2;
+                    model.ATR3 = tickItem.ATR3;
+                    model.BUB1 = tickItem.BUB1;
+                    model.BUB2 = tickItem.BUB2;
+                    model.BUB3 = tickItem.BUB3;
+                    model.BLB1 = tickItem.BLB1;
+                    model.BLB2 = tickItem.BLB2;
+                    model.BLB3 = tickItem.BLB3;
+                    model.FUB1 = tickItem.FUB1;
+                    model.FUB2 = tickItem.FUB2;
+                    model.FUB3 = tickItem.FUB3;
+                    model.FLB1 = tickItem.FLB1;
+                    model.FLB2 = tickItem.FLB2;
+                    model.FLB3 = tickItem.FLB3;
+                    model.ST1 = tickItem.ST1;
+                    model.ST2 = tickItem.ST2;
+                    model.ST3 = tickItem.ST3;
+                    model.Trend1 = tickItem.Trend1;
+                    model.Trend2 = tickItem.Trend2;
+                    model.Trend3 = tickItem.Trend3;
+
+                    model.EHEMA1 = tickItem.EHEMA1;
+                    model.EHEMA2 = tickItem.EHEMA2;
+                    model.EHEMA3 = tickItem.EHEMA3;
+                    model.EHEMA4 = tickItem.EHEMA4;
+                    model.EHEMA5 = tickItem.EHEMA5;
+                    model.VWMA1 = tickItem.VWMA1;
+                    model.VWMA2 = tickItem.VWMA2;
+                    model.HAOpen = tickItem.HAOpen;
+                    model.HAHigh = tickItem.HAHigh;
+                    model.HALow = tickItem.HALow;
+                    model.HAClose = tickItem.HAClose;
+                    model.varEMA1v2 = tickItem.varEMA1v2;
+                    model.varEMA1v3 = tickItem.varEMA1v3;
+                    model.varEMA1v4 = tickItem.varEMA1v4;
+                    model.varEMA2v3 = tickItem.varEMA2v3;
+                    model.varEMA2v4 = tickItem.varEMA2v4;
+                    model.varEMA3v4 = tickItem.varEMA3v4;
+                    model.varEMA4v5 = tickItem.varEMA4v5;
+                    model.varVWMA1vVWMA2 = tickItem.varVWMA1vVWMA2;
+                    model.varVWMA1vPriceClose = tickItem.varVWMA1vPriceClose;
+                    model.varVWMA2vPriceClose = tickItem.varVWMA2vPriceClose;
+                    model.varVWMA1vEMA1 = tickItem.varVWMA1vEMA1;
+                    model.varHAOvHAC = tickItem.varHAOvHAC;
+                    model.varHAOvHAPO = tickItem.varHAOvHAPO;
+                    model.varHACvHAPC = tickItem.varHACvHAPC;
+                    model.varOvC = tickItem.varOvC;
+                    model.varOvPO = tickItem.varOvPO;
+                    model.varCvPC = tickItem.varCvPC;
+                    model.HAOCwEMA1 = tickItem.HAOCwEMA1;
+                    model.OCwEMA1 = tickItem.OCwEMA1;
+                    model.AllEMAsInNum = tickItem.AllEMAsInNum;
+
+
+                    tickerElderData.Add(model);
+                }
+            }
+
+            return tickerElderData;
+        }
+
+        public void UpdateTickerElderDataTable(DataTable dtTickerElderData)
+        {
+            using (SqlConnection sqlConn = new SqlConnection(_configSettings.AzSQLConString))
+            {
+                using (SqlCommand sqlComm = new SqlCommand("spUpdateTickerElderIndicators"))
+                {
+                    sqlComm.Connection = sqlConn;
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.CommandTimeout = 600;
+
+                    SqlParameter tblParam = new SqlParameter("@tblTickerElder", SqlDbType.Structured);
+                    tblParam.Value = dtTickerElderData;
 
                     sqlComm.Parameters.Add(tblParam);
 

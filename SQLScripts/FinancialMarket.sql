@@ -1129,3 +1129,9 @@ select * from MasterStockList
 
 --truncate table UserLogins
 
+
+sp_helptext spUpdateTicker
+
+select * from TickerMin
+
+select distinct(TradingSymbol) from TickerMin

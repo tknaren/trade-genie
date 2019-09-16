@@ -8,10 +8,8 @@ namespace Utilities
 {
     public interface IConfigSettings
     {
-        string StartingTimeHour { get; }
-        string StartingTimeMinute { get; }
-        string EndingTimeHour { get; }
-        string EndingTimeMinute { get; }
+        TimeSpan StartingTime { get; }
+        TimeSpan EndingTime { get; }
         string Exchange { get; }
         string PeriodInDays { get; }
         string DelayInMin { get; }
@@ -25,5 +23,23 @@ namespace Utilities
         string StartDate { get; }
         string EndDate { get; }
         string AzSQLConString { get; }
+        string Min3Timer { get; }
+        string Min5Timer { get; }
+        string Min10Timer { get; }
+        string Min15Timer { get; }
+        string Min30Timer { get; }
+        string Min60Timer { get; }
+        bool IsPositional { get; }
+
+        string TimePeriodsToCalculate { get; }
+        string EMAsToCalculate { get; }
+        string EHEMAsToCalculate { get; }
+        string VWMAsToCalculate { get; }
+        string RSIsToCalculate { get; }
+        string ForceIndexesToCalculate { get; }
+        string ATRsToCalculate { get; }
+        string SuperTrendMultipliers { get; }
+        string EMADeviationPeriods { get; }
+
     }
 }
