@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using Serilog;
+using Serilog.Exceptions;
 
 namespace BusinessLogicLayer
 {
@@ -31,15 +33,15 @@ namespace BusinessLogicLayer
             // add 5 mins to the start time and continue the same for 5, 15, 30 and 60 mins
             bool loadIndicators = false;
 
-            TimeSpan CurrentTime = new TimeSpan(DateTime.Now.TimeOfDay.Hours, DateTime.Now.TimeOfDay.Minutes, 0);
-            TimeSpan startTime = new TimeSpan(9, 15, 0);
-            DateTime startDateTime = DateTime.Today + startTime;
+            TimeSpan CurrentTime = new TimeSpan(AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Hours, DateTime.Now.TimeOfDay.Minutes, 0);
+            //TimeSpan startTime = _settings.StartingTime;
+            DateTime startDateTime = DateTime.Today + _settings.StartingTime;
 
             if (!_settings.IsPositional)
             {
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min3Timer).Contains(CurrentTime))
                 {
-                    Console.WriteLine(" Min3Timer " + CurrentTime.ToString());
+                    Log.Information(" Min3Timer " + CurrentTime.ToString());
 
                     _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 3);
 
@@ -48,7 +50,7 @@ namespace BusinessLogicLayer
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min5Timer).Contains(CurrentTime))
                 {
-                    Console.WriteLine(" Min5Timer " + CurrentTime.ToString());
+                    Log.Information(" Min5Timer " + CurrentTime.ToString());
 
                     _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 5);
 
@@ -57,30 +59,38 @@ namespace BusinessLogicLayer
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min10Timer).Contains(CurrentTime))
                 {
-                    Console.WriteLine(" Min10Timer " + CurrentTime.ToString());
+                    Log.Information(" Min10Timer " + CurrentTime.ToString());
 
                     _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 10);
+
+                    loadIndicators = true;
                 }
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min15Timer).Contains(CurrentTime))
                 {
-                    Console.WriteLine(" Min15Timer " + CurrentTime.ToString());
+                    Log.Information(" Min15Timer " + CurrentTime.ToString());
 
                     _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 15);
+
+                    loadIndicators = true;
                 }
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min30Timer).Contains(CurrentTime))
                 {
-                    Console.WriteLine(" Min30Timer " + CurrentTime.ToString());
+                    Log.Information(" Min30Timer " + CurrentTime.ToString());
 
                     _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 30);
+
+                    loadIndicators = true;
                 }
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min60Timer).Contains(CurrentTime))
                 {
-                    Console.WriteLine(" Min60Timer " + CurrentTime.ToString());
+                    Log.Information(" Min60Timer " + CurrentTime.ToString());
 
                     _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 60);
+
+                    loadIndicators = true;
                 }
             }
             else

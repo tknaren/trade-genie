@@ -1135,3 +1135,9 @@ sp_helptext spUpdateTicker
 select * from TickerMin
 
 select distinct(TradingSymbol) from TickerMin
+
+select * from TickerMin
+
+select * from TickerMinElderIndicators
+select * from TickerMinEMAHA
+select * from TickerMinSuperTrend

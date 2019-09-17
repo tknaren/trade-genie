@@ -7,6 +7,9 @@ using BusinessLogicLayer;
 using DataAccessLayer;
 using Microsoft.Azure.WebJobs;
 using Utilities;
+using Serilog;
+using Serilog.Exceptions;
+using System.Threading;
 
 namespace OHLCProcessor
 {
@@ -17,9 +20,7 @@ namespace OHLCProcessor
         IDBMethods _dBMethods;
         IHistoryLoaderEngine _historyLoaderEngine;
         IConsolidatorEngine _consolidatorEngine;
-        TextWriter log;
-
-        //Timer tickerTimer = null;
+        IIndicatorEngine _indicatorEngine;
 
         public ProcessOHLC()
         {
@@ -28,7 +29,7 @@ namespace OHLCProcessor
             _dBMethods = new DBMethods(_configSettings);
             _historyLoaderEngine = new HistoryLoaderEngine(_configSettings, _upstoxInterface, _dBMethods);
             _consolidatorEngine = new ConsolidatorEngine(_configSettings, _dBMethods);
-            //tickerTimer = new Timer();
+            _indicatorEngine = new IndicatorEngine(_configSettings, _dBMethods);
         }
 
         public void Dispose()
@@ -39,7 +40,7 @@ namespace OHLCProcessor
             _historyLoaderEngine = null;
         }
 
-        public void ProcessOHLCMain()
+        private void ProcessOHLCMain()
         {
             //Call History Loader Engine
             //Call Consolidator Engine
@@ -47,56 +48,62 @@ namespace OHLCProcessor
 
             try
             {
-                Console.WriteLine("History Fetch Start @ " + DateTime.Now.ToString());
+                if (HistoryFetchTime())
+                {
+                    Log.Information("History Fetch Start");
+                    _historyLoaderEngine.LoadHistory();
+                    Log.Information("History Fetch End");
+                }
 
-                _historyLoaderEngine.LoadHistory();
-
-                Console.WriteLine("History Fetch End @ " + DateTime.Now.ToString());
-
+                Log.Information("Consolidator Start");
                 bool loadIndicators = _consolidatorEngine.ConsolidateTickerEntries();
+                Log.Information("Consolidator End");
 
-                Console.WriteLine("Consolidator End @ " + DateTime.Now.ToString());
-
+                if (loadIndicators)
+                {
+                    Log.Information("Indicators Start");
+                    _indicatorEngine.IndicatorEngineLogic();
+                    Log.Information("Indicators End");
+                }
 
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message + " " + ex.StackTrace);
+                Log.Error(ex, "ProcessOHLCMain Exception");
             }
         }
 
-        //private bool TradingTime()
-        //{
-        //    TimeSpan CurrentTime = DateTime.Now.TimeOfDay;
-        //    return ((CurrentTime > _configSettings.StartingTime) && (CurrentTime < _configSettings.EndingTime));
-        //}
+        private bool TradingTime()
+        {
+            TimeSpan CurrentTime = AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay;
 
-        //public void StartEngine()
-        //{
-        //    this.tickerTimer.Interval = Convert.ToInt32(_configSettings.DelayInMin) * 60 * 1000; //convert minutes to milliseconds
-        //    this.tickerTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.tickerTimer_Tick);
-        //    this.tickerTimer.Enabled = true;
-        //}
+            return ((CurrentTime > _configSettings.StartingTime) && (CurrentTime < _configSettings.EndingTime));
+        }
 
+        private bool HistoryFetchTime()
+        {
+            TimeSpan CurrentTime = AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay;
 
-        //private void tickerTimer_Tick(object sender, ElapsedEventArgs e)
-        //{
-        //    Console.WriteLine("Timer called");
+            return ((CurrentTime > _configSettings.StartingTime) && (CurrentTime < _configSettings.HistoryEndTime));
+        }
 
-        //    if (TradingTime())
-        //    {
-        //        Console.WriteLine("Trading Time");
+        public void StartEngine()
+        {
+            try
+            {
+                while (true)
+                {
+                    if (TradingTime())
+                        ProcessOHLCMain();
 
-        //        try
-        //        {
-        //            ProcessOHLCMain();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine(ex);
-        //        }
-        //    }
+                    Thread.Sleep(Convert.ToInt32(_configSettings.DelayInMin) * 60 * 1000);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Start Engine Exception");
+            }
+        }
 
-        //}
     }
 }

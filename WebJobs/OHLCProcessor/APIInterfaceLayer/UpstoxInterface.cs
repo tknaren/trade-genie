@@ -3,11 +3,15 @@ using System;
 using System.Text;
 using UpstoxNet;
 using Utilities;
+using Serilog;
+using Serilog.Exceptions;
 
 namespace APIInterfaceLayer
 {
     public interface IUpstoxInterface
     {
+        string AccessToken { get; }
+        bool IsLoggedIn { get; }
         bool InitializeUpstox(string apiKey, string apiSecret, string redirectUrl);
         bool SetUpstoxAccessToken(string accesToken);
         string BuildHistoryUri(string stockCode);
@@ -32,6 +36,9 @@ namespace APIInterfaceLayer
             _configSettings = configSettings;
         }
 
+        public string AccessToken { get { return _upstox.Access_Token; } }
+        public bool IsLoggedIn { get { return _upstox.Login_Status; } }
+
         public bool InitializeUpstox(string apiKey, string apiSecret, string redirectUrl)
         {
             bool isInitialized = false;
@@ -46,7 +53,7 @@ namespace APIInterfaceLayer
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while initializing Upstox: {0}", ex.Message);
+                Log.Error(ex, "Initialize Upstox Exception");
 
                 throw ex;
             }
@@ -64,11 +71,11 @@ namespace APIInterfaceLayer
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while setting Access Token: {0}", ex.Message);
+                Log.Error(ex, "Set Upstox AccessToken Exception");
 
                 throw ex;
             }
-
+            
             return isSuccessful;
         }
 
@@ -83,9 +90,9 @@ namespace APIInterfaceLayer
             uri.Append(_separator);
             uri.Append(_configSettings.IntervalInMin);
             uri.Append(_param);
-            uri.Append("start_date=" + _configSettings.StartDate);
+            uri.Append("start_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
             uri.Append(_paramSeparator);
-            uri.Append("end_date=" + _configSettings.EndDate);
+            uri.Append("end_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
 
             return uri.ToString();
         }

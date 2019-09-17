@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 using DataAccessLayer.Models;
+using Serilog;
+using Serilog.Exceptions;
 
 namespace BusinessLogicLayer
 {
@@ -54,28 +56,43 @@ namespace BusinessLogicLayer
             bool isAccessTokenSuccessfullySet = false;
             List<MasterStockList> masterStockLists = null;
 
-            accessToken = _dBMethods.GetLatestAccessToken();
-
-            if (!string.IsNullOrEmpty(accessToken))
+            if (!_upstoxInterface.IsLoggedIn)
             {
-                isSuccessfulLogin = _upstoxInterface.InitializeUpstox(_settings.APIKey, _settings.APISecret, _settings.RedirectUrl);
+                accessToken = _dBMethods.GetLatestAccessToken();
 
-                if (isSuccessfulLogin)
-                    isAccessTokenSuccessfullySet = _upstoxInterface.SetUpstoxAccessToken(accessToken);
+                if (!string.IsNullOrEmpty(accessToken))
+                {
+                    isSuccessfulLogin = _upstoxInterface.InitializeUpstox(_settings.APIKey, _settings.APISecret, _settings.RedirectUrl);
+
+                    if (isSuccessfulLogin)
+                        isAccessTokenSuccessfullySet = _upstoxInterface.SetUpstoxAccessToken(accessToken);
+
+                    Log.Information("Is Login Successful: {0}", isAccessTokenSuccessfullySet.ToString());
+                }
+            }
+            else
+            {
+                Log.Information("Access Token: {0}", _upstoxInterface.AccessToken);
+                Log.Information("Is Logged In: {0}", _upstoxInterface.IsLoggedIn.ToString());
             }
 
             masterStockLists = _dBMethods.GetMasterStockList();
 
             foreach (MasterStockList stock in masterStockLists)
             {
-                string uri = _upstoxInterface.BuildHistoryUri(stock.TradingSymbol);
+                try
+                {
+                    string uri = _upstoxInterface.BuildHistoryUri(stock.TradingSymbol);
 
-                Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
+                    Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
 
-                AddToTickerDataTable(stock.InstrumentToken, stock.TradingSymbol, historial);
+                    AddToTickerDataTable(stock.InstrumentToken, stock.TradingSymbol, historial);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Download History Exception");
+                }
             }
-
-            Console.WriteLine("Is Login Successful: {0}", isAccessTokenSuccessfullySet.ToString());
         }
 
         private void AddToTickerDataTable(int instrumentToken, string tradingSymbol, Historical historical)

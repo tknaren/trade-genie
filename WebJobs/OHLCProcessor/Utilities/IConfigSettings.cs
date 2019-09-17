@@ -10,6 +10,7 @@ namespace Utilities
     {
         TimeSpan StartingTime { get; }
         TimeSpan EndingTime { get; }
+        TimeSpan HistoryEndTime { get; }
         string Exchange { get; }
         string PeriodInDays { get; }
         string DelayInMin { get; }

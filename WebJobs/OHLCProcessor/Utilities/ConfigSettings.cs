@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using Serilog;
 
 namespace Utilities
 {
@@ -27,13 +28,22 @@ namespace Utilities
             }
         }
 
+        public TimeSpan HistoryEndTime
+        {
+            get
+            {
+                return new TimeSpan(Int32.Parse(ConfigurationManager.AppSettings["HistoryEndTimeHour"]),
+                                             Int32.Parse(ConfigurationManager.AppSettings["HistoryEndTimeMinute"]), 0);
+            }
+        }
+
         public string Exchange
         {
             get { return ConfigurationManager.AppSettings["Exchange"].ToString(); }
         }
 
         public string PeriodInDays
-        {
+        { 
             get { return ConfigurationManager.AppSettings["PeriodInDays"].ToString(); }
         }
 

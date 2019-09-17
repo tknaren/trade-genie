@@ -3,6 +3,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using Serilog;
+using Serilog.Exceptions;
+using Serilog.Exceptions.SqlServer;
+using Serilog.Exceptions.Core;
+using Serilog.Exceptions.SqlServer.Destructurers;
 
 namespace OHLCProcessor
 {
@@ -36,31 +41,28 @@ namespace OHLCProcessor
 
             try
             {
+                Log.Logger = new LoggerConfiguration()
+                    .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder()
+                        .WithDefaultDestructurers()
+                        .WithDestructurers(new[] { new SqlExceptionDestructurer() }))
+                    .MinimumLevel.Debug()
+                    .WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception} {Properties:j}")
+                    .CreateLogger();
 
                 using (ProcessOHLC processOHLC = new ProcessOHLC())
                 {
-                    Console.WriteLine("Started @" + DateTime.Now.ToString());
+                    Log.Information("START");
 
-                    processOHLC.ProcessOHLCMain();
+                    processOHLC.StartEngine();
 
-                    Console.WriteLine("Ended @" + DateTime.Now.ToString());
+                    Log.Information("END");
+
                 }
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ex, "Main Exception");
             }
         }
-        //public static void StartEngine([TimerTrigger("0 */1 3-11 * * 1-5")] TimerInfo timerInfo, TextWriter log)
-        //{
-        //    using (ProcessOHLC processOHLC = new ProcessOHLC())
-        //    {
-        //        log.WriteLine("Started @" + DateTime.Now.ToString());
-
-        //        processOHLC.ProcessOHLCMain();
-
-        //        log.WriteLine("Ended @" + DateTime.Now.ToString());
-        //    }
-        //}
     }
 }

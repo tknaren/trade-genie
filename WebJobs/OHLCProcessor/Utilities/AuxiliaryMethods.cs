@@ -28,6 +28,11 @@ namespace Utilities
             return TimeZoneInfo.ConvertTimeFromUtc(dtInUTC, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
         }
 
+        public static DateTime GetCurrentIndianTimeStamp()
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+        }
+
         public static List<TimeSpan> MinuteTimer(string timerString)
         {
             List<string> minList = timerString.Split(',').ToList();
@@ -71,5 +76,7 @@ namespace Utilities
             }
             return dataTable;
         }
+
+        
     }
 }
