@@ -1136,8 +1136,26 @@ select * from TickerMin
 
 select distinct(TradingSymbol) from TickerMin
 
-select * from TickerMin
+select top 10 * from TickerMin where Datetime > '2019-09-18'
 
-select * from TickerMinElderIndicators
-select * from TickerMinEMAHA
-select * from TickerMinSuperTrend
+select * from TickerMinElderIndicators where TickerDatetime > '2019-09-18' and timeperiod = 30 and StockCode = 'ADANIPORTS'
+select * from TickerMinEMAHA where TickerDatetime > '2019-09-18'
+select * from TickerMinSuperTrend where TickerDatetime > '2019-09-18'
+
+select count(1) from TickerMin where Datetime > '2019-09-18'
+
+select Timeperiod, count(1) from TickerMinElderIndicators 
+where TickerDatetime > '2019-09-18'
+group by  Timeperiod 
+order by Timeperiod 
+
+
+--3	4185
+--5	2385
+--10	1170
+--15	720
+--30	360
+
+select * from Logs
+
+truncate table logs

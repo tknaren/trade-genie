@@ -26,7 +26,7 @@ namespace DataAccessLayer
 
     public class DBMethods : IDBMethods
     {
-        IConfigSettings _configSettings;
+        private readonly IConfigSettings _configSettings;
         public DBMethods(IConfigSettings configSettings)
         {
             _configSettings = configSettings;

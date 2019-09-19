@@ -20,9 +20,9 @@ namespace APIInterfaceLayer
 
     public class UpstoxInterface : IUpstoxInterface
     {
-        Upstox _upstox;
-        IConfigSettings _configSettings;
-        WebClientInterface _webClient;
+        private readonly Upstox _upstox;
+        private readonly IConfigSettings _configSettings;
+        private readonly WebClientInterface _webClient;
 
         string _separator = "/";
         string _param = "?";

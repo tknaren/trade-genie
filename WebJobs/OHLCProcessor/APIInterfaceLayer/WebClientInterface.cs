@@ -12,7 +12,7 @@ namespace APIInterfaceLayer
 {
     public class WebClientInterface
     {
-        IConfigSettings _configSettings;
+        private readonly IConfigSettings _configSettings;
 
         public WebClientInterface(IConfigSettings configSettings)
         {

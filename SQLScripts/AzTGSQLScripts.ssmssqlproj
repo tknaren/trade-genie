@@ -43,6 +43,12 @@
           <AssociatedConnUserName>aztgsqlserver</AssociatedConnUserName>
           <FullPath>FinancialMarket.sql</FullPath>
         </FileNode>
+        <FileNode Name="Log_Table_Script.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:tcp:aztgsqlserver.database.windows.net,1433:False:aztgsqlserver</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>tcp:aztgsqlserver.database.windows.net,1433</AssociatedConnSrvName>
+          <AssociatedConnUserName>aztgsqlserver</AssociatedConnUserName>
+          <FullPath>Log_Table_Script.sql</FullPath>
+        </FileNode>
         <FileNode Name="spGetScriptsForBackTest.sql">
           <AssociatedConnectionMoniker />
           <AssociatedConnSrvName />

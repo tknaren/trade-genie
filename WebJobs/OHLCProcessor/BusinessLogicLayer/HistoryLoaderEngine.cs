@@ -90,7 +90,7 @@ namespace BusinessLogicLayer
                 }
                 catch (Exception ex)
                 {
-                    Log.Error(ex, "Download History Exception");
+                    Log.Error(ex, "Download History Exception " + stock.TradingSymbol);
                 }
             }
         }
@@ -101,27 +101,34 @@ namespace BusinessLogicLayer
             int volume;
             DateTime ohlcDateTime;
 
-            foreach (string historyItem in historical.data)
+            if (historical != null && historical.data != null)
             {
-                string[] ohlcArray = historyItem.Split(',');
+                foreach (string historyItem in historical.data)
+                {
+                    string[] ohlcArray = historyItem.Split(',');
 
-                ohlcDateTime = AuxiliaryMethods.ConvertUnixTimeStampToWindows(ohlcArray[0]);
-                open = Convert.ToDecimal(ohlcArray[1]);
-                high = Convert.ToDecimal(ohlcArray[2]);
-                low = Convert.ToDecimal(ohlcArray[3]);
-                close = Convert.ToDecimal(ohlcArray[4]);
-                volume = Convert.ToInt32(ohlcArray[5]);
+                    ohlcDateTime = AuxiliaryMethods.ConvertUnixTimeStampToWindows(ohlcArray[0]);
+                    open = Convert.ToDecimal(ohlcArray[1]);
+                    high = Convert.ToDecimal(ohlcArray[2]);
+                    low = Convert.ToDecimal(ohlcArray[3]);
+                    close = Convert.ToDecimal(ohlcArray[4]);
+                    volume = Convert.ToInt32(ohlcArray[5]);
 
-                dtHistoryData.AddRow(
-                        instrumentToken,
-                        tradingSymbol,
-                        ohlcDateTime,
-                        open,
-                        high,
-                        low,
-                        close,
-                        volume);
+                    dtHistoryData.AddRow(
+                            instrumentToken,
+                            tradingSymbol,
+                            ohlcDateTime,
+                            open,
+                            high,
+                            low,
+                            close,
+                            volume);
 
+                }
+            }
+            else
+            {
+                throw new Exception("History not fetched for " + tradingSymbol);
             }
         }
 

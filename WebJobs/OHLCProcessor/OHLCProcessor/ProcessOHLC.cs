@@ -15,12 +15,12 @@ namespace OHLCProcessor
 {
     public class ProcessOHLC : IDisposable
     {
-        IConfigSettings _configSettings;
-        IUpstoxInterface _upstoxInterface;
-        IDBMethods _dBMethods;
-        IHistoryLoaderEngine _historyLoaderEngine;
-        IConsolidatorEngine _consolidatorEngine;
-        IIndicatorEngine _indicatorEngine;
+        private readonly IConfigSettings _configSettings;
+        private readonly IUpstoxInterface _upstoxInterface;
+        private readonly IDBMethods _dBMethods;
+        private readonly IHistoryLoaderEngine _historyLoaderEngine;
+        private readonly IConsolidatorEngine _consolidatorEngine;
+        private readonly IIndicatorEngine _indicatorEngine;
 
         public ProcessOHLC()
         {
@@ -34,10 +34,7 @@ namespace OHLCProcessor
 
         public void Dispose()
         {
-            _configSettings = null;
-            _upstoxInterface = null;
-            _dBMethods = null;
-            _historyLoaderEngine = null;
+
         }
 
         private void ProcessOHLCMain()
@@ -46,6 +43,8 @@ namespace OHLCProcessor
             //Call Consolidator Engine
             //Call Indicator Engine
 
+            bool loadIndicators = false;
+
             try
             {
                 if (HistoryFetchTime())
@@ -53,11 +52,11 @@ namespace OHLCProcessor
                     Log.Information("History Fetch Start");
                     _historyLoaderEngine.LoadHistory();
                     Log.Information("History Fetch End");
-                }
 
-                Log.Information("Consolidator Start");
-                bool loadIndicators = _consolidatorEngine.ConsolidateTickerEntries();
-                Log.Information("Consolidator End");
+                    Log.Information("Consolidator Start");
+                    loadIndicators = _consolidatorEngine.ConsolidateTickerEntries();
+                    Log.Information("Consolidator End");
+                }
 
                 if (loadIndicators)
                 {
