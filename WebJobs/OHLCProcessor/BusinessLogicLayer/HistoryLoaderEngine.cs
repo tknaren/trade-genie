@@ -33,6 +33,7 @@ namespace BusinessLogicLayer
         private readonly IUpstoxInterface _upstoxInterface;
         private readonly IDBMethods _dBMethods;
         private readonly TickerMinDataTable dtHistoryData;
+        private static string accessToken;
 
         public HistoryLoaderEngine(IConfigSettings settings, IUpstoxInterface upstoxInterface, IDBMethods dBMethods)
         {
@@ -51,47 +52,59 @@ namespace BusinessLogicLayer
 
         private void DownloadHistory()
         {
-            string accessToken = string.Empty;
-            bool isSuccessfulLogin = false;
-            bool isAccessTokenSuccessfullySet = false;
+            
+            //bool isSuccessfulLogin = false;
+            //bool isAccessTokenSuccessfullySet = false;
             List<MasterStockList> masterStockLists = null;
 
-            if (!_upstoxInterface.IsLoggedIn)
+            //if (!_upstoxInterface.IsLoggedIn)
+            //{
+            //    accessToken = _dBMethods.GetLatestAccessToken();
+
+            //    if (!string.IsNullOrEmpty(accessToken))
+            //    {
+            //        isSuccessfulLogin = _upstoxInterface.InitializeUpstox(_settings.APIKey, _settings.APISecret, _settings.RedirectUrl);
+
+            //        if (isSuccessfulLogin)
+            //            isAccessTokenSuccessfullySet = _upstoxInterface.SetUpstoxAccessToken(accessToken);
+
+            //        Log.Information("Is Login Successful: {0}", isAccessTokenSuccessfullySet.ToString());
+            //    }
+            //}
+            //else
+            //{
+            //    Log.Information("Access Token: {0}", _upstoxInterface.AccessToken);
+            //    Log.Information("Is Logged In: {0}", _upstoxInterface.IsLoggedIn.ToString());
+            //}
+
+            if (string.IsNullOrEmpty(accessToken))
             {
                 accessToken = _dBMethods.GetLatestAccessToken();
+            }
 
-                if (!string.IsNullOrEmpty(accessToken))
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                masterStockLists = _dBMethods.GetMasterStockList();
+
+                foreach (MasterStockList stock in masterStockLists)
                 {
-                    isSuccessfulLogin = _upstoxInterface.InitializeUpstox(_settings.APIKey, _settings.APISecret, _settings.RedirectUrl);
+                    try
+                    {
+                        string uri = _upstoxInterface.BuildHistoryUri(stock.TradingSymbol);
 
-                    if (isSuccessfulLogin)
-                        isAccessTokenSuccessfullySet = _upstoxInterface.SetUpstoxAccessToken(accessToken);
+                        Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
 
-                    Log.Information("Is Login Successful: {0}", isAccessTokenSuccessfullySet.ToString());
+                        AddToTickerDataTable(stock.InstrumentToken, stock.TradingSymbol, historial);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Download History Exception " + stock.TradingSymbol);
+                    }
                 }
             }
             else
             {
-                Log.Information("Access Token: {0}", _upstoxInterface.AccessToken);
-                Log.Information("Is Logged In: {0}", _upstoxInterface.IsLoggedIn.ToString());
-            }
-
-            masterStockLists = _dBMethods.GetMasterStockList();
-
-            foreach (MasterStockList stock in masterStockLists)
-            {
-                try
-                {
-                    string uri = _upstoxInterface.BuildHistoryUri(stock.TradingSymbol);
-
-                    Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
-
-                    AddToTickerDataTable(stock.InstrumentToken, stock.TradingSymbol, historial);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Download History Exception " + stock.TradingSymbol);
-                }
+                Log.Information("Access token empty - Please login");
             }
         }
 

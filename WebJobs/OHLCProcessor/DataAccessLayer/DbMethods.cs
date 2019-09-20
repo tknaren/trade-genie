@@ -36,18 +36,28 @@ namespace DataAccessLayer
         {
             string accessToken = string.Empty;
             DateTime logInDateTime = new DateTime();
+            DateTime currentDateTime = AuxiliaryMethods.GetCurrentIndianTimeStamp().Date;
             string status = string.Empty;
 
             using (aztgsqldbEntities db = new aztgsqldbEntities())
             {
-                var latestLogin = db.UserLogins.Where(a => a.Status == "IN").OrderByDescending(b => b.LoginDateTime).FirstOrDefault();
+                var latestLogin = db.UserLogins.Where(a => a.Status == "IN")
+                    .Where(b => b.LoginDateTime >= currentDateTime)
+                    .FirstOrDefault();
 
-                accessToken = latestLogin.AccessToken;
-                logInDateTime = latestLogin.LoginDateTime;
-                status = latestLogin.Status;
+                if (latestLogin != null)
+                {
+                    accessToken = latestLogin.AccessToken;
+                    logInDateTime = latestLogin.LoginDateTime;
+                    status = latestLogin.Status;
+
+                    Log.Information("Access Token: {0}, Logged In Time: {1}, Status: {2}", accessToken, logInDateTime, status);
+                }
+                else
+                {
+                    Log.Information("Not Logged In for Today - Please Login.");
+                }
             }
-
-            Log.Information("Access Token: {0}, Logged In Time: {1}, Status: {2}", accessToken, logInDateTime, status);
 
             return accessToken;
         }

@@ -41,11 +41,15 @@ namespace BusinessLogicLayer
             {
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min3Timer).Contains(CurrentTime))
                 {
-                    Log.Information(" Min3Timer " + CurrentTime.ToString());
+                    Log.Information("Min3Timer IN " + CurrentTime.ToString());
 
                     _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 3);
 
                     loadIndicators = true;
+                }
+                else
+                {
+                    Log.Information("Min3Timer OUT " + CurrentTime.ToString());
                 }
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min5Timer).Contains(CurrentTime))
@@ -56,6 +60,10 @@ namespace BusinessLogicLayer
 
                     loadIndicators = true;
                 }
+                else
+                {
+                    Log.Information("Min5Timer OUT " + CurrentTime.ToString());
+                }
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min10Timer).Contains(CurrentTime))
                 {
@@ -64,6 +72,10 @@ namespace BusinessLogicLayer
                     _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 10);
 
                     loadIndicators = true;
+                }
+                else
+                {
+                    Log.Information("Min10Timer OUT " + CurrentTime.ToString());
                 }
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min15Timer).Contains(CurrentTime))
@@ -74,6 +86,10 @@ namespace BusinessLogicLayer
 
                     loadIndicators = true;
                 }
+                else
+                {
+                    Log.Information("Min15Timer OUT " + CurrentTime.ToString());
+                }
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min30Timer).Contains(CurrentTime))
                 {
@@ -83,6 +99,10 @@ namespace BusinessLogicLayer
 
                     loadIndicators = true;
                 }
+                else
+                {
+                    Log.Information("Min30Timer OUT " + CurrentTime.ToString());
+                }
 
                 if (AuxiliaryMethods.MinuteTimer(_settings.Min60Timer).Contains(CurrentTime))
                 {
@@ -91,6 +111,10 @@ namespace BusinessLogicLayer
                     _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 60);
 
                     loadIndicators = true;
+                }
+                else
+                {
+                    Log.Information("Min60Timer OUT " + CurrentTime.ToString());
                 }
             }
             else
