@@ -95,7 +95,7 @@ namespace OHLCProcessor
                     if (TradingTime())
                         ProcessOHLCMain();
 
-                    Thread.Sleep(Convert.ToInt32(_configSettings.DelayInMin) * 60 * 1000);
+                    Thread.Sleep(Convert.ToInt32(_configSettings.DelayInMin) * 30 * 1000);
                 }
             }
             catch (Exception ex)

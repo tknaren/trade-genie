@@ -1155,14 +1155,9 @@ where TickerDatetime > '2019-09-20'
 group by  Timeperiod 
 order by Timeperiod 
 
+select * from UserLogins
 
---3	4185
---5	2385
---10	1170
---15	720
---30	360
-
-select * from Logs
+select * from Logs where id > 65
 --where TimeStamp > '2019-09-19 20:00'
 
 --delete from Logs
