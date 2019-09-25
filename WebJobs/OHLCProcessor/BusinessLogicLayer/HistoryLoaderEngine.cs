@@ -16,6 +16,7 @@ namespace BusinessLogicLayer
 
     public interface IHistoryLoaderEngine
     {
+        bool IsUserLoggedIn { get; }
         void LoadHistory();
     }
 
@@ -34,6 +35,8 @@ namespace BusinessLogicLayer
         private readonly IDBMethods _dBMethods;
         private readonly TickerMinDataTable dtHistoryData;
         private static string accessToken;
+
+        public bool IsUserLoggedIn { get { if (string.IsNullOrEmpty(accessToken)) return true; else return false; } }
 
         public HistoryLoaderEngine(IConfigSettings settings, IUpstoxInterface upstoxInterface, IDBMethods dBMethods)
         {

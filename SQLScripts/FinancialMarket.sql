@@ -1138,7 +1138,15 @@ select distinct(TradingSymbol) from TickerMin
 
 select top 10 * from TickerMin where Datetime > '2019-09-18'
 
-select * from TickerMinElderIndicators where TickerDatetime > '2019-09-19' 
+select * from TickerMinElderIndicators 
+where TickerDatetime > '2019-09-20' 
+and stockcode = 'RELIANCE' and timeperiod = 5
+
+select * from TickerMinSuperTrend 
+where TickerDatetime > '2019-09-20' 
+and stockcode = 'RELIANCE' and timeperiod = 5
+
+
 select * from TickerMinEMAHA where TickerDatetime > '2019-09-19'
 select * from TickerMinSuperTrend where TickerDatetime > '2019-09-19'
 
@@ -1157,8 +1165,9 @@ order by Timeperiod
 
 select * from UserLogins
 
-select * from Logs where id > 65
+select * from Logs where id > 700
 --where TimeStamp > '2019-09-19 20:00'
 
 --delete from Logs
 --truncate table logs
+
