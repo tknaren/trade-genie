@@ -42,6 +42,7 @@ namespace OHLCProcessor
             //Call History Loader Engine
             //Call Consolidator Engine
             //Call Indicator Engine
+            //Just for testing
 
             bool loadIndicators = false;
 
