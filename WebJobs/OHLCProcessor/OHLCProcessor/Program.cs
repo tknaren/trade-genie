@@ -59,7 +59,7 @@ namespace OHLCProcessor
 
                     
                     
-                Log.Information("START");
+                Log.Information("START " + AuxiliaryMethods.GetCurrentIndianTimeStamp());
 
                 ProcessOHLC processOHLC = new ProcessOHLC();
                 processOHLC.StartEngine();
