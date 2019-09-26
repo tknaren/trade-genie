@@ -34,40 +34,43 @@ namespace BusinessLogicLayer
             bool loadIndicators = false;
 
             TimeSpan currentTime = new TimeSpan(AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Hours, DateTime.Now.TimeOfDay.Minutes, 0);
-            //TimeSpan startTime = _settings.StartingTime;
             DateTime startDateTime = DateTime.Today + _settings.StartingTime;
 
-            if (!_settings.IsPositional)
+            bool isOHLC3Min = OHLC_3Min(currentTime, startDateTime);
+            bool isOHLC5Min = OHLC_5Min(currentTime, startDateTime);
+            bool isOHLC10Min = OHLC_10Min(currentTime, startDateTime);
+            bool isOHLC15Min = OHLC_15Min(currentTime, startDateTime);
+            bool isOHLC30Min = OHLC_30Min(currentTime, startDateTime);
+            bool isOHLC60Min = OHLC_60Min(currentTime, startDateTime);
+
+            if (currentTime > _settings.HistoryEndTime)
             {
+                OHLC_EOD(currentTime, startDateTime);
+            }
 
-                Task<bool>[] taskArray = { Task<bool>.Factory.StartNew(() => OHLC_3Min(currentTime, startDateTime)),
-                                           Task<bool>.Factory.StartNew(() => OHLC_5Min(currentTime, startDateTime)),
-                                           Task<bool>.Factory.StartNew(() => OHLC_10Min(currentTime, startDateTime)),
-                                           Task<bool>.Factory.StartNew(() => OHLC_15Min(currentTime, startDateTime)),
-                                           Task<bool>.Factory.StartNew(() => OHLC_30Min(currentTime, startDateTime)),
-                                           Task<bool>.Factory.StartNew(() => OHLC_60Min(currentTime, startDateTime)) };
+            if (isOHLC3Min || isOHLC5Min || isOHLC10Min || isOHLC15Min || isOHLC30Min || isOHLC60Min)
+            {
+                loadIndicators = true;
+            }
 
-                Task.WaitAll(taskArray);
+            return loadIndicators;
+        }
 
-                var results = new bool[taskArray.Length];
+        private bool OHLC_EOD(TimeSpan CurrentTime, DateTime startDateTime)
+        {
+            bool loadIndicators = false;
 
-                for (int i = 0; i < taskArray.Length; i++)
-                {
-                    results[i] = taskArray[i].Result;
+            if (AuxiliaryMethods.MinuteTimer(_settings.EODTimer).Contains(CurrentTime))
+            {
+                Log.Information("EODTimer IN " + CurrentTime.ToString());
 
-                    if (results[i] == true)
-                    {
-                        loadIndicators = true;
-                        break;
-                    }
-                }
+                _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd 09:15:00"), 375);
+
+                loadIndicators = true;
             }
             else
             {
-                if (AuxiliaryMethods.MinuteTimer(_settings.Min60Timer).Contains(currentTime))
-                {
-                    loadIndicators = true;
-                }
+                Log.Information("EODTimer OUT " + CurrentTime.ToString());
             }
 
             return loadIndicators;
@@ -79,7 +82,7 @@ namespace BusinessLogicLayer
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min60Timer).Contains(CurrentTime))
             {
-                Log.Information(" Min60Timer IN " + CurrentTime.ToString());
+                Log.Information("Min60Timer IN " + CurrentTime.ToString());
 
                 _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 60);
 
@@ -99,7 +102,7 @@ namespace BusinessLogicLayer
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min30Timer).Contains(CurrentTime))
             {
-                Log.Information(" Min30Timer IN " + CurrentTime.ToString());
+                Log.Information("Min30Timer IN " + CurrentTime.ToString());
 
                 _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 30);
 
@@ -119,7 +122,7 @@ namespace BusinessLogicLayer
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min15Timer).Contains(CurrentTime))
             {
-                Log.Information(" Min15Timer IN " + CurrentTime.ToString());
+                Log.Information("Min15Timer IN " + CurrentTime.ToString());
 
                 _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 15);
 
@@ -139,7 +142,7 @@ namespace BusinessLogicLayer
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min10Timer).Contains(CurrentTime))
             {
-                Log.Information(" Min10Timer IN " + CurrentTime.ToString());
+                Log.Information("Min10Timer IN " + CurrentTime.ToString());
 
                 _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 10);
 
@@ -159,7 +162,7 @@ namespace BusinessLogicLayer
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min5Timer).Contains(CurrentTime))
             {
-                Log.Information(" Min5Timer IN " + CurrentTime.ToString());
+                Log.Information("Min5Timer IN " + CurrentTime.ToString());
 
                 _dBMethods.GenerateOHLC(startDateTime.ToString("yyyy-MM-dd HH:mm:ss"), 5);
 

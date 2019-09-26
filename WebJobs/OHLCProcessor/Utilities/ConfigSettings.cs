@@ -59,10 +59,10 @@ namespace Utilities
             //get { return ConfigurationManager.AppSettings["PeriodInDays"].ToString(); }
         }
 
-        public string DelayInMin
+        public string DelayInSec
         {
-            get { return CloudConfigurationManager.GetSetting("DelayInMin").ToString(); }
-            //get { return ConfigurationManager.AppSettings["DelayInMin"].ToString(); }
+            get { return CloudConfigurationManager.GetSetting("DelayInSec").ToString(); }
+            //get { return ConfigurationManager.AppSettings["DelayInSec"].ToString(); }
         }
 
         public string IntervalInMin
@@ -160,9 +160,9 @@ namespace Utilities
             //get { return ConfigurationManager.AppSettings["Min60Timer"].ToString(); }
         }
 
-        public bool IsPositional
+        public string EODTimer
         {
-            get { return Convert.ToBoolean(CloudConfigurationManager.GetSetting("IsPositional").ToString()); }
+            get { return CloudConfigurationManager.GetSetting("EODTimer").ToString(); }
             //get { return Convert.ToBoolean(ConfigurationManager.AppSettings["IsPositional"].ToString()); }
         }
 

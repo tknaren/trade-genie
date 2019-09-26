@@ -13,7 +13,7 @@ namespace Utilities
         TimeSpan HistoryEndTime { get; }
         string Exchange { get; }
         string PeriodInDays { get; }
-        string DelayInMin { get; }
+        string DelayInSec { get; }
         string IntervalInMin { get; }
         string APIKey { get; }
         string APISecret { get; }
@@ -30,7 +30,7 @@ namespace Utilities
         string Min15Timer { get; }
         string Min30Timer { get; }
         string Min60Timer { get; }
-        bool IsPositional { get; }
+        string EODTimer { get; }
 
         string TimePeriodsToCalculate { get; }
         string EMAsToCalculate { get; }

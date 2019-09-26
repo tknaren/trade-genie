@@ -53,13 +53,13 @@ namespace OHLCProcessor
                     Log.Information("History Fetch Start");
                     _historyLoaderEngine.LoadHistory();
                     Log.Information("History Fetch End");
+                }
 
-                    if (_historyLoaderEngine.IsUserLoggedIn)
-                    {
-                        Log.Information("Consolidator Start");
-                        loadIndicators = _consolidatorEngine.ConsolidateTickerEntries();
-                        Log.Information("Consolidator End");
-                    }
+                if (_historyLoaderEngine.IsUserLoggedIn)
+                {
+                    Log.Information("Consolidator Start");
+                    loadIndicators = _consolidatorEngine.ConsolidateTickerEntries();
+                    Log.Information("Consolidator End");
                 }
 
                 if (loadIndicators)
@@ -72,7 +72,7 @@ namespace OHLCProcessor
             }
             catch(Exception ex)
             {
-                Log.Error(ex, "ProcessOHLCMain Exception");
+                Log.Error(ex, "ProcessOHLC Main Exception");
             }
         }
 
@@ -92,7 +92,7 @@ namespace OHLCProcessor
 
         private int GetSleepTime()
         {
-            int maxSeconds = 60;
+            int maxSeconds = Convert.ToInt32(_configSettings.DelayInSec);
             int seconds = AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Seconds;
 
             int timeToSleep = maxSeconds - seconds;
