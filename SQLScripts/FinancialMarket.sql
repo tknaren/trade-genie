@@ -1159,9 +1159,13 @@ order by  TradingSymbol asc
 
 
 select Timeperiod, count(1) from TickerMinElderIndicators 
-where TickerDatetime > '2019-09-20'
+where TickerDatetime > '2019-09-26'
 group by  Timeperiod 
 order by Timeperiod 
+
+select * from TickerMinElderIndicators 
+where TickerDatetime > '2019-09-26'
+and StockCode = 'ADANIPORTS'
 
 select * from UserLogins
 
@@ -1171,3 +1175,23 @@ select * from Logs where id > 700
 --delete from Logs
 --truncate table logs
 
+select top 1000 * from Logs(nolock)
+where Timestamp > '2019-09-26' and id > 5500
+order by id desc
+
+select * from TickerMin
+where Datetime > '2019-09-26'
+and TradingSymbol = 'ADANIPORTS'
+order by Datetime desc
+
+select * from TickerMinElderIndicators 
+where TickerDatetime > '2019-09-26'
+and StockCode = 'ADANIPORTS' and timeperiod = 3
+order by TickerDateTime desc
+
+--delete from Logs where Timestamp < getDate() - 2 
+
+select * from Logs
+where Level = 'Error' and Timestamp > '2019-09-26'
+
+sp_helptext spGenerateOHLC
