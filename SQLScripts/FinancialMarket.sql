@@ -1176,22 +1176,54 @@ select * from Logs where id > 700
 --truncate table logs
 
 select top 1000 * from Logs(nolock)
-where Timestamp > '2019-09-26' and id > 5500
+where Timestamp > '2019-09-26' and id > 7000
 order by id desc
 
-select * from TickerMin
-where Datetime > '2019-09-26'
-and TradingSymbol = 'ADANIPORTS'
-order by Datetime desc
+--select * from TickerMin
+--where Datetime > '2019-09-26'
+--and TradingSymbol = 'ADANIPORTS'
+--order by Datetime desc
 
 select * from TickerMinElderIndicators 
 where TickerDatetime > '2019-09-26'
-and StockCode = 'ADANIPORTS' and timeperiod = 3
+and StockCode = 'ADANIPORTS' and timeperiod = 375
 order by TickerDateTime desc
+
+select * from MasterStockList
+where IsIncluded = 1
+
+select * from MasterStockList where Collection = 'Nifty Midcap 50'
+
+--update MasterStockList 
+--set IsIncluded = 1
+--where Collection = 'Nifty Midcap 50'
+
 
 --delete from Logs where Timestamp < getDate() - 2 
 
 select * from Logs
 where Level = 'Error' and Timestamp > '2019-09-26'
 
-sp_helptext spGenerateOHLC
+--sp_helptext spGenerateOHLC
+
+select today.TradingSymbol, yesterday.[Close], today.[Open], ((today.[Open] - yesterday.[Close]) / today.[Open]) * 100 as GapPer 
+from TickerMin yesterday inner join TickerMin today on yesterday.TradingSymbol = today.tradingsymbol  
+and today.[DateTime] = '2019-09-26 09:15' and yesterday.[DateTime] = '2019-09-25 15:29'
+
+select * from TickerMin
+where TradingSymbol = 'AUROPHARMA'
+and [DateTime] > '2019-09-26 09:15'
+
+
+select top 100 * from TickerMin as today
+where DateTime = '2019-09-26 09:15'
+
+
+exec spGenerateOHLC '2019-09-21 09:15',3
+exec spGenerateOHLC '2019-09-21 09:15',5
+exec spGenerateOHLC '2019-09-21 09:15',10
+exec spGenerateOHLC '2019-09-21 09:15',15
+exec spGenerateOHLC '2019-09-21 09:15',25
+exec spGenerateOHLC '2019-09-21 09:15',30
+exec spGenerateOHLC '2019-09-21 09:15',60
+exec spGenerateOHLC '2019-09-21 09:15',375

@@ -90,7 +90,7 @@ namespace APIInterfaceLayer
             uri.Append(_separator);
             uri.Append(_configSettings.IntervalInMin);
             uri.Append(_param);
-            uri.Append("start_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
+            uri.Append("start_date=" + DateTime.Today.AddDays(-5).ToString("dd-MM-yyyy"));
             uri.Append(_paramSeparator);
             uri.Append("end_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
 

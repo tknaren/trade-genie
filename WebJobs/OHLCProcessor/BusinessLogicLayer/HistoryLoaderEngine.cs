@@ -60,26 +60,6 @@ namespace BusinessLogicLayer
             //bool isAccessTokenSuccessfullySet = false;
             List<MasterStockList> masterStockLists = null;
 
-            //if (!_upstoxInterface.IsLoggedIn)
-            //{
-            //    accessToken = _dBMethods.GetLatestAccessToken();
-
-            //    if (!string.IsNullOrEmpty(accessToken))
-            //    {
-            //        isSuccessfulLogin = _upstoxInterface.InitializeUpstox(_settings.APIKey, _settings.APISecret, _settings.RedirectUrl);
-
-            //        if (isSuccessfulLogin)
-            //            isAccessTokenSuccessfullySet = _upstoxInterface.SetUpstoxAccessToken(accessToken);
-
-            //        Log.Information("Is Login Successful: {0}", isAccessTokenSuccessfullySet.ToString());
-            //    }
-            //}
-            //else
-            //{
-            //    Log.Information("Access Token: {0}", _upstoxInterface.AccessToken);
-            //    Log.Information("Is Logged In: {0}", _upstoxInterface.IsLoggedIn.ToString());
-            //}
-
             if (string.IsNullOrEmpty(accessToken))
             {
                 accessToken = _dBMethods.GetLatestAccessToken();

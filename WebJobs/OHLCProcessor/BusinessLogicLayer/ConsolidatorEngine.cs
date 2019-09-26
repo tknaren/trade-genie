@@ -34,7 +34,7 @@ namespace BusinessLogicLayer
             bool loadIndicators = false;
 
             TimeSpan currentTime = new TimeSpan(AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Hours, DateTime.Now.TimeOfDay.Minutes, 0);
-            DateTime startDateTime = DateTime.Today + _settings.StartingTime;
+            DateTime startDateTime = DateTime.Today.AddDays(-5) + _settings.StartingTime;
 
             bool isOHLC3Min = OHLC_3Min(currentTime, startDateTime);
             bool isOHLC5Min = OHLC_5Min(currentTime, startDateTime);
