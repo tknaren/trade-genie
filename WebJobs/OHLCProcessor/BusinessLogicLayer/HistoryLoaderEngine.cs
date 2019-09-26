@@ -36,7 +36,7 @@ namespace BusinessLogicLayer
         private readonly TickerMinDataTable dtHistoryData;
         private static string accessToken;
 
-        public bool IsUserLoggedIn { get { if (string.IsNullOrEmpty(accessToken)) return true; else return false; } }
+        public bool IsUserLoggedIn { get { if (!string.IsNullOrEmpty(accessToken)) return true; else return false; } }
 
         public HistoryLoaderEngine(IConfigSettings settings, IUpstoxInterface upstoxInterface, IDBMethods dBMethods)
         {

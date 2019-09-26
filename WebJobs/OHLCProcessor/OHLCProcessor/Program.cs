@@ -19,30 +19,6 @@ namespace OHLCProcessor
     {
         static void Main()
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-
-            //if (System.Environment.UserInteractive)
-            //{
-            //    using (ProcessOHLC processOHLC = new ProcessOHLC())
-            //    {
-            //        processOHLC.ProcessOHLCMain();
-            //    }
-            //}
-            //else
-            //{
-            //    var config = new JobHostConfiguration();
-            //    config.UseTimers();
-
-            //    if (config.IsDevelopment)
-            //    {
-            //        config.UseDevelopmentSettings();
-            //    }
-
-            //    var host = new JobHost(config);
-            //    host.RunAndBlock();
-            //}
-
             try
             {
                 var columnOption = new ColumnOptions();
@@ -56,15 +32,13 @@ namespace OHLCProcessor
                     //.WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception} {Properties:j}")
                     .WriteTo.MSSqlServer(ConfigurationManager.ConnectionStrings["aztgsqldb"].ToString(), "Logs", columnOptions: columnOption)
                     .CreateLogger();
-
-                    
                     
                 Log.Information("START " + AuxiliaryMethods.GetCurrentIndianTimeStamp());
 
                 ProcessOHLC processOHLC = new ProcessOHLC();
                 processOHLC.StartEngine();
 
-                Log.Information("END");
+                Log.Information("END " + AuxiliaryMethods.GetCurrentIndianTimeStamp());
             }
             catch(Exception ex)
             {

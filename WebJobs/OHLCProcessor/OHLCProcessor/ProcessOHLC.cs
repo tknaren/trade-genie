@@ -107,9 +107,14 @@ namespace OHLCProcessor
                 while (true)
                 {
                     if (TradingTime())
+                    {
                         ProcessOHLCMain();
-
-                    Thread.Sleep(GetSleepTime());
+                        Thread.Sleep(GetSleepTime());
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
             catch (Exception ex)
