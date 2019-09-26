@@ -90,6 +90,16 @@ namespace OHLCProcessor
             return ((CurrentTime > _configSettings.StartingTime) && (CurrentTime < _configSettings.HistoryEndTime));
         }
 
+        private int GetSleepTime()
+        {
+            int maxSeconds = 60;
+            int seconds = AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Seconds;
+
+            int timeToSleep = maxSeconds - seconds;
+
+            return timeToSleep * 1000;
+        }
+
         public void StartEngine()
         {
             try
@@ -99,7 +109,7 @@ namespace OHLCProcessor
                     if (TradingTime())
                         ProcessOHLCMain();
 
-                    Thread.Sleep(Convert.ToInt32(_configSettings.DelayInMin) * 60 * 1000);
+                    Thread.Sleep(GetSleepTime());
                 }
             }
             catch (Exception ex)

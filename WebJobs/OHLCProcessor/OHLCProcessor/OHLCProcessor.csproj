@@ -207,7 +207,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
-    <None Include="OHLCProcessor_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\aztgwebapp-Stage - Web Deploy.pubxml" />
     <None Include="Properties\webjob-publish-settings.json" />
