@@ -18,7 +18,7 @@ namespace DataAccessLayer
     public partial class aztgsqldbEntities : DbContext
     {
         public aztgsqldbEntities(string conString)
-            : base(conString)
+            : base("name=SQLAZURECONNSTR_aztgsqldbEntities")
         {
         }
     
