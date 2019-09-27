@@ -137,7 +137,7 @@ namespace OHLCProcessor
         {
             try
             {
-                if (Environment.UserInteractive)
+                if (!Environment.UserInteractive)
                 {
                     while (true)
                     {
