@@ -48,33 +48,42 @@ namespace OHLCProcessor
 
             try
             {
-                if (HistoryFetchTime())
+                if (!Environment.UserInteractive)
                 {
-                    Log.Information("History Fetch Start");
-                    _historyLoaderEngine.LoadHistory();
-                    Log.Information("History Fetch End");
-                }
+                    if (HistoryFetchTime())
+                    {
+                        Log.Information("History Fetch Start");
+                        _historyLoaderEngine.LoadHistory();
+                        Log.Information("History Fetch End");
+                    }
 
-                if (_historyLoaderEngine.IsUserLoggedIn)
-                {
-                    Log.Information("Consolidator Start");
-                    loadIndicators = _consolidatorEngine.ConsolidateTickerEntries();
-                    Log.Information("Consolidator End");
-                }
+                    if (_historyLoaderEngine.IsUserLoggedIn)
+                    {
+                        Log.Information("Consolidator Start");
+                        loadIndicators = _consolidatorEngine.ConsolidateTickerEntries();
+                        Log.Information("Consolidator End");
+                    }
 
-                if (IsDayHistoryTime())
+                    if (IsDayHistoryTime())
+                    {
+                        Log.Information("Day History Fetch Start");
+                        _historyLoaderEngine.LoadHistory(true);
+                        Log.Information("Day History Fetch End");
+                        loadIndicators = true;
+                    }
+
+                    if (loadIndicators)
+                    {
+                        Log.Information("Indicators Start");
+                        _indicatorEngine.IndicatorEngineLogic();
+                        Log.Information("Indicators End");
+                    }
+                }
+                else
                 {
-                    Log.Information("Day History Fetch Start");
                     _historyLoaderEngine.LoadHistory(true);
-                    Log.Information("Day History Fetch End");
-                    loadIndicators = true;
-                }
-
-                if (loadIndicators)
-                {
-                    Log.Information("Indicators Start");
+                    _consolidatorEngine.ConsolidateTickerEntries();
                     _indicatorEngine.IndicatorEngineLogic();
-                    Log.Information("Indicators End");
                 }
 
             }
@@ -129,17 +138,24 @@ namespace OHLCProcessor
         {
             try
             {
-                while (true)
+                if (!Environment.UserInteractive)
                 {
-                    if (TradingTime())
+                    while (true)
                     {
-                        ProcessOHLCMain();
-                        Thread.Sleep(GetSleepTime());
+                        if (TradingTime())
+                        {
+                            ProcessOHLCMain();
+                            Thread.Sleep(GetSleepTime());
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else
-                    {
-                        break;
-                    }
+                }
+                else
+                {
+                    ProcessOHLCMain();
                 }
             }
             catch (Exception ex)

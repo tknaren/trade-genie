@@ -26,6 +26,7 @@ namespace Utilities
         string StartDate { get; }
         string EndDate { get; }
         string AzSQLConString { get; }
+        string AzEFConString { get; }
         string Min3Timer { get; }
         string Min5Timer { get; }
         string Min10Timer { get; }

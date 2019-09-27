@@ -11,7 +11,7 @@ using Serilog.Exceptions.SqlServer;
 using Serilog.Exceptions.Core;
 using Serilog.Exceptions.SqlServer.Destructurers;
 using Utilities;
-
+using Microsoft.Azure;
 
 namespace OHLCProcessor
 {
@@ -21,6 +21,8 @@ namespace OHLCProcessor
         {
             try
             {
+                IConfigSettings _config = new ConfigSettings();
+
                 var columnOption = new ColumnOptions();
                 columnOption.Store.Remove(StandardColumn.MessageTemplate);
 
@@ -30,7 +32,7 @@ namespace OHLCProcessor
                         .WithDestructurers(new[] { new SqlExceptionDestructurer() }))
                     .MinimumLevel.Debug()
                     //.WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception} {Properties:j}")
-                    .WriteTo.MSSqlServer(ConfigurationManager.ConnectionStrings["aztgsqldb"].ToString(), "Logs", columnOptions: columnOption)
+                    .WriteTo.MSSqlServer(_config.AzSQLConString, "Logs", columnOptions: columnOption)
                     .CreateLogger();
                     
                 Log.Information("START " + AuxiliaryMethods.GetCurrentIndianTimeStamp());

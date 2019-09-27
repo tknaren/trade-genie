@@ -117,7 +117,11 @@ namespace Utilities
 
         public string AzSQLConString
         {
-            get { return ConfigurationManager.ConnectionStrings["aztgsqldb"].ToString(); }
+            get { return ConfigurationManager.ConnectionStrings["SQLAZURECONNSTR_aztgsqldb"].ToString(); }
+        }
+        public string AzEFConString
+        {
+            get { return ConfigurationManager.ConnectionStrings["SQLAZURECONNSTR_aztgsqldbEntities"].ToString(); }
         }
 
         public string Min3Timer

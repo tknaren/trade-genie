@@ -41,7 +41,7 @@ namespace DataAccessLayer
             DateTime currentDateTime = AuxiliaryMethods.GetCurrentIndianTimeStamp().Date;
             string status = string.Empty;
 
-            using (aztgsqldbEntities db = new aztgsqldbEntities())
+            using (aztgsqldbEntities db = new aztgsqldbEntities(_configSettings.AzEFConString))
             {
                 var latestLogin = db.UserLogins.Where(a => a.Status == "IN")
                     .Where(b => b.LoginDateTime >= currentDateTime)
@@ -68,7 +68,7 @@ namespace DataAccessLayer
         {
             List<MasterStockList> mslist = null;
 
-            using (aztgsqldbEntities db = new aztgsqldbEntities())
+            using (aztgsqldbEntities db = new aztgsqldbEntities(_configSettings.AzEFConString))
             {
                 var masterStockList = from msl in db.MasterStockLists
                                       where msl.IsIncluded == true
@@ -157,7 +157,7 @@ namespace DataAccessLayer
 
             List<TickerElderIndicatorsModel> tickerElderData = new List<TickerElderIndicatorsModel>();
 
-            using (aztgsqldbEntities db = new aztgsqldbEntities())
+            using (aztgsqldbEntities db = new aztgsqldbEntities(_configSettings.AzEFConString))
             {
                 tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList).ToList();
 
