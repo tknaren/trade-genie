@@ -1179,6 +1179,7 @@ select top 1000 * from Logs(nolock)
 where Timestamp > '2019-09-27' and id > 7000
 order by id desc
 
+
 --select * from TickerMin
 --where Datetime > '2019-09-26'
 --and TradingSymbol = 'ADANIPORTS'
@@ -1202,7 +1203,7 @@ select * from MasterStockList where Collection = 'Nifty Midcap 50'
 --delete from Logs where Timestamp < getDate() - 2 
 
 select * from Logs
-where Level = 'Error' and Timestamp > '2019-09-26'
+where Timestamp > '2019-09-27'
 
 --sp_helptext spGenerateOHLC
 
