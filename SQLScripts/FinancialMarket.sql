@@ -1176,7 +1176,7 @@ select * from Logs where id > 700
 --truncate table logs
 
 select top 1000 * from Logs(nolock)
-where Timestamp > '2019-09-27' and id > 7000
+where Timestamp > '2019-09-27' and id > 7500
 order by id desc
 
 
