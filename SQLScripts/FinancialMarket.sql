@@ -1175,7 +1175,7 @@ select * from Logs where id > 700
 --delete from Logs
 --truncate table logs
 
-select top 1000 * from Logs(nolock)
+select top 100 * from Logs(nolock)
 where Timestamp > '2019-09-27' and id > 7500
 order by id desc
 
@@ -1218,7 +1218,7 @@ where Timestamp > '2019-09-27'
 
 select * from TickerMin
 where TradingSymbol = 'AMARAJABAT'
-and [DateTime] > '2019-09-24 09:15'
+and [DateTime] > '2019-09-27 15:15'
 
 
 select top 100 * from TickerMin as today
