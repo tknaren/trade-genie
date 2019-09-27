@@ -1176,7 +1176,7 @@ select * from Logs where id > 700
 --truncate table logs
 
 select top 1000 * from Logs(nolock)
-where Timestamp > '2019-09-26' and id > 7000
+where Timestamp > '2019-09-27' and id > 7000
 order by id desc
 
 --select * from TickerMin
@@ -1185,7 +1185,7 @@ order by id desc
 --order by Datetime desc
 
 select * from TickerMinElderIndicators 
-where TickerDatetime > '2019-09-26'
+where TickerDatetime > '2019-09-01'
 and StockCode = 'ADANIPORTS' and timeperiod = 375
 order by TickerDateTime desc
 
@@ -1206,14 +1206,14 @@ where Level = 'Error' and Timestamp > '2019-09-26'
 
 --sp_helptext spGenerateOHLC
 
-declare @Yesterday datetime, @Today datetime
-set @Yesterday = '2019-09-23 15:29' 
-set @Today = '2019-09-24 09:15'
-select today.TradingSymbol, cast(yesterday.[DateTime] as Date) as 'Yesterday', yesterday.[Close], 
-cast(today.[DateTime] as date) as 'Today', today.[Open], ((today.[Open] - yesterday.[Close]) / today.[Open]) * 100 as GapPer 
-from TickerMin yesterday inner join TickerMin today on yesterday.TradingSymbol = today.tradingsymbol  
-and today.[DateTime] = @Today and yesterday.[DateTime] = @Yesterday
-where (((today.[Open] - yesterday.[Close]) / today.[Open]) * 100 > 2)
+--declare @Yesterday datetime, @Today datetime
+--set @Yesterday = '2019-09-23' 
+--set @Today = '2019-09-24'
+--select today.TradingSymbol, cast(yesterday.[DateTime] as Date) as 'Yesterday', yesterday.[Close], 
+--cast(today.[DateTime] as date) as 'Today', today.[Open], ((today.[Open] - yesterday.[Close]) / today.[Open]) * 100 as GapPer 
+--from TickerMin yesterday inner join TickerMin today on yesterday.TradingSymbol = today.tradingsymbol  
+--and today.[DateTime] = @Today and yesterday.[DateTime] = @Yesterday
+--where (((today.[Open] - yesterday.[Close]) / today.[Open]) * 100 > 2)
 
 select * from TickerMin
 where TradingSymbol = 'AMARAJABAT'
@@ -1232,3 +1232,24 @@ exec spGenerateOHLC '2019-09-21 09:15',25
 exec spGenerateOHLC '2019-09-21 09:15',30
 exec spGenerateOHLC '2019-09-21 09:15',60
 exec spGenerateOHLC '2019-09-21 09:15',375
+
+select * from TickerMinElderIndicators 
+
+declare @Yesterday datetime, @Today datetime
+set @Yesterday = '2019-09-20' 
+set @Today = '2019-09-23'
+select today.StockCode, cast(yesterday.TickerDateTime as Date) as 'Yesterday', yesterday.PriceClose, 
+cast(today.TickerDateTime as date) as 'Today', today.PriceOpen, ((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100 as GapPer 
+from TickerMinElderIndicators yesterday inner join TickerMinElderIndicators today on yesterday.StockCode = today.StockCode
+and today.TickerDateTime = @Today and yesterday.TickerDateTime = @Yesterday
+where (((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100  > 2) and today.PriceClose > 50
+union
+select today.StockCode, cast(yesterday.TickerDateTime as Date) as 'Yesterday', yesterday.PriceClose, 
+cast(today.TickerDateTime as date) as 'Today', today.PriceOpen, ((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100 as GapPer 
+from TickerMinElderIndicators yesterday inner join TickerMinElderIndicators today on yesterday.StockCode = today.StockCode
+and today.TickerDateTime = @Today and yesterday.TickerDateTime = @Yesterday
+where (((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100  < -2) and today.PriceClose > 50
+
+--truncate table TickerMinElderIndicators
+--truncate table TickerMinSuperTrend
+--Truncate table TickerMinEMAHA
