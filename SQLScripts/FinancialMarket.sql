@@ -1206,13 +1206,18 @@ where Level = 'Error' and Timestamp > '2019-09-26'
 
 --sp_helptext spGenerateOHLC
 
-select today.TradingSymbol, yesterday.[Close], today.[Open], ((today.[Open] - yesterday.[Close]) / today.[Open]) * 100 as GapPer 
+declare @Yesterday datetime, @Today datetime
+set @Yesterday = '2019-09-23 15:29' 
+set @Today = '2019-09-24 09:15'
+select today.TradingSymbol, cast(yesterday.[DateTime] as Date) as 'Yesterday', yesterday.[Close], 
+cast(today.[DateTime] as date) as 'Today', today.[Open], ((today.[Open] - yesterday.[Close]) / today.[Open]) * 100 as GapPer 
 from TickerMin yesterday inner join TickerMin today on yesterday.TradingSymbol = today.tradingsymbol  
-and today.[DateTime] = '2019-09-26 09:15' and yesterday.[DateTime] = '2019-09-25 15:29'
+and today.[DateTime] = @Today and yesterday.[DateTime] = @Yesterday
+where (((today.[Open] - yesterday.[Close]) / today.[Open]) * 100 > 2)
 
 select * from TickerMin
-where TradingSymbol = 'AUROPHARMA'
-and [DateTime] > '2019-09-26 09:15'
+where TradingSymbol = 'AMARAJABAT'
+and [DateTime] > '2019-09-24 09:15'
 
 
 select top 100 * from TickerMin as today

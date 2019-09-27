@@ -11,6 +11,8 @@ namespace Utilities
         TimeSpan StartingTime { get; }
         TimeSpan EndingTime { get; }
         TimeSpan HistoryEndTime { get; }
+        DateTime DayHistoryStartDate { get; }
+        DateTime DayHistoryEndDate { get; }
         string Exchange { get; }
         string PeriodInDays { get; }
         string DelayInSec { get; }
@@ -31,6 +33,7 @@ namespace Utilities
         string Min30Timer { get; }
         string Min60Timer { get; }
         string EODTimer { get; }
+        
 
         string TimePeriodsToCalculate { get; }
         string EMAsToCalculate { get; }

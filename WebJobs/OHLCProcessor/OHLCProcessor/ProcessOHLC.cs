@@ -62,6 +62,14 @@ namespace OHLCProcessor
                     Log.Information("Consolidator End");
                 }
 
+                if (IsDayHistoryTime())
+                {
+                    Log.Information("Day History Fetch Start");
+                    _historyLoaderEngine.LoadHistory(true);
+                    Log.Information("Day History Fetch End");
+                    loadIndicators = true;
+                }
+
                 if (loadIndicators)
                 {
                     Log.Information("Indicators Start");
@@ -88,6 +96,23 @@ namespace OHLCProcessor
             TimeSpan CurrentTime = AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay;
 
             return ((CurrentTime > _configSettings.StartingTime) && (CurrentTime < _configSettings.HistoryEndTime));
+        }
+
+        private bool IsDayHistoryTime()
+        {
+            bool isDayHistoryTime = false;
+
+            TimeSpan timeSpan = AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay;
+
+            TimeSpan eodTime = new TimeSpan(Convert.ToInt32(_configSettings.EODTimer.Split(':')[0]),
+                                            Convert.ToInt32(_configSettings.EODTimer.Split(':')[1]), 0);
+
+            TimeSpan CurrentTime = new TimeSpan(timeSpan.Hours, timeSpan.Minutes, 00);
+
+            if (CurrentTime == eodTime)
+                isDayHistoryTime = true;
+
+            return isDayHistoryTime;
         }
 
         private int GetSleepTime()

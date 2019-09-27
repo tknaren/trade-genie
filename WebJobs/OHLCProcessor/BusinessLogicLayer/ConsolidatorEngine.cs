@@ -33,7 +33,9 @@ namespace BusinessLogicLayer
             // add 5 mins to the start time and continue the same for 5, 15, 30 and 60 mins
             bool loadIndicators = false;
 
-            TimeSpan currentTime = new TimeSpan(AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Hours, DateTime.Now.TimeOfDay.Minutes, 0);
+            TimeSpan currentTime = new TimeSpan(AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Hours, 
+                                        AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Minutes, 0);
+
             DateTime startDateTime = DateTime.Today.AddDays(-5) + _settings.StartingTime;
 
             bool isOHLC3Min = OHLC_3Min(currentTime, startDateTime);
@@ -43,10 +45,10 @@ namespace BusinessLogicLayer
             bool isOHLC30Min = OHLC_30Min(currentTime, startDateTime);
             bool isOHLC60Min = OHLC_60Min(currentTime, startDateTime);
 
-            if (currentTime > _settings.HistoryEndTime)
-            {
-                OHLC_EOD(currentTime, startDateTime);
-            }
+            //if (currentTime > _settings.HistoryEndTime)
+            //{
+            //    OHLC_EOD(currentTime, startDateTime);
+            //}
 
             if (isOHLC3Min || isOHLC5Min || isOHLC10Min || isOHLC15Min || isOHLC30Min || isOHLC60Min)
             {

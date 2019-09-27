@@ -14,7 +14,7 @@ namespace APIInterfaceLayer
         bool IsLoggedIn { get; }
         bool InitializeUpstox(string apiKey, string apiSecret, string redirectUrl);
         bool SetUpstoxAccessToken(string accesToken);
-        string BuildHistoryUri(string stockCode);
+        string BuildHistoryUri(string stockCode, bool downloadDayHistory = false);
         Historical GetHistory(string accesToken, string uri);
     }
 
@@ -79,24 +79,38 @@ namespace APIInterfaceLayer
             return isSuccessful;
         }
 
-        public string BuildHistoryUri(string stockCode)
+        public string BuildHistoryUri(string stockCode, bool downloadDayHistory = false)
         {
             StringBuilder uri = new StringBuilder();
+
             uri.Append(_configSettings.HistoricalAPI);
             uri.Append(_separator);
             uri.Append(_configSettings.Exchange);
             uri.Append(_separator);
             uri.Append(stockCode);
             uri.Append(_separator);
-            uri.Append(_configSettings.IntervalInMin);
-            uri.Append(_param);
-            uri.Append("start_date=" + DateTime.Today.AddDays(-5).ToString("dd-MM-yyyy"));
-            uri.Append(_paramSeparator);
-            uri.Append("end_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
+
+            if (!downloadDayHistory)
+            {
+                uri.Append(_configSettings.IntervalInMin);
+                uri.Append(_param);
+                uri.Append("start_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
+                uri.Append(_paramSeparator);
+                uri.Append("end_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
+            }
+            else
+            {
+                uri.Append("day");
+                uri.Append(_param);
+                uri.Append("start_date=" + _configSettings.DayHistoryStartDate.ToString("dd-MM-yyyy"));
+                uri.Append(_paramSeparator);
+                uri.Append("end_date=" + _configSettings.DayHistoryEndDate.ToString("dd-MM-yyyy"));
+            }
 
             return uri.ToString();
         }
 
+        
         public Historical GetHistory(string accesToken, string uri)
         {
             Historical historical = _webClient.CallHistoricalAPI(accesToken, uri);

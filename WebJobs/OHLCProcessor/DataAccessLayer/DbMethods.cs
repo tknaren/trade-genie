@@ -17,6 +17,8 @@ namespace DataAccessLayer
 
         void InsertTickerDataTable(TickerMinDataTable dtTicker);
 
+        void InsertTickerDataTable(TickerMinDataTable dtTicker, bool downloadDayHistory);
+
         void GenerateOHLC(string dateTime, int minuteBar);
 
         List<TickerElderIndicatorsModel> GetTickerDataForIndicators(string instrumentList, string timePeriodList);
@@ -80,19 +82,48 @@ namespace DataAccessLayer
 
         public void InsertTickerDataTable(TickerMinDataTable dtTicker)
         {
+            string commandName = "spUpdateTicker";
+
             using (SqlConnection sqlConn = new SqlConnection(_configSettings.AzSQLConString))
             {
-                using (SqlCommand sqlComm = new SqlCommand("spUpdateTicker"))
+                using (SqlCommand sqlComm = new SqlCommand(commandName))
                 {
                     sqlComm.Connection = sqlConn;
                     sqlComm.CommandType = CommandType.StoredProcedure;
                     sqlComm.CommandTimeout = 240;
-                    //sqlComm.Parameters.AddWithValue("@tblTicker", dtTicker);
 
                     SqlParameter tblParam = new SqlParameter("@tblTicker", SqlDbType.Structured);
                     tblParam.Value = dtTicker;
 
                     sqlComm.Parameters.Add(tblParam);
+
+                    sqlConn.Open();
+                    int ret = sqlComm.ExecuteNonQuery();
+                    sqlConn.Close();
+                }
+            }
+        }
+
+        public void InsertTickerDataTable(TickerMinDataTable dtTicker, bool downloadDayHistory)
+        {
+            string commandName = "spUpdateTickerElder";
+
+            using (SqlConnection sqlConn = new SqlConnection(_configSettings.AzSQLConString))
+            {
+                using (SqlCommand sqlComm = new SqlCommand(commandName))
+                {
+                    sqlComm.Connection = sqlConn;
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.CommandTimeout = 240;
+
+                    SqlParameter tblParam = new SqlParameter("@tblTicker", SqlDbType.Structured);
+                    tblParam.Value = dtTicker;
+
+                    SqlParameter tpParam = new SqlParameter("@timePeriod", SqlDbType.Int);
+                    tpParam.Value = 375;
+
+                    sqlComm.Parameters.Add(tblParam);
+                    sqlComm.Parameters.Add(tpParam);
 
                     sqlConn.Open();
                     int ret = sqlComm.ExecuteNonQuery();
