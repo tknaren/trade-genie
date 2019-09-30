@@ -73,6 +73,8 @@
     <Compile Include="MasterStockList.cs">
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DateCollection.cs" />
+    <Compile Include="Models\GapStrategyOrderBook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="spGetGapOpenedScripts_Result.cs">
       <DependentUpon>TGModel.tt</DependentUpon>

@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
+using Serilog.Exceptions;
+using Serilog.Exceptions.Core;
+using Serilog.Exceptions.SqlServer.Destructurers;
 
 namespace BackTestingApp
 {
@@ -10,12 +16,32 @@ namespace BackTestingApp
     {
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            try
+            {
+                IConfigSettings _config = new ConfigSettings();
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+                var columnOption = new ColumnOptions();
+                columnOption.Store.Remove(StandardColumn.MessageTemplate);
+
+                Log.Logger = new LoggerConfiguration()
+                    .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder()
+                        .WithDefaultDestructurers()
+                        .WithDestructurers(new[] { new SqlExceptionDestructurer() }))
+                    .MinimumLevel.Debug()
+                    .WriteTo.MSSqlServer(_config.AzSQLConString, "BackTestLogs", columnOptions: columnOption)
+                    .CreateLogger();
+
+                Log.Information("START " + AuxiliaryMethods.GetCurrentIndianTimeStamp());
+
+                MarketStrategiesBackTester strategiesTester = new MarketStrategiesBackTester();
+                strategiesTester.RunBackTest();
+
+                Log.Information("END " + AuxiliaryMethods.GetCurrentIndianTimeStamp());
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex,"Main Exception");
+            }
         }
     }
 }

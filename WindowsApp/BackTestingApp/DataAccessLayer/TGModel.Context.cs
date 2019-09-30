@@ -18,7 +18,7 @@ namespace DataAccessLayer
     public partial class TGEntities : DbContext
     {
         public TGEntities()
-            : base("name=TGEntities")
+            : base("name=SQLAZURECONNSTR_aztgsqldbEntities")
         {
         }
     
