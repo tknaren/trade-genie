@@ -1,3 +1,4 @@
+/*
 select count(1) from TickerMinElderIndicators
 where TickerDateTime > '2017-12-27' and TimePeriod = 5
 union
@@ -1239,18 +1240,41 @@ select * from TickerMinElderIndicators
 declare @Yesterday datetime, @Today datetime
 set @Yesterday = '2019-09-20' 
 set @Today = '2019-09-23'
-select today.StockCode, cast(yesterday.TickerDateTime as Date) as 'Yesterday', yesterday.PriceClose, 
-cast(today.TickerDateTime as date) as 'Today', today.PriceOpen, ((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100 as GapPer 
-from TickerMinElderIndicators yesterday inner join TickerMinElderIndicators today on yesterday.StockCode = today.StockCode
-and today.TickerDateTime = @Today and yesterday.TickerDateTime = @Yesterday
+select today.StockCode, msl.[collection], cast(yesterday.TickerDateTime as Date) as 'Yesterday', yesterday.PriceClose, 
+cast(today.TickerDateTime as date) as 'Today', today.PriceOpen, ((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100 as GapPer,
+(today.PriceOpen - (today.PriceOpen * 0.01)) as 'Target', today.PriceLow as 'Final', 
+CASE WHEN today.PriceLow < (today.PriceOpen - (today.PriceOpen * 0.01)) THEN 'TRUE' ELSE 'FALSE' END
+from TickerMinElderIndicators yesterday 
+inner join TickerMinElderIndicators today on yesterday.StockCode = today.StockCode and today.TickerDateTime = @Today and yesterday.TickerDateTime = @Yesterday
+inner join MasterStockList msl on msl.TradingSymbol = today.StockCode
 where (((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100  > 2) and today.PriceClose > 50
 union
-select today.StockCode, cast(yesterday.TickerDateTime as Date) as 'Yesterday', yesterday.PriceClose, 
-cast(today.TickerDateTime as date) as 'Today', today.PriceOpen, ((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100 as GapPer 
-from TickerMinElderIndicators yesterday inner join TickerMinElderIndicators today on yesterday.StockCode = today.StockCode
-and today.TickerDateTime = @Today and yesterday.TickerDateTime = @Yesterday
+select today.StockCode, msl.[collection], cast(yesterday.TickerDateTime as Date) as 'Yesterday', yesterday.PriceClose, 
+cast(today.TickerDateTime as date) as 'Today', today.PriceOpen, ((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100 as GapPer,
+(today.PriceOpen + (today.PriceOpen * 0.01)) as 'Target', today.PriceHigh as 'Final',
+CASE WHEN today.PriceHigh > (today.PriceOpen + (today.PriceOpen * 0.01)) THEN 'TRUE' ELSE 'FALSE' END
+from TickerMinElderIndicators yesterday 
+inner join TickerMinElderIndicators today on yesterday.StockCode = today.StockCode and today.TickerDateTime = @Today and yesterday.TickerDateTime = @Yesterday
+inner join MasterStockList msl on msl.TradingSymbol = today.StockCode
 where (((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100  < -2) and today.PriceClose > 50
 
 --truncate table TickerMinElderIndicators
 --truncate table TickerMinSuperTrend
 --Truncate table TickerMinEMAHA
+
+--truncate table Logs
+
+select * from TickerMinElderIndicators
+where stockCode = 'ABB'
+
+--delete from TickerMinElderIndicators
+--where TimePeriod <> 375
+
+select * from UserLogins
+select * from MasterStockList
+
+--INSERT INTO MasterStockList VALUES (1111111, '','','Nifty Midcap', 1)
+*/
+
+exec spGetGapOpenedScripts '2019-09-20', '2019-09-23', 1, 2, 5000, 50 
+
