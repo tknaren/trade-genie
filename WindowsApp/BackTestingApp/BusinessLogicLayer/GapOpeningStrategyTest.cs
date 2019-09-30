@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataAccessLayer;
 using DataAccessLayer.Models;
 using Utilities;
+using Serilog;
 
 namespace BusinessLogicLayer
 {
@@ -72,6 +73,14 @@ namespace BusinessLogicLayer
                                 //9.  Loop thru the Min data and check if the order has hit Target or SL
                                 //10. If the time breaches 12 pm, close the position.
 
+                                if (potentialScript.GapPer > 0)
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    
+                                }
 
                                 orderBook.Add(order);
 
@@ -80,10 +89,20 @@ namespace BusinessLogicLayer
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-
+                Log.Error(ex, "GapOpeningStrategyTest Error");
             }
+        }
+
+        public void HandleGapUpScripts()
+        {
+
+        }
+
+        public void HandleGapDownScripts()
+        {
+
         }
 
     }
