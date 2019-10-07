@@ -16,7 +16,8 @@ namespace BackTestingApp
 
         public MarketStrategiesBackTester()
         {
-
+            _config = new ConfigSettings();
+            _dbMethods = new DBMethods();
         }
 
         public void RunBackTest()

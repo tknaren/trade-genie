@@ -12,6 +12,7 @@ namespace DataAccessLayer
         List<MasterStockList> GetMasterStockList();
         List<TickerMin> GetMinuteData(DateTime startDate, DateTime endDate, string stockCode);
         List<spGetGapOpenedScripts_Result> GetStocksWithGapOpening(DateTime yesterday, DateTime today, int targetPercentage, int gapPercentage, int priceRangeHigh, int priceRangeLow);
+        void InsertGapStrategyOrders(List<GapStrategyPotentialOrder> potentialOrders);
     }
 
     public class DBMethods : IDBMethods
@@ -83,6 +84,19 @@ namespace DataAccessLayer
             }
 
             return listOfStocks;
+        }
+
+        public void InsertGapStrategyOrders(List<GapStrategyPotentialOrder> potentialOrders)
+        {
+            using (TGEntities tGEntities = new TGEntities())
+            {
+                foreach(GapStrategyPotentialOrder potentialOrder in  potentialOrders)
+                {
+                    tGEntities.GapStrategyPotentialOrders.Add(potentialOrder);
+                }
+
+                tGEntities.SaveChanges();
+            }
         }
     }
 }

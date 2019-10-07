@@ -20,6 +20,7 @@ namespace DataAccessLayer
         public TGEntities()
             : base("name=SQLAZURECONNSTR_aztgsqldbEntities")
         {
+            this.Database.CommandTimeout = 600;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -33,6 +34,7 @@ namespace DataAccessLayer
         public virtual DbSet<TickerMinEMAHA> TickerMinEMAHAs { get; set; }
         public virtual DbSet<TickerMinSuperTrend> TickerMinSuperTrends { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }
+        public virtual DbSet<GapStrategyPotentialOrder> GapStrategyPotentialOrders { get; set; }
     
         public virtual ObjectResult<spGetStocksWithGapOpening_Result> spGetStocksWithGapOpening(Nullable<System.DateTime> yesterday, Nullable<System.DateTime> today, Nullable<int> percentage, Nullable<int> stockPrice)
         {

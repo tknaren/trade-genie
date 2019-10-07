@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="TGModel.TickerMinEMAHA" Width="1.5" PointX="10.875" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="TGModel.TickerMinSuperTrend" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="TGModel.UserLogin" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TGModel.GapStrategyPotentialOrder" Width="1.5" PointX="0.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -5,6 +5,31 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="TGModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="GapStrategyPotentialOrders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StockCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Collection" Type="varchar" MaxLength="50" />
+          <Property Name="Yesterday" Type="date" />
+          <Property Name="YesterdayClose" Type="float" />
+          <Property Name="Today" Type="date" />
+          <Property Name="TodayOpen" Type="float" />
+          <Property Name="GapPer" Type="float" />
+          <Property Name="Position" Type="varchar" MaxLength="50" />
+          <Property Name="BuyTime" Type="datetime" />
+          <Property Name="SellTime" Type="datetime" />
+          <Property Name="StopLossTime" Type="datetime" />
+          <Property Name="BuyPrice" Type="float" />
+          <Property Name="SellPrice" Type="float" />
+          <Property Name="StopLoss" Type="float" />
+          <Property Name="Target" Type="float" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="MaxProfitAchieved" Type="float" />
+          <Property Name="MaxProfitCanBeAchieved" Type="float" />
+          <Property Name="PNL" Type="float" />
+        </EntityType>
         <EntityType Name="MasterStockList">
           <Key>
             <PropertyRef Name="InstrumentToken" />
@@ -180,6 +205,7 @@
           <Parameter Name="stockPrice" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="TGModelStoreContainer">
+          <EntitySet Name="GapStrategyPotentialOrders" EntityType="Self.GapStrategyPotentialOrders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MasterStockList" EntityType="Self.MasterStockList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TickerMin" EntityType="Self.TickerMin" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TickerMinElderIndicators" EntityType="Self.TickerMinElderIndicators" Schema="dbo" store:Type="Tables" />
@@ -372,6 +398,7 @@
             <Parameter Name="priceRangeHigh" Mode="In" Type="Int32" />
             <Parameter Name="priceRangeLow" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="GapStrategyPotentialOrders" EntityType="TGModel.GapStrategyPotentialOrder" />
         </EntityContainer>
         <ComplexType Name="spGetStocksWithGapOpening_Result">
           <Property Type="String" Name="StockCode" Nullable="false" MaxLength="15" />
@@ -393,6 +420,31 @@
           <Property Type="Double" Name="Final" Nullable="true" />
           <Property Type="String" Name="IsProfit" Nullable="false" MaxLength="5" />
         </ComplexType>
+        <EntityType Name="GapStrategyPotentialOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StockCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Collection" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Yesterday" Type="DateTime" Precision="0" />
+          <Property Name="YesterdayClose" Type="Double" />
+          <Property Name="Today" Type="DateTime" Precision="0" />
+          <Property Name="TodayOpen" Type="Double" />
+          <Property Name="GapPer" Type="Double" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BuyTime" Type="DateTime" Precision="3" />
+          <Property Name="SellTime" Type="DateTime" Precision="3" />
+          <Property Name="StopLossTime" Type="DateTime" Precision="3" />
+          <Property Name="BuyPrice" Type="Double" />
+          <Property Name="SellPrice" Type="Double" />
+          <Property Name="StopLoss" Type="Double" />
+          <Property Name="Target" Type="Double" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="MaxProfitAchieved" Type="Double" />
+          <Property Name="MaxProfitCanBeAchieved" Type="Double" />
+          <Property Name="PNL" Type="Double" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -585,6 +637,32 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="GapStrategyPotentialOrders">
+            <EntityTypeMapping TypeName="TGModel.GapStrategyPotentialOrder">
+              <MappingFragment StoreEntitySet="GapStrategyPotentialOrders">
+                <ScalarProperty Name="PNL" ColumnName="PNL" />
+                <ScalarProperty Name="MaxProfitCanBeAchieved" ColumnName="MaxProfitCanBeAchieved" />
+                <ScalarProperty Name="MaxProfitAchieved" ColumnName="MaxProfitAchieved" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Target" ColumnName="Target" />
+                <ScalarProperty Name="StopLoss" ColumnName="StopLoss" />
+                <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+                <ScalarProperty Name="BuyPrice" ColumnName="BuyPrice" />
+                <ScalarProperty Name="StopLossTime" ColumnName="StopLossTime" />
+                <ScalarProperty Name="SellTime" ColumnName="SellTime" />
+                <ScalarProperty Name="BuyTime" ColumnName="BuyTime" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="GapPer" ColumnName="GapPer" />
+                <ScalarProperty Name="TodayOpen" ColumnName="TodayOpen" />
+                <ScalarProperty Name="Today" ColumnName="Today" />
+                <ScalarProperty Name="YesterdayClose" ColumnName="YesterdayClose" />
+                <ScalarProperty Name="Yesterday" ColumnName="Yesterday" />
+                <ScalarProperty Name="Collection" ColumnName="Collection" />
+                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

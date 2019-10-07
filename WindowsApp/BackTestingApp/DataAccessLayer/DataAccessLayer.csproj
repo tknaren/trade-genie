@@ -70,9 +70,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBMethods.cs" />
+    <Compile Include="GapStrategyPotentialOrder.cs">
+      <DependentUpon>TGModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="MasterStockList.cs">
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Candle.cs" />
     <Compile Include="Models\DateCollection.cs" />
     <Compile Include="Models\GapStrategyOrderBook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

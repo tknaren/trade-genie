@@ -1061,7 +1061,7 @@ exec spGenerateOHLC '2019-09-03 09:15',15
 --select * from TickerMin where Datetime > '2019-09-19'
 
 select TradingSymbol, count(1) from TickerMin 
-where Datetime > '2019-09-03'
+where Datetime > '2019-09-27'
 group by TradingSymbol
 order by  TradingSymbol asc
 
@@ -1191,7 +1191,15 @@ exec spGetGapOpenedScripts '2019-09-20', '2019-09-23', 1, 2, 5000, 50
 select top 10 * from TickerMinElderIndicators(nolock)
 where TimePeriod = 3
 
-select * from Logs
+select top 100 * from Logs
+order by Id desc
+
 
 select * from BackTestLogs
+order by Id desc
 
+select top 10 * from TickerMin
+
+select * from GaPstrategyPotentialOrders
+where Id > 11 and Position in ('LONG','SHORT') and PNL > 0
+--truncate table GaPstrategyPotentialOrders
