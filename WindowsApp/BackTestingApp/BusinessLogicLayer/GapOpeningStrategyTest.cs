@@ -302,7 +302,7 @@ namespace BusinessLogicLayer
                             order.MaxProfitAchieved = 0;
                             order.MaxProfitCanBeAchieved = 0;
 
-                            orderBook.Add(order);
+                            //orderBook.Add(order);
                         }
                         else
                         {
@@ -327,7 +327,7 @@ namespace BusinessLogicLayer
                             order.MaxProfitAchieved = 0;
                             order.MaxProfitCanBeAchieved = 0;
 
-                            orderBook.Add(order);
+                            //orderBook.Add(order);
                         }
                     }
                 }

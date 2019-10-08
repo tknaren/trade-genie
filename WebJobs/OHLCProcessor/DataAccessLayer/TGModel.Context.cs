@@ -20,6 +20,7 @@ namespace DataAccessLayer
         public aztgsqldbEntities(string conString)
             : base("name=SQLAZURECONNSTR_aztgsqldbEntities")
         {
+            this.Database.CommandTimeout = 6000;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

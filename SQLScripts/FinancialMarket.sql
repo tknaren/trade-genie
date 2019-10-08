@@ -1061,15 +1061,15 @@ exec spGenerateOHLC '2019-09-03 09:15',15
 --select * from TickerMin where Datetime > '2019-09-19'
 
 select TradingSymbol, count(1) from TickerMin 
-where Datetime > '2019-09-27'
+where Datetime > '2019-10-07'
 group by TradingSymbol
 order by  TradingSymbol asc
 
 
---select Timeperiod, count(1) from TickerMinElderIndicators 
---where TickerDatetime > '2019-09-26'
---group by  Timeperiod 
---order by Timeperiod 
+select Timeperiod, count(1) from TickerMinElderIndicators 
+where TickerDatetime > '2019-10-07'
+group by  Timeperiod 
+order by Timeperiod 
 
 --select * from TickerMinElderIndicators 
 --where TickerDatetime > '2019-09-26'
@@ -1135,13 +1135,13 @@ order by timeStamp desc
 --where DateTime = '2019-09-26 09:15'
 
 
---exec spGenerateOHLC '2019-09-21 09:15',3
---exec spGenerateOHLC '2019-09-21 09:15',5
---exec spGenerateOHLC '2019-09-21 09:15',10
---exec spGenerateOHLC '2019-09-21 09:15',15
---exec spGenerateOHLC '2019-09-21 09:15',25
---exec spGenerateOHLC '2019-09-21 09:15',30
---exec spGenerateOHLC '2019-09-21 09:15',60
+exec spGenerateOHLC '2019-10-01 09:15',3
+exec spGenerateOHLC '2019-10-01 09:15',5
+exec spGenerateOHLC '2019-10-01 09:15',10
+exec spGenerateOHLC '2019-10-01 09:15',15
+exec spGenerateOHLC '2019-10-01 09:15',25
+exec spGenerateOHLC '2019-10-01 09:15',30
+exec spGenerateOHLC '2019-10-01 09:15',60
 --exec spGenerateOHLC '2019-09-21 09:15',375
 
 --select * from TickerMinElderIndicators 
@@ -1180,18 +1180,19 @@ order by timeStamp desc
 ----where TimePeriod <> 375
 
 select * from UserLogins
+order by LoginDateTime desc
 --select * from MasterStockList
 
 --INSERT INTO MasterStockList VALUES (1111111, '','','Nifty Midcap', 1)
 
 
-exec spGetGapOpenedScripts '2019-09-20', '2019-09-23', 1, 2, 5000, 50 
+exec spGetGapOpenedScripts '2019-10-04', '2019-10-07', 1, 2, 5000, 50 
 
 
 select top 10 * from TickerMinElderIndicators(nolock)
 where TimePeriod = 3
 
-select top 100 * from Logs
+select top 100 * from Logs(nolock)
 order by Id desc
 
 
@@ -1203,3 +1204,10 @@ select top 10 * from TickerMin
 select * from GaPstrategyPotentialOrders
 where Id > 11 and Position in ('LONG','SHORT') and PNL > 0
 --truncate table GaPstrategyPotentialOrders
+
+exec RealTimeGapOpenedScripts '2019-10-04', '2019-10-07 09:15:00', 1, 2, 5000, 50 
+
+--select TradingSymbol, count(1) from TickerMin 
+--where Datetime > '2019-10-07'
+--group by TradingSymbol
+--order by  TradingSymbol asc
