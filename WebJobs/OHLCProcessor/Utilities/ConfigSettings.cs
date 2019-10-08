@@ -75,6 +75,11 @@ namespace Utilities
             get { return CloudConfigurationManager.GetSetting("IntervalInMin").ToString(); }
         }
 
+        public string IntervalPeriod
+        {
+            get { return CloudConfigurationManager.GetSetting("IntervalPeriod").ToString(); }
+        }
+
         public string APIKey
         {
             get { return CloudConfigurationManager.GetSetting("Api_Key").ToString(); }

@@ -93,19 +93,19 @@ namespace APIInterfaceLayer
             if (!downloadDayHistory)
             {
                 uri.Append(_configSettings.IntervalInMin);
-                //uri.Append("1");
                 uri.Append(_param);
-                uri.Append("start_date=" + DateTime.Today.AddDays(-6).ToString("dd-MM-yyyy"));
+                uri.Append("start_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
                 uri.Append(_paramSeparator);
                 uri.Append("end_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
             }
             else
             {
-                uri.Append("day");
+                uri.Append(_configSettings.IntervalPeriod);
                 uri.Append(_param);
-                uri.Append("start_date=" + _configSettings.DayHistoryStartDate.ToString("dd-MM-yyyy"));
+                //uri.Append("start_date=" + _configSettings.DayHistoryStartDate.ToString("dd-MM-yyyy"));
+                uri.Append("start_date=" + DateTime.Today.AddDays(-1).ToString("dd-MM-yyyy"));
                 uri.Append(_paramSeparator);
-                uri.Append("end_date=" + _configSettings.DayHistoryEndDate.ToString("dd-MM-yyyy"));
+                uri.Append("end_date=" + DateTime.Today.ToString("dd-MM-yyyy"));
             }
 
             return uri.ToString();

@@ -17,6 +17,7 @@ namespace Utilities
         string PeriodInDays { get; }
         string DelayInSec { get; }
         string IntervalInMin { get; }
+        string IntervalPeriod { get; }
         string APIKey { get; }
         string APISecret { get; }
         string RedirectUrl { get; }
@@ -35,7 +36,6 @@ namespace Utilities
         string Min60Timer { get; }
         string EODTimer { get; }
         
-
         string TimePeriodsToCalculate { get; }
         string EMAsToCalculate { get; }
         string EHEMAsToCalculate { get; }
