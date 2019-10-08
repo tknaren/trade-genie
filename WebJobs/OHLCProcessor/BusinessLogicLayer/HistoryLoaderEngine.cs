@@ -50,11 +50,13 @@ namespace BusinessLogicLayer
         {
             DownloadHistory(downloadDayHistory);
 
-            UploadHistoryToDB(downloadDayHistory);
+            //UploadHistoryToDB(downloadDayHistory);
         }
 
         private void DownloadHistory(bool downloadDayHistory = false)
         {
+            int iCtr = 0;
+
             List<MasterStockList> masterStockLists = null;
 
             if (string.IsNullOrEmpty(accessToken))
@@ -75,11 +77,25 @@ namespace BusinessLogicLayer
                         Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
 
                         AddToTickerDataTable(stock.InstrumentToken, stock.TradingSymbol, historial);
+
+                        if (iCtr >= 20)
+                        {
+                            UploadHistoryToDB(downloadDayHistory);
+
+                            iCtr = 0;
+                        }
                     }
                     catch (Exception ex)
                     {
                         Log.Error(ex, "Download History Exception " + stock.TradingSymbol);
                     }
+
+                    iCtr++;
+                }
+
+                if (iCtr > 1 && dtHistoryData.Rows.Count > 1)
+                {
+                    UploadHistoryToDB(downloadDayHistory);
                 }
             }
             else
@@ -128,9 +144,15 @@ namespace BusinessLogicLayer
         private void UploadHistoryToDB(bool downloadDayHistory = false)
         {
             if (!downloadDayHistory)
+            {
                 _dBMethods.InsertTickerDataTable(dtHistoryData);
+            }
             else
+            {
                 _dBMethods.InsertTickerDataTable(dtHistoryData, downloadDayHistory);
+            }
+
+            dtHistoryData.Clear();
         }
     }
 }
