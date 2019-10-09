@@ -1192,14 +1192,35 @@ exec spGetGapOpenedScripts '2019-10-04', '2019-10-07', 1, 2, 5000, 50
 select top 10 * from TickerMinElderIndicators(nolock)
 where TimePeriod = 375
 
-select top 50 * from Logs(nolock)
+select top 500 * from Logs(nolock)
+--where timestamp < '2019-10-09 15:30 +05:30'
 order by Id desc
+
+--22254	History Fetch End	NULL	Information	2019-10-09 15:24:29.2856959 +05:30	NULL	<properties />	NULL
+--22253	History Fetch Start	NULL	Information	2019-10-09 15:23:02.6073526 +05:30	NULL	<properties />	NULL
+
+--2928	Load To DB END		NULL	Information	2019-10-09 19:24:08.1351573 +05:30
+--2927	Load To DB START	NULL	Information	2019-10-09 19:22:42.3068315 +05:30
+--2880	Waiting				NULL	Information	2019-10-09 19:22:03.1763213 +05:30
+--2879	History Fetch Start	NULL	Information	2019-10-09 19:22:02.9731820 +05:30
 
 
 select * from BackTestLogs
 order by Id desc
 
 select top 10 * from TickerMin
+
+--DECLARE @InstrumentList varchar(2500)
+--DECLARE @Today DATE
+--SET @InstrumentList = 'ADANIENT,AMARAJABAT,APOLLOHOSP,APOLLOTYRE,ARVIND,BALKRISIND,BERGEPAINT,BHARATFORG,RELINFRA,CENTURYTEX,EXIDEIND,CHOLAFIN,FEDERALBNK,CASTROLIND,IDBI,MRPL,SRF,TATACHEM,TATAGLOBAL,VOLTAS,BANKINDIA,ENGINERSIN,JINDALSTEL,AJANTPHARM,TVSMOTOR,UNIONBANK,CANBK,GODREJIND,DIVISLAB,IGL,BIOCON,IDFC,RCOM,M&MFIN,GMRINFRA,MINDTREE,PAGEIND,DISHTV'
+--SET @Today = GETDATE()
+--SELECT InstrumentToken, TradingSymbol, [DateTime], [Open], High, Low, [Close], Volume
+--FROM (
+--	SELECT InstrumentToken, TradingSymbol, [DateTime], [Open], High, Low, [Close], Volume, 
+--	ROW_NUMBER() OVER(partition BY TradingSymbol ORDER BY [DateTime] DESC) AS RankValue
+--	FROM TICKERMIN WHERE [DateTime] > @Today and TradingSymbol IN (SELECT * FROM ufn_CSVToTable(@InstrumentList,',')) ) i
+--Where RankValue = 1
+--Order by TradingSymbol, [DateTime]
 
 select * from GaPstrategyPotentialOrders
 where Id > 11 and Position in ('LONG','SHORT') and PNL > 0
@@ -1223,19 +1244,30 @@ where TimePeriod = 3 and StockCode = 'RELIANCE'
 order by TickerDateTime desc
 
 --update MasterStockList
---set IsIncluded = 0
---where TradingSymbol not like 'H%'
+--set IsIncluded = 1
+--where collection = 'Nifty 50'
 
 
 select * from MasterStockList
 where IsIncluded = 1
 
+select distinct InstrumentToken from MasterStockList
+
+--delete from MasterStockList
+--where tradingsymbol = 'IDFCBANK'
+
 --delete from TickerMin
---where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH')
---and DateTime > getDate()-1
+--where 
+----TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH') and 
+--DateTime > getDate()-1
 
 
-select * from TickerMin
-where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH')
-and DateTime > getDate()-1
+select count(1) from TickerMin(nolock)
+where 
+--TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH') and 
+DateTime > getDate()-1
 
+select * from TickerMinStage(nolock)
+where 
+TradingSymbol in ('MARUTI','BANKINDIA') and 
+DateTime > getDate()-1

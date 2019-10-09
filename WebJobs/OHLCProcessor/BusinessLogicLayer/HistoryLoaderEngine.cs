@@ -73,57 +73,57 @@ namespace BusinessLogicLayer
 
                 #region Current Logic of getting the history sequentially
 
-                //foreach (MasterStockList stock in masterStockLists)
-                //{
-                //    try
-                //    {
-                //        string uri = _upstoxInterface.BuildHistoryUri(stock.TradingSymbol, downloadDayHistory);
+                foreach (MasterStockList stock in masterStockLists)
+                {
+                    try
+                    {
+                        string uri = _upstoxInterface.BuildHistoryUri(stock.TradingSymbol, downloadDayHistory);
 
-                //        Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
+                        Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
 
-                //        AddToTickerDataTable(stock.InstrumentToken, stock.TradingSymbol, historial);
+                        AddToTickerDataTable(stock.InstrumentToken, stock.TradingSymbol, historial);
 
-                //        if (iCtr >= 20)
-                //        {
-                //            UploadHistoryToDB(downloadDayHistory);
+                        if (iCtr >= 20)
+                        {
+                            UploadHistoryToDB(downloadDayHistory);
 
-                //            iCtr = 0;
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Log.Error(ex, "Download History Exception " + stock.TradingSymbol);
-                //    }
+                            iCtr = 0;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Download History Exception " + stock.TradingSymbol);
+                    }
 
-                //    iCtr++;
-                //}
+                    iCtr++;
+                }
 
-                //if (iCtr > 1 && dtHistoryData.Rows.Count > 1)
-                //{
-                //    UploadHistoryToDB(downloadDayHistory);
-                //}
+                if (iCtr > 1 && dtHistoryData.Rows.Count > 1)
+                {
+                    UploadHistoryToDB(downloadDayHistory);
+                }
 
                 #endregion
 
                 #region New Logic for getting the history simultaneously and loading to DB
 
-                List<Task> taskList = new List<Task>();
+                //List<Task> taskList = new List<Task>();
 
-                foreach (MasterStockList stock in masterStockLists)
-                {
-                    Task stockHistoryTask = Task.Run(() => GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol));
-                    taskList.Add(stockHistoryTask);
-                }
+                //foreach (MasterStockList stock in masterStockLists)
+                //{
+                //    Task stockHistoryTask = Task.Run(() => GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol));
+                //    taskList.Add(stockHistoryTask);
+                //}
 
-                Log.Information("Waiting for all tasks to complete");
+                //Log.Information("Waiting for all tasks to complete");
 
-                Task.WaitAll(taskList.ToArray());
+                //Task.WaitAll(taskList.ToArray());
 
-                Log.Information("Load To DB START");
+                //Log.Information("Load To DB START");
 
-                UploadHistoryToDB();
+                //UploadHistoryToDB();
 
-                Log.Information("Load To DB END");
+                //Log.Information("Load To DB END");
 
                 #endregion
 
