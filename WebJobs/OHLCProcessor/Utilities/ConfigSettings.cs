@@ -208,5 +208,30 @@ namespace Utilities
         {
             get { return CloudConfigurationManager.GetSetting("EMADeviationPeriods").ToString(); }
         }
+
+        public int BulkCommitBatchSize
+        {
+            get { return Convert.ToInt32(CloudConfigurationManager.GetSetting("BulkCommitBatchSize").ToString()); }
+        }
+
+        public bool IsHistoryFetchReq
+        {
+            get { return Convert.ToBoolean(CloudConfigurationManager.GetSetting("IsHistoryFetchReq").ToString()); }
+        }
+
+        public bool IsDayHistoryFetchReq
+        {
+            get { return Convert.ToBoolean(CloudConfigurationManager.GetSetting("IsDayHistoryFetchReq").ToString()); }
+        }
+
+        public bool IsConsolidatorReq
+        {
+            get { return Convert.ToBoolean(CloudConfigurationManager.GetSetting("IsConsolidatorReq").ToString()); }
+        }
+
+        public bool IsIndicatorReq
+        {
+            get { return Convert.ToBoolean(CloudConfigurationManager.GetSetting("IsIndicatorReq").ToString()); }
+        }
     }
 }

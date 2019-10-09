@@ -24,6 +24,10 @@ namespace DataAccessLayer
         List<TickerElderIndicatorsModel> GetTickerDataForIndicators(string instrumentList, string timePeriodList);
 
         void UpdateTickerElderDataTable(DataTable dtTickerElderData);
+
+        void BulkUploadHistoryToDB(IList<TickerMin> tickerData);
+
+        void MergeTickerData();
     }
 
     public class DBMethods : IDBMethods
@@ -130,6 +134,38 @@ namespace DataAccessLayer
                     sqlConn.Close();
                 }
             }
+        }
+
+        public void MergeTickerData()
+        {
+            string commandName = "spMergeTicker";
+
+            using (SqlConnection sqlConn = new SqlConnection(_configSettings.AzSQLConString))
+            {
+                using (SqlCommand sqlComm = new SqlCommand(commandName))
+                {
+                    sqlComm.Connection = sqlConn;
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.CommandTimeout = 600;
+
+                    sqlConn.Open();
+                    int ret = sqlComm.ExecuteNonQuery();
+                    sqlConn.Close();
+                }
+            }
+        }
+
+        public void BulkUploadHistoryToDB(IList<TickerMin> tickerData)
+        {
+            var objBulk = new SQLBulkUpload<TickerMin>()
+            {
+                InternalStore = tickerData,
+                TableName = "TickerMinStage",
+                CommitBatchSize = _configSettings.BulkCommitBatchSize,
+                ConnectionString = _configSettings.AzSQLConString
+            };
+
+            objBulk.Commit();
         }
 
         public void GenerateOHLC(string dateTime, int minuteBar)

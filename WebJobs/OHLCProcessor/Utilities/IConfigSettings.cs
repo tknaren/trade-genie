@@ -46,5 +46,10 @@ namespace Utilities
         string SuperTrendMultipliers { get; }
         string EMADeviationPeriods { get; }
 
+        int BulkCommitBatchSize { get; }
+        bool IsHistoryFetchReq { get; }
+        bool IsDayHistoryFetchReq { get; }
+        bool IsConsolidatorReq { get; }
+        bool IsIndicatorReq { get; }
     }
 }

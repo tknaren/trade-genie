@@ -48,21 +48,21 @@ namespace OHLCProcessor
 
             try
             {
-                if (HistoryFetchTime())
+                if (HistoryFetchTime() && _configSettings.IsHistoryFetchReq)
                 {
                     Log.Information("History Fetch Start");
                     _historyLoaderEngine.LoadHistory();
                     Log.Information("History Fetch End");
                 }
 
-                if (_historyLoaderEngine.IsUserLoggedIn)
+                if (_historyLoaderEngine.IsUserLoggedIn && _configSettings.IsConsolidatorReq)
                 {
                     Log.Information("Consolidator Start");
                     loadIndicators = _consolidatorEngine.ConsolidateTickerEntries();
                     Log.Information("Consolidator End");
                 }
 
-                if (IsDayHistoryTime())
+                if (IsDayHistoryTime() && _configSettings.IsDayHistoryFetchReq)
                 {
                     Log.Information("Day History Fetch Start");
                     _historyLoaderEngine.LoadHistory(true);
@@ -70,7 +70,7 @@ namespace OHLCProcessor
                     loadIndicators = true;
                 }
 
-                if (loadIndicators)
+                if (loadIndicators && _configSettings.IsIndicatorReq)
                 {
                     Log.Information("Indicators Start");
                     _indicatorEngine.IndicatorEngineLogic();

@@ -1190,9 +1190,9 @@ exec spGetGapOpenedScripts '2019-10-04', '2019-10-07', 1, 2, 5000, 50
 
 
 select top 10 * from TickerMinElderIndicators(nolock)
-where TimePeriod = 3
+where TimePeriod = 375
 
-select top 100 * from Logs(nolock)
+select top 50 * from Logs(nolock)
 order by Id desc
 
 
@@ -1210,4 +1210,32 @@ exec RealTimeGapOpenedScripts '2019-10-04', '2019-10-07 09:15:00', 1, 2, 5000, 5
 --select TradingSymbol, count(1) from TickerMin 
 --where Datetime > '2019-10-07'
 --group by TradingSymbol
+
 --order by  TradingSymbol asc
+
+
+select top 20 * from TickerMin
+where TradingSymbol = 'RELIANCE'
+order by DateTime desc
+
+select top 20 * from TickerMinElderIndicators
+where TimePeriod = 3 and StockCode = 'RELIANCE'
+order by TickerDateTime desc
+
+--update MasterStockList
+--set IsIncluded = 0
+--where TradingSymbol not like 'H%'
+
+
+select * from MasterStockList
+where IsIncluded = 1
+
+--delete from TickerMin
+--where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH')
+--and DateTime > getDate()-1
+
+
+select * from TickerMin
+where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH')
+and DateTime > getDate()-1
+

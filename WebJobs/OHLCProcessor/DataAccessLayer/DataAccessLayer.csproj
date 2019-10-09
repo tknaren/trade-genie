@@ -109,6 +109,7 @@
     <Compile Include="spImpulseMediumFrame_Result.cs">
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SQLBulkUpload.cs" />
     <Compile Include="TGModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
