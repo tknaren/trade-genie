@@ -189,13 +189,20 @@ namespace BusinessLogicLayer
 
         private void GetIndividualStockHistory(int instrumentToken, string tradingSymbol)
         {
-            string uri = _upstoxInterface.BuildHistoryUri(tradingSymbol);
+            try
+            {
+                string uri = _upstoxInterface.BuildHistoryUri(tradingSymbol);
 
-            Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
+                Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
 
-            Log.Information("History retreived for " + tradingSymbol);
+                //Log.Information("History retreived for " + tradingSymbol);
 
-            AddToTickerObject(instrumentToken, tradingSymbol, historial);
+                AddToTickerObject(instrumentToken, tradingSymbol, historial);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Download History Exception " + tradingSymbol);
+            }
         }
 
         private void AddToTickerObject(int instrumentToken, string tradingSymbol, Historical historical)
