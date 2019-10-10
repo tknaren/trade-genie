@@ -1192,7 +1192,7 @@ exec spGetGapOpenedScripts '2019-10-04', '2019-10-07', 1, 2, 5000, 50
 select top 10 * from TickerMinElderIndicators(nolock)
 where TimePeriod = 375
 
-select top 500 * from Logs(nolock)
+select top 50 * from Logs(nolock)
 --where timestamp < '2019-10-09 15:30 +05:30'
 order by Id desc
 
@@ -1245,7 +1245,8 @@ order by TickerDateTime desc
 
 --update MasterStockList
 --set IsIncluded = 1
---where collection = 'Nifty 50'
+----where collection = 'Nifty 50'
+--where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH') 
 
 
 select * from MasterStockList
@@ -1271,3 +1272,5 @@ select * from TickerMinStage(nolock)
 where 
 TradingSymbol in ('MARUTI','BANKINDIA') and 
 DateTime > getDate()-1
+
+exec spGetTickerLatestData 'HDFC,HDFCBANK,HEROMOTOCO,HINDALCO,HINDUNILVR,HINDPETRO,HCLTECH', '2019-10-10'

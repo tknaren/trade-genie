@@ -116,8 +116,10 @@ namespace BusinessLogicLayer
 
                 List<Task> taskList = new List<Task>();
 
-                Task retLatestTickDataTask = Task.Run(() => GetLatestTickerMins(instrumentList));
-                taskList.Add(retLatestTickDataTask);
+                //Task retLatestTickDataTask = Task.Run(() => GetLatestTickerMins(instrumentList));
+                //taskList.Add(retLatestTickDataTask);
+
+                GetLatestTickerMins(instrumentList);
 
                 foreach (MasterStockList stock in masterStockLists)
                 {
@@ -149,6 +151,25 @@ namespace BusinessLogicLayer
             tickerLatestMins = _dBMethods.GetLatestTickerData(instrumentList, DateTime.Today);
         }
 
+        private void GetIndividualStockHistory(int instrumentToken, string tradingSymbol)
+        {
+            try
+            {
+                string uri = _upstoxInterface.BuildHistoryUri(tradingSymbol);
+
+                Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
+
+                //Log.Information("History retreived for " + tradingSymbol);
+
+                //AddToTickerObject(instrumentToken, tradingSymbol, historial);
+                AddToTickerDataTable(instrumentToken, tradingSymbol, historial);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Download History Exception " + tradingSymbol);
+            }
+        }
+
         private void AddToTickerDataTable(int instrumentToken, string tradingSymbol, Historical historical)
         {
             decimal open, high, low, close;
@@ -161,28 +182,31 @@ namespace BusinessLogicLayer
                              where tick.TradingSymbol == tradingSymbol
                              select tick).FirstOrDefault();
 
-                foreach (string historyItem in historical.data)
+                lock (tickerLock)
                 {
-                    string[] ohlcArray = historyItem.Split(',');
-
-                    ohlcDateTime = AuxiliaryMethods.ConvertUnixTimeStampToWindows(ohlcArray[0]);
-                    open = Convert.ToDecimal(ohlcArray[1]);
-                    high = Convert.ToDecimal(ohlcArray[2]);
-                    low = Convert.ToDecimal(ohlcArray[3]);
-                    close = Convert.ToDecimal(ohlcArray[4]);
-                    volume = Convert.ToInt32(ohlcArray[5]);
-
-                    if (query == null || (query != null && ohlcDateTime > query.DateTime))
+                    foreach (string historyItem in historical.data)
                     {
-                        dtHistoryData.AddRow(
-                                instrumentToken,
-                                tradingSymbol,
-                                ohlcDateTime,
-                                open,
-                                high,
-                                low,
-                                close,
-                                volume);
+                        string[] ohlcArray = historyItem.Split(',');
+
+                        ohlcDateTime = AuxiliaryMethods.ConvertUnixTimeStampToWindows(ohlcArray[0]);
+                        open = Convert.ToDecimal(ohlcArray[1]);
+                        high = Convert.ToDecimal(ohlcArray[2]);
+                        low = Convert.ToDecimal(ohlcArray[3]);
+                        close = Convert.ToDecimal(ohlcArray[4]);
+                        volume = Convert.ToInt32(ohlcArray[5]);
+
+                        if (query == null || (query != null && ohlcDateTime > query.DateTime))
+                        {
+                            dtHistoryData.AddRow(
+                                    instrumentToken,
+                                    tradingSymbol,
+                                    ohlcDateTime,
+                                    open,
+                                    high,
+                                    low,
+                                    close,
+                                    volume);
+                        }
                     }
                 }
             }
@@ -207,24 +231,6 @@ namespace BusinessLogicLayer
         }
 
         #region Section for handling simultaneuous threads
-
-        private void GetIndividualStockHistory(int instrumentToken, string tradingSymbol)
-        {
-            try
-            {
-                string uri = _upstoxInterface.BuildHistoryUri(tradingSymbol);
-
-                Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
-
-                //Log.Information("History retreived for " + tradingSymbol);
-
-                AddToTickerObject(instrumentToken, tradingSymbol, historial);
-            }
-            catch(Exception ex)
-            {
-                Log.Error(ex, "Download History Exception " + tradingSymbol);
-            }
-        }
 
         private void AddToTickerObject(int instrumentToken, string tradingSymbol, Historical historical)
         {
