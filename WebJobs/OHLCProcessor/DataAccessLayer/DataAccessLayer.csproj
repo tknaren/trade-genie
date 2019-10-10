@@ -94,6 +94,9 @@
     <Compile Include="Quote.cs">
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="spGetGapOpenedScripts_Result.cs">
+      <DependentUpon>TGModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="spGetScriptsForBackTest_Result.cs">
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>
@@ -104,6 +107,9 @@
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spGetTickerElderForTimePeriod_Result.cs">
+      <DependentUpon>TGModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetTickerLatestData_Result.cs">
       <DependentUpon>TGModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spImpulseMediumFrame_Result.cs">

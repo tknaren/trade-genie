@@ -17,7 +17,7 @@ namespace DataAccessLayer
     
     public partial class aztgsqldbEntities : DbContext
     {
-        public aztgsqldbEntities(string conString)
+        public aztgsqldbEntities()
             : base("name=SQLAZURECONNSTR_aztgsqldbEntities")
         {
             this.Database.CommandTimeout = 6000;
@@ -235,6 +235,53 @@ namespace DataAccessLayer
         public virtual int spUpdateTickerElderIndicators()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateTickerElderIndicators");
+        }
+    
+        public virtual ObjectResult<spGetGapOpenedScripts_Result> spGetGapOpenedScripts(Nullable<System.DateTime> yesterday, Nullable<System.DateTime> today, Nullable<int> targetPercentage, Nullable<int> gapPercentage, Nullable<int> priceRangeHigh, Nullable<int> priceRangeLow)
+        {
+            var yesterdayParameter = yesterday.HasValue ?
+                new ObjectParameter("yesterday", yesterday) :
+                new ObjectParameter("yesterday", typeof(System.DateTime));
+    
+            var todayParameter = today.HasValue ?
+                new ObjectParameter("today", today) :
+                new ObjectParameter("today", typeof(System.DateTime));
+    
+            var targetPercentageParameter = targetPercentage.HasValue ?
+                new ObjectParameter("targetPercentage", targetPercentage) :
+                new ObjectParameter("targetPercentage", typeof(int));
+    
+            var gapPercentageParameter = gapPercentage.HasValue ?
+                new ObjectParameter("gapPercentage", gapPercentage) :
+                new ObjectParameter("gapPercentage", typeof(int));
+    
+            var priceRangeHighParameter = priceRangeHigh.HasValue ?
+                new ObjectParameter("priceRangeHigh", priceRangeHigh) :
+                new ObjectParameter("priceRangeHigh", typeof(int));
+    
+            var priceRangeLowParameter = priceRangeLow.HasValue ?
+                new ObjectParameter("priceRangeLow", priceRangeLow) :
+                new ObjectParameter("priceRangeLow", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetGapOpenedScripts_Result>("spGetGapOpenedScripts", yesterdayParameter, todayParameter, targetPercentageParameter, gapPercentageParameter, priceRangeHighParameter, priceRangeLowParameter);
+        }
+    
+        public virtual ObjectResult<spGetTickerLatestData_Result> spGetTickerLatestData(string instrumentList, Nullable<System.DateTime> dateTill)
+        {
+            var instrumentListParameter = instrumentList != null ?
+                new ObjectParameter("InstrumentList", instrumentList) :
+                new ObjectParameter("InstrumentList", typeof(string));
+    
+            var dateTillParameter = dateTill.HasValue ?
+                new ObjectParameter("DateTill", dateTill) :
+                new ObjectParameter("DateTill", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetTickerLatestData_Result>("spGetTickerLatestData", instrumentListParameter, dateTillParameter);
+        }
+    
+        public virtual int spMergeTicker()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spMergeTicker");
         }
     }
 }

@@ -28,6 +28,8 @@ namespace DataAccessLayer
         void BulkUploadHistoryToDB(IList<TickerMin> tickerData);
 
         void MergeTickerData();
+
+        List<TickerMin> GetLatestTickerData(string instrumentList, DateTime today);
     }
 
     public class DBMethods : IDBMethods
@@ -45,7 +47,7 @@ namespace DataAccessLayer
             DateTime currentDateTime = AuxiliaryMethods.GetCurrentIndianTimeStamp().Date;
             string status = string.Empty;
 
-            using (aztgsqldbEntities db = new aztgsqldbEntities(_configSettings.AzEFConString))
+            using (aztgsqldbEntities db = new aztgsqldbEntities())
             {
                 var latestLogin = db.UserLogins.Where(a => a.Status == "IN")
                     .Where(b => b.LoginDateTime >= currentDateTime)
@@ -72,7 +74,7 @@ namespace DataAccessLayer
         {
             List<MasterStockList> mslist = null;
 
-            using (aztgsqldbEntities db = new aztgsqldbEntities(_configSettings.AzEFConString))
+            using (aztgsqldbEntities db = new aztgsqldbEntities())
             {
                 var masterStockList = from msl in db.MasterStockLists
                                       where msl.IsIncluded == true
@@ -187,13 +189,41 @@ namespace DataAccessLayer
             }
         }
 
+        public List<TickerMin> GetLatestTickerData(string instrumentList, DateTime today)
+        {
+            List<TickerMin> latestTickerData = new List<TickerMin>();
+
+            using (aztgsqldbEntities db = new aztgsqldbEntities())
+            {
+                var result = db.spGetTickerLatestData(instrumentList, today);
+
+                foreach(spGetTickerLatestData_Result singleItem in result)
+                {
+                    TickerMin tickerMin = new TickerMin {
+                        InstrumentToken = singleItem.InstrumentToken,
+                        TradingSymbol = singleItem.TradingSymbol,
+                        DateTime = singleItem.DateTime,
+                        Open = singleItem.Open,
+                        High = singleItem.High,
+                        Low = singleItem.Low,
+                        Close = singleItem.Close,
+                        Volume = singleItem.Volume
+                    };
+
+                    latestTickerData.Add(tickerMin);
+                }
+            }
+
+            return latestTickerData;
+        }
+
         public List<TickerElderIndicatorsModel> GetTickerDataForIndicators(string instrumentList, string timePeriodList)
         {
             List<spGetTickerDataForIndicators_Result> tickerResult = new List<spGetTickerDataForIndicators_Result>();
 
             List<TickerElderIndicatorsModel> tickerElderData = new List<TickerElderIndicatorsModel>();
 
-            using (aztgsqldbEntities db = new aztgsqldbEntities(_configSettings.AzEFConString))
+            using (aztgsqldbEntities db = new aztgsqldbEntities())
             {
                 tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList).ToList();
 

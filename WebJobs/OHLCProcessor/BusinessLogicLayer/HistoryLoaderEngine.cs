@@ -37,6 +37,7 @@ namespace BusinessLogicLayer
         private readonly object tickerLock = new object();
         private readonly IList<TickerMin> tickerData; 
         private static string accessToken;
+        private IList<TickerMin> tickerLatestMins;
 
         public bool IsUserLoggedIn { get { if (!string.IsNullOrEmpty(accessToken)) return true; else return false; } }
 
@@ -71,59 +72,68 @@ namespace BusinessLogicLayer
             {
                 masterStockLists = _dBMethods.GetMasterStockList();
 
+                string instrumentList = string.Join(",", from item in masterStockLists select item.TradingSymbol);
+
                 #region Current Logic of getting the history sequentially
 
-                foreach (MasterStockList stock in masterStockLists)
-                {
-                    try
-                    {
-                        string uri = _upstoxInterface.BuildHistoryUri(stock.TradingSymbol, downloadDayHistory);
+                //_dBMethods.GetLatestTickerData(instrumentList, DateTime.Today));
 
-                        Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
+                //foreach (MasterStockList stock in masterStockLists)
+                //{
+                //    try
+                //    {
+                //        string uri = _upstoxInterface.BuildHistoryUri(stock.TradingSymbol, downloadDayHistory);
 
-                        AddToTickerDataTable(stock.InstrumentToken, stock.TradingSymbol, historial);
+                //        Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
 
-                        if (iCtr >= 20)
-                        {
-                            UploadHistoryToDB(downloadDayHistory);
+                //        AddToTickerDataTable(stock.InstrumentToken, stock.TradingSymbol, historial);
 
-                            iCtr = 0;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "Download History Exception " + stock.TradingSymbol);
-                    }
+                //        UploadHistoryToDB(downloadDayHistory);
 
-                    iCtr++;
-                }
+                //        //if (iCtr >= 20)
+                //        //{
+                //        //    UploadHistoryToDB(downloadDayHistory);
 
-                if (iCtr > 1 && dtHistoryData.Rows.Count > 1)
-                {
-                    UploadHistoryToDB(downloadDayHistory);
-                }
+                //        //    iCtr = 0;
+                //        //}
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Log.Error(ex, "Download History Exception " + stock.TradingSymbol);
+                //    }
+
+                //    iCtr++;
+                //}
+
+                //if (iCtr > 1 && dtHistoryData.Rows.Count > 1)
+                //{
+                //    UploadHistoryToDB(downloadDayHistory);
+                //}
 
                 #endregion
 
                 #region New Logic for getting the history simultaneously and loading to DB
 
-                //List<Task> taskList = new List<Task>();
+                List<Task> taskList = new List<Task>();
 
-                //foreach (MasterStockList stock in masterStockLists)
-                //{
-                //    Task stockHistoryTask = Task.Run(() => GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol));
-                //    taskList.Add(stockHistoryTask);
-                //}
+                Task retLatestTickDataTask = Task.Run(() => GetLatestTickerMins(instrumentList));
+                taskList.Add(retLatestTickDataTask);
 
-                //Log.Information("Waiting for all tasks to complete");
+                foreach (MasterStockList stock in masterStockLists)
+                {
+                    Task stockHistoryTask = Task.Run(() => GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol));
+                    taskList.Add(stockHistoryTask);
+                }
 
-                //Task.WaitAll(taskList.ToArray());
+                Log.Information("Waiting for all tasks to complete");
 
-                //Log.Information("Load To DB START");
+                Task.WaitAll(taskList.ToArray());
 
-                //UploadHistoryToDB();
+                Log.Information("Load To DB START");
 
-                //Log.Information("Load To DB END");
+                UploadHistoryToDB(downloadDayHistory);
+
+                Log.Information("Load To DB END");
 
                 #endregion
 
@@ -134,6 +144,11 @@ namespace BusinessLogicLayer
             }
         }
 
+        private void GetLatestTickerMins(string instrumentList)
+        {
+            tickerLatestMins = _dBMethods.GetLatestTickerData(instrumentList, DateTime.Today);
+        }
+
         private void AddToTickerDataTable(int instrumentToken, string tradingSymbol, Historical historical)
         {
             decimal open, high, low, close;
@@ -142,6 +157,10 @@ namespace BusinessLogicLayer
 
             if (historical != null && historical.data != null)
             {
+                var query = (from tick in tickerLatestMins
+                             where tick.TradingSymbol == tradingSymbol
+                             select tick).FirstOrDefault();
+
                 foreach (string historyItem in historical.data)
                 {
                     string[] ohlcArray = historyItem.Split(',');
@@ -153,16 +172,18 @@ namespace BusinessLogicLayer
                     close = Convert.ToDecimal(ohlcArray[4]);
                     volume = Convert.ToInt32(ohlcArray[5]);
 
-                    dtHistoryData.AddRow(
-                            instrumentToken,
-                            tradingSymbol,
-                            ohlcDateTime,
-                            open,
-                            high,
-                            low,
-                            close,
-                            volume);
-
+                    if (query == null || (query != null && ohlcDateTime > query.DateTime))
+                    {
+                        dtHistoryData.AddRow(
+                                instrumentToken,
+                                tradingSymbol,
+                                ohlcDateTime,
+                                open,
+                                high,
+                                low,
+                                close,
+                                volume);
+                    }
                 }
             }
             else
