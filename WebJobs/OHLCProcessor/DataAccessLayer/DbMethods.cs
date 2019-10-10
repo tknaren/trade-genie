@@ -162,7 +162,7 @@ namespace DataAccessLayer
             var objBulk = new SQLBulkUpload<TickerMin>()
             {
                 InternalStore = tickerData,
-                TableName = "TickerMinStage",
+                TableName = "TickerMin",
                 CommitBatchSize = _configSettings.BulkCommitBatchSize,
                 ConnectionString = _configSettings.AzSQLConString
             };

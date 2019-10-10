@@ -133,7 +133,7 @@ namespace BusinessLogicLayer
 
                 Log.Information("Load To DB START");
 
-                UploadHistoryToDB(downloadDayHistory);
+                UploadHistoryToDB();
 
                 Log.Information("Load To DB END");
 
@@ -197,15 +197,28 @@ namespace BusinessLogicLayer
 
                         if (query == null || (query != null && ohlcDateTime > query.DateTime))
                         {
-                            dtHistoryData.AddRow(
-                                    instrumentToken,
-                                    tradingSymbol,
-                                    ohlcDateTime,
-                                    open,
-                                    high,
-                                    low,
-                                    close,
-                                    volume);
+                            //dtHistoryData.AddRow(
+                            //        instrumentToken,
+                            //        tradingSymbol,
+                            //        ohlcDateTime,
+                            //        open,
+                            //        high,
+                            //        low,
+                            //        close,
+                            //        volume);
+
+
+                            tickerData.Add(new TickerMin
+                            {
+                                InstrumentToken = instrumentToken,
+                                TradingSymbol = tradingSymbol,
+                                DateTime = ohlcDateTime,
+                                Open = open,
+                                High = high,
+                                Low = low,
+                                Close = close,
+                                Volume = volume
+                            });
                         }
                     }
                 }
@@ -289,7 +302,8 @@ namespace BusinessLogicLayer
         {
             _dBMethods.BulkUploadHistoryToDB(tickerData);
 
-            _dBMethods.MergeTickerData();
+            //_dBMethods.MergeTickerData();
+            tickerData.Clear();
         }
 
         #endregion
