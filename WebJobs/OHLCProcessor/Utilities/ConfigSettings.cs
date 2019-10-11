@@ -233,5 +233,10 @@ namespace Utilities
         {
             get { return Convert.ToBoolean(CloudConfigurationManager.GetSetting("IsIndicatorReq").ToString()); }
         }
+
+        public int HistoryAPICallBatchSize
+        {
+            get { return Convert.ToInt32(CloudConfigurationManager.GetSetting("HistoryAPICallBatchSize").ToString()); }
+        }
     }
 }

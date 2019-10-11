@@ -35,9 +35,11 @@ namespace BusinessLogicLayer
         private readonly IDBMethods _dBMethods;
         private readonly TickerMinDataTable dtHistoryData;
         private readonly object tickerLock = new object();
-        private readonly IList<TickerMin> tickerData; 
+        private readonly IList<TickerMin> tickerData;
+        private readonly IDictionary<string, Historical> histories;
         private static string accessToken;
         private IList<TickerMin> tickerLatestMins;
+
 
         public bool IsUserLoggedIn { get { if (!string.IsNullOrEmpty(accessToken)) return true; else return false; } }
 
@@ -48,6 +50,7 @@ namespace BusinessLogicLayer
             _dBMethods = dBMethods;
             dtHistoryData = new TickerMinDataTable();
             tickerData = new List<TickerMin>();
+            histories = new Dictionary<string, Historical>();
         }
 
         public void LoadHistory(bool downloadDayHistory = false)
@@ -59,8 +62,6 @@ namespace BusinessLogicLayer
 
         private void DownloadHistory(bool downloadDayHistory = false)
         {
-            int iCtr = 0;
-
             List<MasterStockList> masterStockLists = null;
 
             if (string.IsNullOrEmpty(accessToken))
@@ -119,17 +120,39 @@ namespace BusinessLogicLayer
                 //Task retLatestTickDataTask = Task.Run(() => GetLatestTickerMins(instrumentList));
                 //taskList.Add(retLatestTickDataTask);
 
-                GetLatestTickerMins(instrumentList);
+                Log.Information("Parallel threads started to get Stock History");
 
-                foreach (MasterStockList stock in masterStockLists)
+                Task lastHistoryEntry = Task.Run(() => GetLatestTickerMins(instrumentList));
+                taskList.Add(lastHistoryEntry);
+
+                int batchSize = _settings.HistoryAPICallBatchSize;
+                int numberOfPages = (masterStockLists.Count / batchSize) + (masterStockLists.Count % batchSize == 0 ? 0 : 1);
+
+                for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++)
                 {
-                    Task stockHistoryTask = Task.Run(() => GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol));
-                    taskList.Add(stockHistoryTask);
+                    foreach (MasterStockList stock in masterStockLists.Skip(pageIndex * batchSize).Take(batchSize))
+                    {
+                        Task stockHistoryTask = Task.Run(() => GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol));
+                        taskList.Add(stockHistoryTask);
+                    }
+
+                    Log.Information("Waiting for batch-" + (pageIndex + 1).ToString() + " tasks to complete");
+
+                    Task.WaitAll(taskList.ToArray());
+
+                    Log.Information("Batch-" + (pageIndex + 1).ToString() + " tasks completed");
+
+                    taskList.Clear();
                 }
 
-                Log.Information("Waiting for all tasks to complete");
+                //enumerate history dictionary
+                foreach (KeyValuePair<string, Historical> entry in histories)
+                {
+                    int instrumentToken = Convert.ToInt32(entry.Key.Split(',')[0]);
+                    string tradingSymbol = entry.Key.Split(',')[1].ToString();
 
-                Task.WaitAll(taskList.ToArray());
+                    AddToTickerDataTable(instrumentToken, tradingSymbol, entry.Value);
+                }
 
                 Log.Information("Load To DB START");
 
@@ -155,14 +178,17 @@ namespace BusinessLogicLayer
         {
             try
             {
+                string historyKey = string.Join(",", instrumentToken.ToString(), tradingSymbol);
+
                 string uri = _upstoxInterface.BuildHistoryUri(tradingSymbol);
 
                 Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
 
+                histories.Add(new KeyValuePair<string, Historical>(historyKey, historial));
                 //Log.Information("History retreived for " + tradingSymbol);
 
                 //AddToTickerObject(instrumentToken, tradingSymbol, historial);
-                AddToTickerDataTable(instrumentToken, tradingSymbol, historial);
+                //AddToTickerDataTable(instrumentToken, tradingSymbol, historial);
             }
             catch (Exception ex)
             {

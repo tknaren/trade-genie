@@ -51,5 +51,6 @@ namespace Utilities
         bool IsDayHistoryFetchReq { get; }
         bool IsConsolidatorReq { get; }
         bool IsIndicatorReq { get; }
+        int HistoryAPICallBatchSize { get; }
     }
 }
