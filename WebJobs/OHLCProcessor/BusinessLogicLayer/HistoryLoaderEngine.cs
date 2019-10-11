@@ -42,7 +42,6 @@ namespace BusinessLogicLayer
         private IDictionary<string, Historical> histories;
         private IList<TickerMin> tickerLatestMins;
 
-
         public bool IsUserLoggedIn { get { if (!string.IsNullOrEmpty(accessToken)) return true; else return false; } }
 
         public HistoryLoaderEngine(IConfigSettings settings, IUpstoxInterface upstoxInterface, IDBMethods dBMethods)
@@ -161,6 +160,8 @@ namespace BusinessLogicLayer
                 UploadHistoryToDB();
 
                 Log.Information("Load To DB END");
+
+                histories.Clear();
 
                 #endregion
 
