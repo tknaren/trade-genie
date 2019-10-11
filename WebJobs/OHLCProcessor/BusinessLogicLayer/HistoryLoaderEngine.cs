@@ -33,11 +33,13 @@ namespace BusinessLogicLayer
         private readonly IConfigSettings _settings;
         private readonly IUpstoxInterface _upstoxInterface;
         private readonly IDBMethods _dBMethods;
-        private readonly TickerMinDataTable dtHistoryData;
         private readonly object tickerLock = new object();
-        private readonly IList<TickerMin> tickerData;
-        private readonly IDictionary<string, Historical> histories;
+
         private static string accessToken;
+
+        private TickerMinDataTable dtHistoryData;
+        private IList<TickerMin> tickerData;
+        private IDictionary<string, Historical> histories;
         private IList<TickerMin> tickerLatestMins;
 
 
