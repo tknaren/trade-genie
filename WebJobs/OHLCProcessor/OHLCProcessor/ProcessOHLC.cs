@@ -70,7 +70,8 @@ namespace OHLCProcessor
                     loadIndicators = true;
                 }
 
-                if (loadIndicators && _configSettings.IsIndicatorReq)
+                //if (loadIndicators && _configSettings.IsIndicatorReq)
+                if (_configSettings.IsIndicatorReq)
                 {
                     Log.Information("Indicators Start");
                     _indicatorEngine.IndicatorEngineLogic();
@@ -88,7 +89,14 @@ namespace OHLCProcessor
         {
             TimeSpan CurrentTime = AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay;
 
-            return ((CurrentTime > _configSettings.StartingTime) && (CurrentTime < _configSettings.EndingTime));
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Saturday || DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+            {
+                return false;
+            }
+            else
+            {
+                return ((CurrentTime > _configSettings.StartingTime) && (CurrentTime < _configSettings.EndingTime));
+            }
         }
 
         private bool HistoryFetchTime()
@@ -141,6 +149,8 @@ namespace OHLCProcessor
                         break;
                     }
                 }
+
+                return;
             }
             catch (Exception ex)
             {

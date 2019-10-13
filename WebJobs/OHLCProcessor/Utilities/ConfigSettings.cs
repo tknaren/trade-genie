@@ -149,6 +149,11 @@ namespace Utilities
             get { return CloudConfigurationManager.GetSetting("Min15Timer").ToString(); }
         }
 
+        public string Min25Timer
+        {
+            get { return CloudConfigurationManager.GetSetting("Min25Timer").ToString(); }
+        }
+
         public string Min30Timer
         {
             get { return CloudConfigurationManager.GetSetting("Min30Timer").ToString(); }
@@ -237,6 +242,14 @@ namespace Utilities
         public int HistoryAPICallBatchSize
         {
             get { return Convert.ToInt32(CloudConfigurationManager.GetSetting("HistoryAPICallBatchSize").ToString()); }
+        }
+
+        public DateTime IndicatorLoadDateFrom
+        {
+            get
+            {
+                return DateTime.Parse(CloudConfigurationManager.GetSetting("IndicatorLoadDateFrom").ToString());
+            }
         }
     }
 }

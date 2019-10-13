@@ -12,6 +12,7 @@ using Serilog.Exceptions.Core;
 using Serilog.Exceptions.SqlServer.Destructurers;
 using Utilities;
 using Microsoft.Azure;
+using Serilog.Formatting.Compact;
 
 namespace OHLCProcessor
 {
@@ -32,6 +33,7 @@ namespace OHLCProcessor
                         .WithDestructurers(new[] { new SqlExceptionDestructurer() }))
                     .MinimumLevel.Debug()
                     //.WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception} {Properties:j}")
+                    //.WriteTo.File(new CompactJsonFormatter(), "log.txt")
                     .WriteTo.MSSqlServer(_config.AzSQLConString, "Logs", columnOptions: columnOption)
                     .CreateLogger();
                     

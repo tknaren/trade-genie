@@ -131,7 +131,7 @@ namespace DataAccessLayer
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetStocksInMomentum_Result>("spGetStocksInMomentum", strCurrentDateParameter, strPrevDateParameter, strPrevToPrevDateParameter, intMinuteBarParameter, positionParameter);
         }
     
-        public virtual ObjectResult<spGetTickerDataForIndicators_Result> spGetTickerDataForIndicators(string instrumentList, string timePeriods)
+        public virtual ObjectResult<spGetTickerDataForIndicators_Result> spGetTickerDataForIndicators(string instrumentList, string timePeriods, DateTime dateFrom)
         {
             var instrumentListParameter = instrumentList != null ?
                 new ObjectParameter("InstrumentList", instrumentList) :
@@ -140,8 +140,12 @@ namespace DataAccessLayer
             var timePeriodsParameter = timePeriods != null ?
                 new ObjectParameter("TimePeriods", timePeriods) :
                 new ObjectParameter("TimePeriods", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetTickerDataForIndicators_Result>("spGetTickerDataForIndicators", instrumentListParameter, timePeriodsParameter);
+
+            var dateFromParameter = dateFrom != null ?
+                new ObjectParameter("DateFrom", dateFrom) :
+                new ObjectParameter("DateFrom", typeof(DateTime));
+
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetTickerDataForIndicators_Result>("spGetTickerDataForIndicators", instrumentListParameter, timePeriodsParameter, dateFromParameter);
         }
     
         public virtual ObjectResult<spGetTickerElderForTimePeriod_Result> spGetTickerElderForTimePeriod(string instrumentList, string timePeriods, Nullable<System.DateTime> startTime, Nullable<System.DateTime> endTime)

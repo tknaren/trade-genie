@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using Serilog;
 
 namespace DataAccessLayer
 {
@@ -34,25 +35,33 @@ namespace DataAccessLayer
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                // make sure to enable triggers
-                // more on triggers in next post
-                SqlBulkCopy bulkCopy =
-                    new SqlBulkCopy
-                    (
-                    connection,
-                    SqlBulkCopyOptions.TableLock |
-                    SqlBulkCopyOptions.FireTriggers |
-                    SqlBulkCopyOptions.UseInternalTransaction,
-                    null
-                    );
+                try
+                {
+                    // make sure to enable triggers
+                    // more on triggers in next post
+                    SqlBulkCopy bulkCopy =
+                        new SqlBulkCopy
+                        (
+                        connection,
+                        SqlBulkCopyOptions.TableLock,
+                        //|
+                        //SqlBulkCopyOptions.FireTriggers |
+                        //SqlBulkCopyOptions.UseInternalTransaction,
+                        null
+                        );
 
-                // set the destination table name
-                bulkCopy.DestinationTableName = TableName;
-                connection.Open();
+                    // set the destination table name
+                    bulkCopy.DestinationTableName = TableName;
+                    connection.Open();
 
-                // write the data in the "dataTable"
-                bulkCopy.WriteToServer(dt);
-                connection.Close();
+                    // write the data in the "dataTable"
+                    bulkCopy.WriteToServer(dt);
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex,"Bulk Copy Error");
+                }
             }
             // reset
             //this.dataTable.Clear();

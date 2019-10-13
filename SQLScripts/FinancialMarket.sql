@@ -1167,9 +1167,9 @@ exec spGenerateOHLC '2019-10-01 09:15',60
 --inner join MasterStockList msl on msl.TradingSymbol = today.StockCode
 --where (((today.PriceOpen - yesterday.PriceClose) / today.PriceOpen) * 100  < -2) and today.PriceClose > 50
 
-----truncate table TickerMinElderIndicators
-----truncate table TickerMinSuperTrend
-----Truncate table TickerMinEMAHA
+truncate table TickerMinElderIndicators
+truncate table TickerMinSuperTrend
+Truncate table TickerMinEMAHA
 
 ----truncate table Logs
 
@@ -1243,11 +1243,13 @@ select top 20 * from TickerMinElderIndicators
 where TimePeriod = 3 and StockCode = 'RELIANCE'
 order by TickerDateTime desc
 
---update MasterStockList
---set IsIncluded = 1
-----where collection = 'Nifty 50'
---where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH') 
+update MasterStockList
+set IsIncluded = 1
+--where collection = 'Nifty 50'
+where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH') 
 
+update MasterStockList
+set IsIncluded = 0
 
 select * from MasterStockList
 where IsIncluded = 1
@@ -1276,4 +1278,32 @@ DateTime > getDate()-1
 exec spGetTickerLatestData 'HDFC,HDFCBANK,HEROMOTOCO,HINDALCO,HINDUNILVR,HINDPETRO,HCLTECH', '2019-10-10'
 
 
+--delete from TickerMinElderIndicators
+--delete from TickerMinSuperTrend
+--delete from TickerMinEMAHA
+
+select * from TickerMinElderIndicators
+where 
+TickerDateTime > cast(getDate() as date) and
+timeperiod = 10
+--delete from TickerMinSuperTrend
+--delete from TickerMinEMAHA
+
+
+select COUNt(*) from TickerMinElderIndicators where 
+	--TimePeriod = 3 and 
+	StockCode = 'IBULHSGFIN'
+
+--delete from TickerMinElderIndicators
+--where TickerDateTime > '2019-10-11 12:10:00.000'
+--delete from TickerMinSuperTrend
+--where TickerDateTime > '2019-10-11 12:10:00.000'
+--delete from TickerMinEMAHA
+--where TickerDateTime > '2019-10-11 12:10:00.000'
+
+select top 100 * from Logs(nolock)
+--where timestamp < '2019-10-13 15:30 +05:30'
+order by Id desc
+
+--truncate table Logs
 

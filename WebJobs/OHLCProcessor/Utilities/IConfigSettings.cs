@@ -32,6 +32,7 @@ namespace Utilities
         string Min5Timer { get; }
         string Min10Timer { get; }
         string Min15Timer { get; }
+        string Min25Timer { get; }
         string Min30Timer { get; }
         string Min60Timer { get; }
         string EODTimer { get; }
@@ -52,5 +53,6 @@ namespace Utilities
         bool IsConsolidatorReq { get; }
         bool IsIndicatorReq { get; }
         int HistoryAPICallBatchSize { get; }
+        DateTime IndicatorLoadDateFrom { get; }
     }
 }

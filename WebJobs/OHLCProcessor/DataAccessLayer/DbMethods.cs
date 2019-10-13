@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using Utilities;
 using Serilog;
+using Newtonsoft;
+using Newtonsoft.Json;
 
 namespace DataAccessLayer
 {
@@ -27,9 +29,17 @@ namespace DataAccessLayer
 
         void BulkUploadHistoryToDB(IList<TickerMin> tickerData);
 
+        void BulkUploadElderDataToDB(IList<TickerMinElderIndicator> tickerElderData);
+
+        void BulkUploadSuperTrendDataToDB(IList<TickerMinSuperTrend> tickerSuperTrendData);
+
+        void BulkUploadEMAHADataToDB(IList<TickerMinEMAHA> tickerEMAHAData);
+
         void MergeTickerData();
 
         List<TickerMin> GetLatestTickerData(string instrumentList, DateTime today);
+
+        List<TickerMin> GetTickerDataForConsolidation();
     }
 
     public class DBMethods : IDBMethods
@@ -159,10 +169,59 @@ namespace DataAccessLayer
 
         public void BulkUploadHistoryToDB(IList<TickerMin> tickerData)
         {
+            string output = JsonConvert.SerializeObject(tickerData);
+
+            Log.Information("TickerData {@tickerData}", tickerData);
+
             var objBulk = new SQLBulkUpload<TickerMin>()
             {
                 InternalStore = tickerData,
                 TableName = "TickerMin",
+                CommitBatchSize = _configSettings.BulkCommitBatchSize,
+                ConnectionString = _configSettings.AzSQLConString
+            };
+
+            objBulk.Commit();
+        }
+
+        public void BulkUploadElderDataToDB(IList<TickerMinElderIndicator> tickerElderData)
+        {
+            //string output = JsonConvert.SerializeObject(tickerElderData);
+
+            //Log.Information("TickerData - {output}", output);
+
+            //Log.Verbose<IList<TickerMinElderIndicator>>("{tickerElderData}", tickerElderData);
+
+            var objBulk = new SQLBulkUpload<TickerMinElderIndicator>()
+            {
+                InternalStore = tickerElderData,
+                TableName = "TickerMinElderIndicators",
+                CommitBatchSize = _configSettings.BulkCommitBatchSize,
+                ConnectionString = _configSettings.AzSQLConString
+            };
+
+            objBulk.Commit();
+        }
+
+        public void BulkUploadSuperTrendDataToDB(IList<TickerMinSuperTrend> tickerSuperTrendData)
+        {
+            var objBulk = new SQLBulkUpload<TickerMinSuperTrend>()
+            {
+                InternalStore = tickerSuperTrendData,
+                TableName = "TickerMinSuperTrend",
+                CommitBatchSize = _configSettings.BulkCommitBatchSize,
+                ConnectionString = _configSettings.AzSQLConString
+            };
+
+            objBulk.Commit();
+        }
+
+        public void BulkUploadEMAHADataToDB(IList<TickerMinEMAHA> tickerEMAHAData)
+        {
+            var objBulk = new SQLBulkUpload<TickerMinEMAHA>()
+            {
+                InternalStore = tickerEMAHAData,
+                TableName = "TickerMinEMAHA",
                 CommitBatchSize = _configSettings.BulkCommitBatchSize,
                 ConnectionString = _configSettings.AzSQLConString
             };
@@ -225,7 +284,8 @@ namespace DataAccessLayer
 
             using (aztgsqldbEntities db = new aztgsqldbEntities())
             {
-                tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList).ToList();
+                //tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList, DateTime.Today).ToList();
+                tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList, _configSettings.IndicatorLoadDateFrom).ToList();
 
                 foreach (spGetTickerDataForIndicators_Result tickItem in tickerResult)
                 {
@@ -344,6 +404,26 @@ namespace DataAccessLayer
                     sqlConn.Close();
                 }
             }
+        }
+
+        public List<TickerMin> GetTickerDataForConsolidation()
+        {
+            List<TickerMin> tickerDataForConsolidation = new List<TickerMin>();
+
+            using (aztgsqldbEntities db = new aztgsqldbEntities())
+            {
+                //tickerDataForConsolidation = (from tkr in db.TickerMins
+                //                             where tkr.TradingSymbol == tradingSymbol
+                //                                && tkr.DateTime > DateTime.Today
+                //                             select tkr).ToList<TickerMin>();
+
+                tickerDataForConsolidation = (from tkr in db.TickerMins
+                                                  //where tkr.DateTime > DateTime.Today
+                                              where tkr.DateTime > _configSettings.IndicatorLoadDateFrom
+                                              select tkr).ToList<TickerMin>();
+            }
+
+            return tickerDataForConsolidation;
         }
     }
 }

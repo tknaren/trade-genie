@@ -501,6 +501,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
         <Function Name="spGetTickerDataForIndicators" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="InstrumentList" Type="varchar" Mode="In" />
           <Parameter Name="TimePeriods" Type="varchar" Mode="In" />
+          <Parameter Name="DateFrom" Type="datetime" Mode="In" />
         </Function>
         <Function Name="spGetTickerElderForTimePeriod" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="InstrumentList" Type="varchar" Mode="In" />
@@ -1099,6 +1100,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
           <FunctionImport Name="spGetTickerDataForIndicators" ReturnType="Collection(aztgsqldbModel.spGetTickerDataForIndicators_Result)">
             <Parameter Name="InstrumentList" Mode="In" Type="String" />
             <Parameter Name="TimePeriods" Mode="In" Type="String" />
+            <Parameter Name="DateFrom" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="spGetTickerElderForTimePeriod" ReturnType="Collection(aztgsqldbModel.spGetTickerElderForTimePeriod_Result)">
             <Parameter Name="InstrumentList" Mode="In" Type="String" />

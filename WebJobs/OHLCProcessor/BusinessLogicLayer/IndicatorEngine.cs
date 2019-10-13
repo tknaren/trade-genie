@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using DataAccessLayer;
 using DataAccessLayer.Models;
 using Utilities;
+using Serilog;
+using Serilog.Exceptions;
 
 namespace BusinessLogicLayer
 {
@@ -31,28 +33,93 @@ namespace BusinessLogicLayer
 
         public void IndicatorEngineLogic()
         {
-            mslList = _dBMethods.GetMasterStockList();
+            //string[] timePeriodsToCalculate = _settings.TimePeriodsToCalculate.Split(',');
+            string[] timePeriodsToCalculate = GetTimePeriodsToCalculate();
 
-            string[] timePeriodsToCalculate = _settings.TimePeriodsToCalculate.Split(',');
+            if (timePeriodsToCalculate.Length > 0)
+            {
+                Log.Information("Time Periods to Calculate - " + string.Join(",", timePeriodsToCalculate));
+            }
+            else
+            {
+                Log.Information("No TimePeriods - Exiting");
+
+                return;
+            }
+
+            List<Task> taskList = new List<Task>();
+            List<TickerMin> tkrDataForConsol = new List<TickerMin>();
+            List<TickerMin> tkrAllData = new List<TickerMin>();
+            List<TickerElderIndicatorsModel> tickerListElder = new List<TickerElderIndicatorsModel>();
+
+            mslList = _dBMethods.GetMasterStockList();
 
             string instrumentList = string.Join(",", from item in mslList select item.TradingSymbol);
 
-            tickerListMaster = _dBMethods.GetTickerDataForIndicators(instrumentList, _settings.TimePeriodsToCalculate);
+            Log.Information("Indicators - Get Time Periods");
+            Log.Information("Indicators - Get All Ticker Data");
 
+            Task<List<TickerElderIndicatorsModel>> tickerListMasterTask = 
+                Task.Run(() => _dBMethods.GetTickerDataForIndicators(instrumentList, _settings.TimePeriodsToCalculate));
+            //tickerListMaster = _dBMethods.GetTickerDataForIndicators(instrumentList, _settings.TimePeriodsToCalculate);
+
+            taskList.Add(tickerListMasterTask);
+
+            Task<List<TickerMin>> tkrAllDataTask =
+                Task.Run(() => _dBMethods.GetTickerDataForConsolidation());
+
+            taskList.Add(tkrAllDataTask);
+
+            Task.WaitAll(taskList.ToArray());
+
+            tickerListMaster = tickerListMasterTask.Result;
+            tkrAllData = tkrAllDataTask.Result;
+
+            // tkrAllData = _dBMethods.GetTickerDataForConsolidation(msl.TradingSymbol, DateTime.Today);
+            // tkrAllData = _dBMethods.GetTickerDataForConsolidation();
+
+            Log.Information("Indicators - Start Calculation");
+
+            // Get the data from TickerMin
+            // If last record is present, get records greater than that time,
+            // else get entire records greater than fromDate configuration
+            // Once after the OHLC, Volume, Change and TradedValue calculation is done, load the data to tickerListMaster 
+            //  to facilitate the further calculation of the indicators
             foreach (MasterStockList msl in mslList)
             {
                 for (int iTimePeriod = 0; iTimePeriod < timePeriodsToCalculate.Length; iTimePeriod++)
                 {
-                    //lock (thisLock)
-                    //{
-                    //    tickerListElder = dbmethod.GetTickerDataForElder(msl, Convert.ToInt32(timePeriodsToCalculate[iTimePeriod]));
-                    //}
+                    int timePeriod = Convert.ToInt32(timePeriodsToCalculate[iTimePeriod]);
 
-                    List<TickerElderIndicatorsModel> tickerListElder =
+                    DateTime tickerDateFrom = DateTime.MinValue;
+
+                    TickerElderIndicatorsModel tickeLastRecordedData = 
                                                 (from tle in tickerListMaster
                                                  where tle.StockCode == msl.TradingSymbol
-                                                    && tle.TimePeriod == Convert.ToInt32(timePeriodsToCalculate[iTimePeriod])
-                                                 select tle).ToList();
+                                                    && tle.TimePeriod == timePeriod
+                                                 select tle).FirstOrDefault();
+
+                    if (tickeLastRecordedData != null)
+                    {
+                        // Pull the data from TickerMin greater than the last datetime
+                        tickerDateFrom = tickeLastRecordedData.TickerDateTime.AddMinutes(timePeriod - 1);
+
+                        tickerListElder.Add(tickeLastRecordedData);
+                    }
+                    else
+                    {
+                        // Pull the data from the TickerMin greater than the DateFrom date
+                         tickerDateFrom = _settings.IndicatorLoadDateFrom;
+                        // tickerDateFrom = DateTime.Today;
+                    }
+
+                    tkrDataForConsol = (from tkr in tkrAllData
+                                        where tkr.TradingSymbol == msl.TradingSymbol
+                                            && tkr.DateTime > tickerDateFrom
+                                        select tkr).ToList<TickerMin>();
+
+                    //OHLC Calculation
+                    CalculateOHLC(tkrDataForConsol, timePeriod, tickerListElder);
 
                     //EMA Calculation
                     AllEMACalculation(tickerListElder);
@@ -97,13 +164,222 @@ namespace BusinessLogicLayer
                     CompareEMAWithEMA(tickerListElder);
 
                     //AllVWMACalculation(tickerListElder);
-
+                    tickerListElder.Remove(tickeLastRecordedData);
                 }
             }
 
-            DataTable masterTable = tickerListMaster.ToDataTable();
+            Log.Information("Indicators - Insert into DB");
+            //DataTable masterTable = tickerListElder.ToDataTable();
+            //_dBMethods.UpdateTickerElderDataTable(masterTable);
+            UploadToIndicatorTables(tickerListElder);
+        }
 
-            _dBMethods.UpdateTickerElderDataTable(masterTable);
+        private string[] GetTimePeriodsToCalculate()
+        {
+            string[] timePeriods = { };
+
+            TimeSpan currentTime = new TimeSpan(AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Hours,
+                                        AuxiliaryMethods.GetCurrentIndianTimeStamp().TimeOfDay.Minutes, 0);
+
+            string timePeriodCSV = string.Empty;
+
+            DateTime startDateTime = DateTime.Today + _settings.StartingTime;
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min60Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "60" : ",60";
+            }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min30Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "30" : ",30";
+            }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min25Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "25" : ",25";
+            }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min15Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "15" : ",15";
+            }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min10Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "10" : ",10";
+            }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min5Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "5" : ",5";
+            }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min3Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "3" : ",3";
+            }
+
+            if (timePeriodCSV.Length > 0)
+                timePeriods = timePeriodCSV.Split(',');
+
+            return timePeriods;
+        }
+
+        private void UploadToIndicatorTables(List<TickerElderIndicatorsModel> tickerListElder)
+        {
+            List<TickerMinElderIndicator> elderItems = new List<TickerMinElderIndicator>();
+            List<TickerMinSuperTrend> stItems = new List<TickerMinSuperTrend>();
+            List<TickerMinEMAHA> emahaItems = new List<TickerMinEMAHA>();
+
+            foreach (TickerElderIndicatorsModel tickerItem in tickerListElder)
+            {
+                elderItems.Add(new TickerMinElderIndicator
+                {
+                    StockCode = tickerItem.StockCode,
+                    TickerDateTime = tickerItem.TickerDateTime,
+                    TimePeriod = (int)tickerItem.TimePeriod,
+                    PriceOpen = tickerItem.PriceOpen,
+                    PriceHigh = tickerItem.PriceHigh,
+                    PriceLow = tickerItem.PriceLow,
+                    PriceClose = tickerItem.PriceClose,
+                    Volume = tickerItem.Volume,
+                    Change = tickerItem.Change,
+                    ChangePercent = tickerItem.ChangePercent,
+                    TradedValue = tickerItem.TradedValue,
+                    EMA1 = tickerItem.EMA1,
+                    EMA2 = tickerItem.EMA2,
+                    EMA3 = tickerItem.EMA3,
+                    EMA4 = tickerItem.EMA4,
+                    MACD = tickerItem.MACD,
+                    Signal = tickerItem.Signal,
+                    Histogram = tickerItem.Histogram,
+                    HistIncDec = tickerItem.HistIncDec,
+                    Impulse = tickerItem.Impulse,
+                    ForceIndex1 = tickerItem.ForceIndex1,
+                    ForceIndex2 = tickerItem.ForceIndex2,
+                    EMA1Dev = tickerItem.EMA1Dev,
+                    EMA2Dev = tickerItem.EMA2Dev,
+                    AG1 = tickerItem.AG1,
+                    AL1 = tickerItem.AL1,
+                    RSI1 = tickerItem.RSI1,
+                    AG2 = tickerItem.AG2,
+                    AL2 = tickerItem.AL2,
+                    RSI2 = tickerItem.RSI2
+                });
+
+                stItems.Add(new TickerMinSuperTrend
+                {
+                    StockCode = tickerItem.StockCode,
+                    TickerDateTime = tickerItem.TickerDateTime,
+                    TimePeriod = (int)tickerItem.TimePeriod,
+                    PriceOpen = tickerItem.PriceOpen,
+                    PriceHigh = tickerItem.PriceHigh,
+                    PriceLow = tickerItem.PriceLow,
+                    PriceClose = tickerItem.PriceClose,
+                    Volume = tickerItem.Volume,
+                    TrueRange = tickerItem.TrueRange,
+                    ATR1 = tickerItem.ATR1,
+                    ATR2 = tickerItem.ATR2,
+                    ATR3 = tickerItem.ATR3,
+                    BUB1 = tickerItem.BUB1,
+                    BUB2 = tickerItem.BUB2,
+                    BUB3 = tickerItem.BUB3,
+                    BLB1 = tickerItem.BLB1,
+                    BLB2 = tickerItem.BLB2,
+                    BLB3 = tickerItem.BLB3,
+                    FLB1 = tickerItem.FLB1,
+                    FLB2 = tickerItem.FLB2,
+                    FLB3 = tickerItem.FLB3,
+                    FUB1 = tickerItem.FUB1,
+                    FUB2 = tickerItem.FUB2,
+                    FUB3 = tickerItem.FUB3,
+                    ST1 = tickerItem.ST1,
+                    ST2 = tickerItem.ST2,
+                    ST3 = tickerItem.ST3,
+                    Trend1 = tickerItem.Trend1,
+                    Trend2 = tickerItem.Trend2,
+                    Trend3 = tickerItem.Trend3
+                });
+
+                emahaItems.Add(new TickerMinEMAHA
+                {
+                    StockCode = tickerItem.StockCode,
+                    TickerDateTime = tickerItem.TickerDateTime,
+                    TimePeriod = (int)tickerItem.TimePeriod,
+                    PriceOpen = tickerItem.PriceOpen,
+                    PriceHigh = tickerItem.PriceHigh,
+                    PriceLow = tickerItem.PriceLow,
+                    PriceClose = tickerItem.PriceClose,
+                    Volume = tickerItem.Volume,
+                    EHEMA1 = tickerItem.EHEMA1,
+                    EHEMA2 = tickerItem.EHEMA2,
+                    EHEMA3 = tickerItem.EHEMA3,
+                    EHEMA4 = tickerItem.EHEMA4,
+                    EHEMA5 = tickerItem.EHEMA5,
+                    HAOpen = tickerItem.HAOpen,
+                    HAHigh = tickerItem.HAHigh,
+                    HALow = tickerItem.HALow,
+                    HAClose = tickerItem.HAClose,
+                    varEMA1v2 = tickerItem.varEMA1v2,
+                    varEMA1v3 = tickerItem.varEMA1v3,
+                    varEMA1v4 = tickerItem.varEMA1v4,
+                    varEMA2v3 = tickerItem.varEMA2v3,
+                    varEMA2v4 = tickerItem.varEMA2v4,
+                    varEMA3v4 = tickerItem.varEMA3v4,
+                    varEMA4v5 = tickerItem.varEMA4v5,
+                    varHAOvHAC = tickerItem.varHAOvHAC,
+                    varHAOvHAPO = tickerItem.varHAOvHAPO,
+                    varHACvHAPC = tickerItem.varHACvHAPC,
+                    varOvC = tickerItem.varOvC,
+                    varOvPO = tickerItem.varOvPO,
+                    varCvPC = tickerItem.varCvPC,
+                    HAOCwEMA1 = tickerItem.HAOCwEMA1,
+                    OCwEMA1 = tickerItem.OCwEMA1,
+                    AllEMAsInNum = tickerItem.AllEMAsInNum
+                });
+            }
+
+            _dBMethods.BulkUploadElderDataToDB(elderItems);
+
+            _dBMethods.BulkUploadEMAHADataToDB(emahaItems);
+
+            _dBMethods.BulkUploadSuperTrendDataToDB(stItems);
+        }
+
+        private void CalculateOHLC(List<TickerMin> tkrDataForConsol, int timePeriod, List<TickerElderIndicatorsModel> tickerList)
+        {
+            //OHLC Calculation
+            int numberOfSets = (tkrDataForConsol.Count / timePeriod) + (tkrDataForConsol.Count % timePeriod == 0 ? 0 : 1);
+
+            for (int setIndex = 0; setIndex < numberOfSets; setIndex++)
+            {
+                var tickerBatchList = tkrDataForConsol.Skip(setIndex * timePeriod).Take(timePeriod);
+
+                double open = (double)tickerBatchList.First().Open;
+                double high = (double)tickerBatchList.Max(mx => mx.High);
+                double low = (double)tickerBatchList.Min(mn => mn.Low);
+                double close = (double)tickerBatchList.Last().Close;
+                int volume = (int)tickerBatchList.Sum(sm => sm.Volume);
+                double change = Math.Round(close - open, 2);
+                double changePercent = Math.Round(((close - open) / open) * 100, 2);
+                decimal tradedValue = (decimal)Math.Round((((open + high + low + close) / 4) * volume), 2);
+
+                tickerList.Add(new TickerElderIndicatorsModel
+                {
+                    StockCode = tickerBatchList.First().TradingSymbol,
+                    TickerDateTime = tickerBatchList.First().DateTime,
+                    TimePeriod = timePeriod,
+                    PriceOpen = open,
+                    PriceHigh = high,
+                    PriceLow = low,
+                    PriceClose = close,
+                    Volume = volume,
+                    Change = change,
+                    ChangePercent = changePercent,
+                    TradedValue = tradedValue
+                });
+            }
         }
 
         private void HeikinAshiCalculation(List<TickerElderIndicatorsModel> tickerList)
