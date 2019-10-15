@@ -220,11 +220,13 @@ namespace BusinessLogicLayer
                 timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "60" : "60";
             }
 
-            if (timePeriodCSV.Substring(timePeriodCSV.Length - 1, 1) == ",")
-                timePeriodCSV = timePeriodCSV.TrimEnd(',');
-
             if (timePeriodCSV.Length > 0)
+            {
+                if (timePeriodCSV.Substring(timePeriodCSV.Length - 1, 1) == ",")
+                    timePeriodCSV = timePeriodCSV.TrimEnd(',');
+
                 timePeriods = timePeriodCSV.Split(',');
+            }
 
             return timePeriods;
         }
