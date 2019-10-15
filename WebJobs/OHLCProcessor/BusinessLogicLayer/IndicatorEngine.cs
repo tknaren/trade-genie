@@ -55,12 +55,13 @@ namespace BusinessLogicLayer
             mslList = _dBMethods.GetMasterStockList();
 
             string instrumentList = string.Join(",", from item in mslList select item.TradingSymbol);
+            string timePeriodList = string.Join(",", timePeriodsToCalculate);
 
             Log.Information("Indicators - Get Time Periods");
             Log.Information("Indicators - Get All Ticker Data");
 
             Task<List<TickerElderIndicatorsModel>> tickerListMasterTask = 
-                Task.Run(() => _dBMethods.GetTickerDataForIndicators(instrumentList, _settings.TimePeriodsToCalculate));
+                Task.Run(() => _dBMethods.GetTickerDataForIndicators(instrumentList, timePeriodList));
             //tickerListMaster = _dBMethods.GetTickerDataForIndicators(instrumentList, _settings.TimePeriodsToCalculate);
 
             taskList.Add(tickerListMasterTask);
@@ -186,9 +187,16 @@ namespace BusinessLogicLayer
             }
 
             Log.Information("Indicators - Insert into DB");
-            //DataTable masterTable = tickerListElder.ToDataTable();
-            //_dBMethods.UpdateTickerElderDataTable(masterTable);
-            UploadToIndicatorTables(tickerListElder);
+
+            if (maxTimePeriod == 375)
+            {
+                DataTable masterTable = tickerListElder.ToDataTable();
+                _dBMethods.UpdateTickerElderDataTable(masterTable);
+            }
+            else
+            {
+                UploadToIndicatorTables(tickerListElder);
+            }
         }
 
         private string[] GetTimePeriodsToCalculate(bool isDayHistoryCall = false)
