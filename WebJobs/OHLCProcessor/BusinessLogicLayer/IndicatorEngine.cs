@@ -109,8 +109,8 @@ namespace BusinessLogicLayer
                     else
                     {
                         // Pull the data from the TickerMin greater than the DateFrom date
-                         tickerDateFrom = _settings.IndicatorLoadDateFrom;
-                        // tickerDateFrom = DateTime.Today;
+                        // tickerDateFrom = _settings.IndicatorLoadDateFrom;
+                        tickerDateFrom = DateTime.Today;
                     }
 
                     tkrDataForConsol = (from tkr in tkrAllData
@@ -185,40 +185,43 @@ namespace BusinessLogicLayer
 
             DateTime startDateTime = DateTime.Today + _settings.StartingTime;
 
-            if (AuxiliaryMethods.MinuteTimer(_settings.Min60Timer).Contains(currentTime))
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min3Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "60" : ",60";
-            }
-
-            if (AuxiliaryMethods.MinuteTimer(_settings.Min30Timer).Contains(currentTime))
-            {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "30" : ",30";
-            }
-
-            if (AuxiliaryMethods.MinuteTimer(_settings.Min25Timer).Contains(currentTime))
-            {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "25" : ",25";
-            }
-
-            if (AuxiliaryMethods.MinuteTimer(_settings.Min15Timer).Contains(currentTime))
-            {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "15" : ",15";
-            }
-
-            if (AuxiliaryMethods.MinuteTimer(_settings.Min10Timer).Contains(currentTime))
-            {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "10" : ",10";
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "3" : "3,";
             }
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min5Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "5" : ",5";
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "5" : "5,";
             }
 
-            if (AuxiliaryMethods.MinuteTimer(_settings.Min3Timer).Contains(currentTime))
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min10Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "3" : ",3";
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "10" : "10,";
             }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min15Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "15" : "15,";
+            }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min25Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "25" : "25,";
+            }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min30Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "30" : "30,";
+            }
+
+            if (AuxiliaryMethods.MinuteTimer(_settings.Min60Timer).Contains(currentTime))
+            {
+                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "60" : "60";
+            }
+
+            if (timePeriodCSV.Substring(timePeriodCSV.Length - 1, 1) == ",")
+                timePeriodCSV = timePeriodCSV.TrimEnd(',');
 
             if (timePeriodCSV.Length > 0)
                 timePeriods = timePeriodCSV.Split(',');

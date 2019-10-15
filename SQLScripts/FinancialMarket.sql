@@ -1245,13 +1245,14 @@ order by TickerDateTime desc
 
 update MasterStockList
 set IsIncluded = 1
+where TradingSymbol = 'IBULHSGFIN'
 --where collection = 'Nifty 50'
-where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH') 
+--where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH') 
 
 update MasterStockList
 set IsIncluded = 0
 
-select * from MasterStockList
+select distinct TradingSymbol from MasterStockList
 where IsIncluded = 1
 
 select distinct InstrumentToken from MasterStockList
@@ -1263,6 +1264,7 @@ select distinct InstrumentToken from MasterStockList
 --where 
 ----TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH') and 
 --DateTime > getDate()-1
+
 
 
 select count(1) from TickerMin(nolock)
@@ -1278,9 +1280,9 @@ DateTime > getDate()-1
 exec spGetTickerLatestData 'HDFC,HDFCBANK,HEROMOTOCO,HINDALCO,HINDUNILVR,HINDPETRO,HCLTECH', '2019-10-10'
 
 
---delete from TickerMinElderIndicators
---delete from TickerMinSuperTrend
---delete from TickerMinEMAHA
+--delete from TickerMinElderIndicators where TickerDateTime > '2019-10-11 14:30'
+--delete from TickerMinSuperTrend where TickerDateTime > '2019-10-11 14:30'
+--delete from TickerMinEMAHA where TickerDateTime > '2019-10-11 14:30'
 
 select * from TickerMinElderIndicators
 where 
@@ -1294,6 +1296,10 @@ select COUNt(*) from TickerMinElderIndicators where
 	--TimePeriod = 3 and 
 	StockCode = 'IBULHSGFIN'
 
+select COUNt(*) from TickerMinElderIndicators
+select COUNt(*) from TickerMinSuperTrend
+select COUNt(*) from TickerMinEMAHA
+
 --delete from TickerMinElderIndicators
 --where TickerDateTime > '2019-10-11 12:10:00.000'
 --delete from TickerMinSuperTrend
@@ -1306,4 +1312,9 @@ select top 100 * from Logs(nolock)
 order by Id desc
 
 --truncate table Logs
+
+select * from MasterStockList
+
+select top 10 * from TickerMin(nolock)
+where TradingSymbol = 'IBULHSGFIN'
 

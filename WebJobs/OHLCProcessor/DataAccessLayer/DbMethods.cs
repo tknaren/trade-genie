@@ -169,9 +169,9 @@ namespace DataAccessLayer
 
         public void BulkUploadHistoryToDB(IList<TickerMin> tickerData)
         {
-            string output = JsonConvert.SerializeObject(tickerData);
+            //string output = JsonConvert.SerializeObject(tickerData);
 
-            Log.Information("TickerData {@tickerData}", tickerData);
+            //Log.Information("TickerData {@tickerData}", tickerData);
 
             var objBulk = new SQLBulkUpload<TickerMin>()
             {
@@ -284,8 +284,8 @@ namespace DataAccessLayer
 
             using (aztgsqldbEntities db = new aztgsqldbEntities())
             {
-                //tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList, DateTime.Today).ToList();
-                tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList, _configSettings.IndicatorLoadDateFrom).ToList();
+                tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList, DateTime.Today).ToList();
+                //tickerResult = db.spGetTickerDataForIndicators(instrumentList, timePeriodList, _configSettings.IndicatorLoadDateFrom).ToList();
 
                 foreach (spGetTickerDataForIndicators_Result tickItem in tickerResult)
                 {
@@ -418,8 +418,8 @@ namespace DataAccessLayer
                 //                             select tkr).ToList<TickerMin>();
 
                 tickerDataForConsolidation = (from tkr in db.TickerMins
-                                                  //where tkr.DateTime > DateTime.Today
-                                              where tkr.DateTime > _configSettings.IndicatorLoadDateFrom
+                                                  where tkr.DateTime > DateTime.Today
+                                              //where tkr.DateTime > _configSettings.IndicatorLoadDateFrom
                                               select tkr).ToList<TickerMin>();
             }
 
