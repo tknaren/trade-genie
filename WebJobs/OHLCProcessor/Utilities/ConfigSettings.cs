@@ -251,5 +251,15 @@ namespace Utilities
                 return DateTime.Parse(CloudConfigurationManager.GetSetting("IndicatorLoadDateFrom").ToString());
             }
         }
+
+        public string RedisCacheName
+        {
+            get { return CloudConfigurationManager.GetSetting("RedisCacheName").ToString(); }
+        }
+
+        public string RedisCachePassword
+        {
+            get { return CloudConfigurationManager.GetSetting("RedisCachePassword").ToString(); }
+        }
     }
 }

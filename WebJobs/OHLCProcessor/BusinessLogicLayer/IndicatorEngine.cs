@@ -14,7 +14,7 @@ namespace BusinessLogicLayer
 {
     public interface IIndicatorEngine
     {
-        void IndicatorEngineLogic();
+        void IndicatorEngineLogic(bool isDayHistoryCall = false);
     }
 
     public class IndicatorEngine : IIndicatorEngine
@@ -31,10 +31,10 @@ namespace BusinessLogicLayer
             _dBMethods = dBMethods;
         }
 
-        public void IndicatorEngineLogic()
+        public void IndicatorEngineLogic(bool isDayHistoryCall = false)
         {
             //string[] timePeriodsToCalculate = _settings.TimePeriodsToCalculate.Split(',');
-            string[] timePeriodsToCalculate = GetTimePeriodsToCalculate();
+            string[] timePeriodsToCalculate = GetTimePeriodsToCalculate(isDayHistoryCall);
 
             if (timePeriodsToCalculate.Length > 0)
             {
@@ -116,7 +116,7 @@ namespace BusinessLogicLayer
                                                     && tle.TimePeriod == timePeriod
                                                  select tle).FirstOrDefault();
 
-                    if (tickeLastRecordedData != null)
+                    if (tickeLastRecordedData != null && timePeriod != 375)
                     {
                         // Pull the data from TickerMin greater than the last datetime
                         tickerDateFrom = tickeLastRecordedData.TickerDateTime.AddMinutes(timePeriod - 1);
@@ -191,7 +191,7 @@ namespace BusinessLogicLayer
             UploadToIndicatorTables(tickerListElder);
         }
 
-        private string[] GetTimePeriodsToCalculate()
+        private string[] GetTimePeriodsToCalculate(bool isDayHistoryCall = false)
         {
             string[] timePeriods = { };
 
@@ -243,6 +243,10 @@ namespace BusinessLogicLayer
                     timePeriodCSV = timePeriodCSV.TrimEnd(',');
 
                 timePeriods = timePeriodCSV.Split(',');
+            }
+            else if (isDayHistoryCall)
+            {
+                timePeriods[0] = "375";
             }
 
             return timePeriods;

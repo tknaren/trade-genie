@@ -54,5 +54,7 @@ namespace Utilities
         bool IsIndicatorReq { get; }
         int HistoryAPICallBatchSize { get; }
         DateTime IndicatorLoadDateFrom { get; }
+        string RedisCacheName { get; }
+        string RedisCachePassword { get; }
     }
 }
