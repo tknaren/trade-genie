@@ -65,8 +65,25 @@ namespace BusinessLogicLayer
 
             taskList.Add(tickerListMasterTask);
 
+            int maxTimePeriod = 0;
+
+            for(int i=0; i < timePeriodsToCalculate.Length; i++)
+            {
+                if (maxTimePeriod == 0)
+                {
+                    maxTimePeriod = Convert.ToInt32(timePeriodsToCalculate[i]);
+                }
+                else if (maxTimePeriod < Convert.ToInt32(timePeriodsToCalculate[i]))
+                {
+                    maxTimePeriod = Convert.ToInt32(timePeriodsToCalculate[i]);
+                }
+            }
+
+            if (maxTimePeriod == 0)
+                maxTimePeriod = 60;
+
             Task<List<TickerMin>> tkrAllDataTask =
-                Task.Run(() => _dBMethods.GetTickerDataForConsolidation());
+                Task.Run(() => _dBMethods.GetTickerDataForConsolidation(maxTimePeriod));
 
             taskList.Add(tkrAllDataTask);
 
