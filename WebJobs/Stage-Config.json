@@ -1,0 +1,247 @@
+[
+  {
+    "name": "Api_Key",
+    "value": "ar8VJeMwIW54Ya4cbvTr48KEP9obrSBd993kvaaC",
+    "slotSetting": true
+  },
+  {
+    "name": "Api_Secret",
+    "value": "jb5m80ild3",
+    "slotSetting": true
+  },
+  {
+    "name": "ATRsToCalculate",
+    "value": "7,11,14",
+    "slotSetting": true
+  },
+  {
+    "name": "AzureWebJobsDashboard",
+    "value": "",
+    "slotSetting": true
+  },
+  {
+    "name": "AzureWebJobsStorage",
+    "value": "",
+    "slotSetting": true
+  },
+  {
+    "name": "BulkCommitBatchSize",
+    "value": "5000",
+    "slotSetting": true
+  },
+  {
+    "name": "DayHistoryEndDate",
+    "value": "27-09-2019",
+    "slotSetting": true
+  },
+  {
+    "name": "DayHistoryStartDate",
+    "value": "01-09-2019",
+    "slotSetting": true
+  },
+  {
+    "name": "DelayInSec",
+    "value": "60",
+    "slotSetting": true
+  },
+  {
+    "name": "EHEMAsToCalculate",
+    "value": "8,13,21,34,55",
+    "slotSetting": true
+  },
+  {
+    "name": "EMADeviationPeriods",
+    "value": "13,26",
+    "slotSetting": true
+  },
+  {
+    "name": "EMAsToCalculate",
+    "value": "7,13,12,26",
+    "slotSetting": true
+  },
+  {
+    "name": "EndingTimeHour",
+    "value": "19",
+    "slotSetting": true
+  },
+  {
+    "name": "EndingTimeMinute",
+    "value": "05",
+    "slotSetting": true
+  },
+  {
+    "name": "EODTimer",
+    "value": "17:00",
+    "slotSetting": true
+  },
+  {
+    "name": "Exchange",
+    "value": "nse_eq",
+    "slotSetting": true
+  },
+  {
+    "name": "ForceIndexesToCalculate",
+    "value": "2,13",
+    "slotSetting": true
+  },
+  {
+    "name": "HistoricalAPI",
+    "value": "historical",
+    "slotSetting": true
+  },
+  {
+    "name": "HistoryAPICallBatchSize",
+    "value": "30",
+    "slotSetting": true
+  },
+  {
+    "name": "HistoryEndTimeHour",
+    "value": "15",
+    "slotSetting": true
+  },
+  {
+    "name": "HistoryEndTimeMinute",
+    "value": "35",
+    "slotSetting": true
+  },
+  {
+    "name": "IndicatorLoadDateFrom",
+    "value": "2019-10-11",
+    "slotSetting": true
+  },
+  {
+    "name": "IntervalInMin",
+    "value": "1",
+    "slotSetting": true
+  },
+  {
+    "name": "IntervalPeriod",
+    "value": "day",
+    "slotSetting": true
+  },
+  {
+    "name": "IsConsolidatorReq",
+    "value": "false",
+    "slotSetting": true
+  },
+  {
+    "name": "IsDayHistoryFetchReq",
+    "value": "true",
+    "slotSetting": true
+  },
+  {
+    "name": "IsHistoryFetchReq",
+    "value": "true",
+    "slotSetting": true
+  },
+  {
+    "name": "IsIndicatorReq",
+    "value": "true",
+    "slotSetting": true
+  },
+  {
+    "name": "IsPositional",
+    "value": "false",
+    "slotSetting": true
+  },
+  {
+    "name": "Min10Timer",
+    "value": "09:25,09:35,09:45,09:55,10:05,10:15,10:25,10:35,10:45,10:55,11:05,11:15,11:25,11:35,11:45,11:55,12:05,12:15,12:25,12:35,12:45,12:55,13:05,13:15,13:25,13:35,13:45,13:55,14:05,14:15,14:25,14:35,14:45,14:55,15:05,15:15,15:25,15:30",
+    "slotSetting": true
+  },
+  {
+    "name": "Min15Timer",
+    "value": "09:30,09:45,10:00,10:15,10:30,10:45,11:00,11:15,11:30,11:45,12:00,12:15,12:30,12:45,13:00,13:15,13:30,13:45,14:00,14:15,14:30,14:45,15:00,15:15,15:30",
+    "slotSetting": true
+  },
+  {
+    "name": "Min25Timer",
+    "value": "09:40,10:05,10:30,10:55,11:20,11:45,12:10,12:35,13:00,13:25,13:50,14:15,14:40,15:05,15:30",
+    "slotSetting": true
+  },
+  {
+    "name": "Min30Timer",
+    "value": "09:45,10:15,10:45,11:15,11:45,12:15,12:45,13:15,13:45,14:15,14:45,15:15,15:30",
+    "slotSetting": true
+  },
+  {
+    "name": "Min3Timer",
+    "value": "09:18,09:21,09:24,09:27,09:30,09:33,09:36,09:39,09:42,09:45,09:48,09:51,09:54,09:57,10:00,10:03,10:06,10:09,10:12,10:15,10:18,10:21,10:24,10:27,10:30,10:33,10:36,10:39,10:42,10:45,10:48,10:51,10:54,10:57,11:00,11:03,11:06,11:09,11:12,11:15,11:18,11:21,11:24,11:27,11:30,11:33,11:36,11:39,11:42,11:45,11:48,11:51,11:54,11:57,12:00,12:03,12:06,12:09,12:12,12:15,12:18,12:21,12:24,12:27,12:30,12:33,12:36,12:39,12:42,12:45,12:48,12:51,12:54,12:57,13:00,13:03,13:06,13:09,13:12,13:15,13:18,13:21,13:24,13:27,13:30,13:33,13:36,13:39,13:42,13:45,13:48,13:51,13:54,13:57,14:00,14:03,14:06,14:09,14:12,14:15,14:18,14:21,14:24,14:27,14:30,14:33,14:36,14:39,14:42,14:45,14:48,14:51,14:54,14:57,15:00,15:03,15:06,15:09,15:12,15:15,15:18,15:21,15:24,15:27,15:30",
+    "slotSetting": true
+  },
+  {
+    "name": "Min5Timer",
+    "value": "09:20,09:25,09:30,09:35,09:40,09:45,09:50,09:55,10:00,10:05,10:10,10:15,10:20,10:25,10:30,10:35,10:40,10:45,10:50,10:55,11:00,11:05,11:10,11:15,11:20,11:25,11:30,11:35,11:40,11:45,11:50,11:55,12:00,12:05,12:10,12:15,12:20,12:25,12:30,12:35,12:40,12:45,12:50,12:55,13:00,13:05,13:10,13:15,13:20,13:25,13:30,13:35,13:40,13:45,13:50,13:55,14:00,14:05,14:10,14:15,14:20,14:25,14:30,14:35,14:40,14:45,14:50,14:55,15:00,15:05,15:10,15:15,15:20,15:25,15:30",
+    "slotSetting": true
+  },
+  {
+    "name": "Min60Timer",
+    "value": "10:15,11:15,12:15,13:15,14:15,15:15,15:30",
+    "slotSetting": true
+  },
+  {
+    "name": "MobileAppsManagement_EXTENSION_VERSION",
+    "value": "latest",
+    "slotSetting": true
+  },
+  {
+    "name": "PeriodInDays",
+    "value": "1",
+    "slotSetting": true
+  },
+  {
+    "name": "Redirect_Url",
+    "value": "http://aztgwebapp.azurewebsites.net/Home/AuthCallBack",
+    "slotSetting": true
+  },
+  {
+    "name": "RSIsToCalculate",
+    "value": "7,14",
+    "slotSetting": true
+  },
+  {
+    "name": "StartingTimeHour",
+    "value": "09",
+    "slotSetting": true
+  },
+  {
+    "name": "StartingTimeMinute",
+    "value": "10",
+    "slotSetting": true
+  },
+  {
+    "name": "SuperTrendMultipliers",
+    "value": "3,2,1.5",
+    "slotSetting": true
+  },
+  {
+    "name": "TimePeriodsToCalculate",
+    "value": "3,5,10,15,30,60,375",
+    "slotSetting": true
+  },
+  {
+    "name": "UpstoxBaseUri",
+    "value": "https://api.upstox.com/",
+    "slotSetting": true
+  },
+  {
+    "name": "UserAgent",
+    "value": "Visual Studio",
+    "slotSetting": true
+  },
+  {
+    "name": "VWMAsToCalculate",
+    "value": "7,14",
+    "slotSetting": true
+  },
+  {
+    "name": "WEBSITE_RUN_FROM_PACKAGE",
+    "value": "0",
+    "slotSetting": true
+  },
+  {
+    "name": "WEBSITE_TIME_ZONE",
+    "value": "India Standard Time",
+    "slotSetting": true
+  }
+]

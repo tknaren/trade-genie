@@ -1312,12 +1312,14 @@ where timestamp < '2019-10-15 15:30 +05:30'
 order by Id desc
 
 select top 100 * from Logs(nolock) 
---where 
---timestamp > '2019-10-15 15:59 +05:30' and timestamp < '2019-10-15 16:05 +05:30' 
+where 
+timestamp > '2019-10-16 15:45 +05:30' and timestamp < '2019-10-16 15:50 +05:30' 
 --and Level = 'Error'
 order by Id desc
 
 
+select * from TickerMinSuperTrend
+where StockCode = 'ACC' and TimePeriod = 375
 
 --truncate table Logs
 
@@ -1325,4 +1327,30 @@ select * from MasterStockList
 
 select top 10 * from TickerMin(nolock)
 where TradingSymbol = 'IBULHSGFIN'
+
+
+select stockcode, Timeperiod, count(1) from TickerMinElderIndicators 
+where TickerDatetime > '2019-10-15' 
+group by  stockcode, Timeperiod 
+order by Timeperiod 
+
+select t1.StockCode, t1.TickerDateTime, t1.PriceOpen, t1.PriceHigh, t1.PriceLow, t1.PriceClose, t1.Volume, 
+EHEMA1, EHEMA2, EHEMA3, EHEMA4, EHEMA5,
+ST3, Trend1,Trend2, Trend3, RSI1, RSI2,
+HAOpen, HALow, HAHigh, HAClose, HAOCwEMA1, OCwEMA1, AllEMAsInNum
+from TickerMinEMAHA t1 
+inner join TickerMinElderIndicators t2 on t1.StockCode = t2.StockCode and t1.TickerDateTime = t2.TickerDateTime and t1.TimePeriod = t2.TimePeriod
+inner join TickerMinSuperTrend t3 on t1.StockCode = t3.StockCode and t1.TickerDateTime = t3.TickerDateTime and t1.TimePeriod = t3.TimePeriod
+where t1.TimePeriod = 15 and t1.TickerDateTime > '2019-10-16' --and t1.TickerDateTime < '2018-06-20'
+and t1.StockCode = 'ACC'
+order by t1.TickerDateTime asc
+
+exec spGetTickerDataForIndicators 'ACC','375','2019-10-15 10:10'
+
+select tradingSymbol, count(1) from tickerMin
+where [DateTime] > '2019-10-16' 
+group by  tradingSymbol
+
+
+
 
