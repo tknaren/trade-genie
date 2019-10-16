@@ -55,12 +55,13 @@ namespace BusinessLogicLayer
             mslList = _dBMethods.GetMasterStockList();
 
             string instrumentList = string.Join(",", from item in mslList select item.TradingSymbol);
+            string timePeriodsList = string.Join(",", timePeriodsToCalculate);
 
             Log.Information("Indicators - Get Time Periods");
             Log.Information("Indicators - Get All Ticker Data");
 
             Task<List<TickerElderIndicatorsModel>> tickerListMasterTask = 
-                Task.Run(() => _dBMethods.GetTickerDataForIndicators(instrumentList, _settings.TimePeriodsToCalculate));
+                Task.Run(() => _dBMethods.GetTickerDataForIndicators(instrumentList, timePeriodsList));
             //tickerListMaster = _dBMethods.GetTickerDataForIndicators(instrumentList, _settings.TimePeriodsToCalculate);
 
             taskList.Add(tickerListMasterTask);
@@ -120,6 +121,12 @@ namespace BusinessLogicLayer
                     {
                         // Pull the data from TickerMin greater than the last datetime
                         tickerDateFrom = tickeLastRecordedData.TickerDateTime.AddMinutes(timePeriod - 1);
+
+                        tickerListElder.Add(tickeLastRecordedData);
+                    }
+                    else if (tickeLastRecordedData != null && timePeriod == 375)
+                    {
+                        tickerDateFrom = DateTime.Today;
 
                         tickerListElder.Add(tickeLastRecordedData);
                     }
@@ -246,7 +253,7 @@ namespace BusinessLogicLayer
             }
             else if (isDayHistoryCall)
             {
-                timePeriods[0] = "375";
+                timePeriods = new string[1] { "375" };
             }
 
             return timePeriods;

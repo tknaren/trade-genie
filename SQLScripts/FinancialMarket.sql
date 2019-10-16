@@ -1308,8 +1308,16 @@ select COUNt(*) from TickerMinEMAHA
 --where TickerDateTime > '2019-10-11 12:10:00.000'
 
 select top 100 * from Logs(nolock)
---where timestamp < '2019-10-13 15:30 +05:30'
+where timestamp < '2019-10-15 15:30 +05:30'
 order by Id desc
+
+select top 100 * from Logs(nolock) 
+--where 
+--timestamp > '2019-10-15 15:59 +05:30' and timestamp < '2019-10-15 16:05 +05:30' 
+--and Level = 'Error'
+order by Id desc
+
+
 
 --truncate table Logs
 

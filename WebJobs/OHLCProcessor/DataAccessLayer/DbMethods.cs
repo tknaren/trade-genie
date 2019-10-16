@@ -412,6 +412,15 @@ namespace DataAccessLayer
 
             DateTime fromTimeToFetch = DateTime.Now.AddMinutes(-timeSpanBackward);
 
+            if (timeSpanBackward != 375)
+            {
+                fromTimeToFetch = DateTime.Now.AddMinutes(-timeSpanBackward);
+            }
+            else
+            {
+                fromTimeToFetch = DateTime.Today;
+            }
+
             using (aztgsqldbEntities db = new aztgsqldbEntities())
             {
                 //tickerDataForConsolidation = (from tkr in db.TickerMins
