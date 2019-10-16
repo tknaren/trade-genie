@@ -66,25 +66,26 @@ namespace BusinessLogicLayer
 
             taskList.Add(tickerListMasterTask);
 
-            int maxTimePeriod = 0;
+            //int maxTimePeriod = 0;
 
-            for(int i=0; i < timePeriodsToCalculate.Length; i++)
-            {
-                if (maxTimePeriod == 0)
-                {
-                    maxTimePeriod = Convert.ToInt32(timePeriodsToCalculate[i]);
-                }
-                else if (maxTimePeriod < Convert.ToInt32(timePeriodsToCalculate[i]))
-                {
-                    maxTimePeriod = Convert.ToInt32(timePeriodsToCalculate[i]);
-                }
-            }
+            //for(int i=0; i < timePeriodsToCalculate.Length; i++)
+            //{
+            //    if (maxTimePeriod == 0)
+            //    {
+            //        maxTimePeriod = Convert.ToInt32(timePeriodsToCalculate[i]);
+            //    }
+            //    else if (maxTimePeriod < Convert.ToInt32(timePeriodsToCalculate[i]))
+            //    {
+            //        maxTimePeriod = Convert.ToInt32(timePeriodsToCalculate[i]);
+            //    }
+            //}
 
-            if (maxTimePeriod == 0)
-                maxTimePeriod = 60;
+            //if (maxTimePeriod == 0)
+            //    maxTimePeriod = 60;
 
             Task<List<TickerMin>> tkrAllDataTask =
-                Task.Run(() => _dBMethods.GetTickerDataForConsolidation(maxTimePeriod));
+                Task.Run(() => _dBMethods.GetTickerDataForConsolidation());
+            //Task.Run(() => _dBMethods.GetTickerDataForConsolidation(maxTimePeriod));
 
             taskList.Add(tkrAllDataTask);
 
@@ -194,7 +195,7 @@ namespace BusinessLogicLayer
 
             Log.Information("Indicators - Insert into DB");
 
-            if (maxTimePeriod == 375)
+            if (timePeriodsList.Contains("375"))
             {
                 DataTable masterTable = tickerListElder.ToDataTable();
                 _dBMethods.UpdateTickerElderDataTable(masterTable);

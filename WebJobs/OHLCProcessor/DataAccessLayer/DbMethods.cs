@@ -39,7 +39,8 @@ namespace DataAccessLayer
 
         List<TickerMin> GetLatestTickerData(string instrumentList, DateTime today);
 
-        List<TickerMin> GetTickerDataForConsolidation(int timeSpanBackward);
+        //List<TickerMin> GetTickerDataForConsolidation(int timeSpanBackward);
+        List<TickerMin> GetTickerDataForConsolidation();
     }
 
     public class DBMethods : IDBMethods
@@ -406,20 +407,23 @@ namespace DataAccessLayer
             }
         }
 
-        public List<TickerMin> GetTickerDataForConsolidation(int timeSpanBackward)
+        //public List<TickerMin> GetTickerDataForConsolidation(int timeSpanBackward)
+        public List<TickerMin> GetTickerDataForConsolidation()
         {
             List<TickerMin> tickerDataForConsolidation = new List<TickerMin>();
 
-            DateTime fromTimeToFetch = DateTime.Now.AddMinutes(-timeSpanBackward);
+            //DateTime fromTimeToFetch = DateTime.Now.AddMinutes(-timeSpanBackward);
 
-            if (timeSpanBackward != 375)
-            {
-                fromTimeToFetch = DateTime.Now.AddMinutes(-timeSpanBackward);
-            }
-            else
-            {
-                fromTimeToFetch = DateTime.Today;
-            }
+            //if (timeSpanBackward != 375)
+            //{
+            //    fromTimeToFetch = DateTime.Now.AddMinutes(-timeSpanBackward);
+            //}
+            //else
+            //{
+            //    fromTimeToFetch = DateTime.Today;
+            //}
+
+            DateTime fromTimeToFetch = DateTime.Today;
 
             using (aztgsqldbEntities db = new aztgsqldbEntities())
             {
