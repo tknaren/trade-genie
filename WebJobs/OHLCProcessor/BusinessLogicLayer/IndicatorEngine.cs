@@ -219,37 +219,37 @@ namespace BusinessLogicLayer
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min3Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "3" : "3,";
+                timePeriodCSV = "3,";
             }
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min5Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "5" : "5,";
+                timePeriodCSV = timePeriodCSV + "5,";
             }
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min10Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "10" : "10,";
+                timePeriodCSV = timePeriodCSV + "10,";
             }
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min15Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "15" : "15,";
+                timePeriodCSV = timePeriodCSV + "15,";
             }
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min25Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "25" : "25,";
+                timePeriodCSV = timePeriodCSV + "25,";
             }
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min30Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "30" : "30,";
+                timePeriodCSV = timePeriodCSV + "30,";
             }
 
             if (AuxiliaryMethods.MinuteTimer(_settings.Min60Timer).Contains(currentTime))
             {
-                timePeriodCSV = string.IsNullOrEmpty(timePeriodCSV) == true ? "60" : "60";
+                timePeriodCSV = timePeriodCSV + "60";
             }
 
             if (timePeriodCSV.Length > 0)
