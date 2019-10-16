@@ -193,9 +193,16 @@ namespace BusinessLogicLayer
             }
 
             Log.Information("Indicators - Insert into DB");
-            //DataTable masterTable = tickerListElder.ToDataTable();
-            //_dBMethods.UpdateTickerElderDataTable(masterTable);
-            UploadToIndicatorTables(tickerListElder);
+
+            if (maxTimePeriod == 375)
+            {
+                DataTable masterTable = tickerListElder.ToDataTable();
+                _dBMethods.UpdateTickerElderDataTable(masterTable);
+            }
+            else
+            {
+                UploadToIndicatorTables(tickerListElder);
+            }
         }
 
         private string[] GetTimePeriodsToCalculate(bool isDayHistoryCall = false)
