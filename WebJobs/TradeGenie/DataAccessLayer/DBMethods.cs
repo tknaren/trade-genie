@@ -10,7 +10,7 @@ namespace DataAccessLayer
 {
     public interface IDBMethods
     {
-        List<GapOpenedScripts> GetRealTimeGapOpenedScripts();
+        List<GapOpenedScript> GetRealTimeGapOpenedScripts();
     }
 
     public class DBMethods : IDBMethods
@@ -22,9 +22,9 @@ namespace DataAccessLayer
             _configSettings = configSettings;
         }
 
-        public List<GapOpenedScripts> GetRealTimeGapOpenedScripts()
+        public List<GapOpenedScript> GetRealTimeGapOpenedScripts()
         {
-            List<GapOpenedScripts> currentGapOpenedStocks = new List<GapOpenedScripts>();
+            List<GapOpenedScript> currentGapOpenedStocks = new List<GapOpenedScript>();
 
             DateTime yesterday = _configSettings.PreviousTradeDay;
             DateTime today = DateTime.Today.AddHours(9).AddMinutes(15);
@@ -39,16 +39,19 @@ namespace DataAccessLayer
 
                 foreach(RealTimeGapOpenedScripts_Result item in result)
                 {
-                    currentGapOpenedStocks.Add(new GapOpenedScripts
+                    currentGapOpenedStocks.Add(new GapOpenedScript
                     {
                         TradingSymbol = item.TradingSymbol,
-                        Collection = item.Collection,
+                        Index = item.NiftyIndex,
                         GapPer = (double)item.GapPer,
-                        Open = (double)item.Open,
-                        PriceClose = (double)item.PriceClose,
+                        TradedValue = (decimal)item.TradedValue,
+                        Yesterday = (DateTime)item.Yesterday,
+                        YesterdayClose = (double)item.YesterdayClose,
+                        YesterdayHL = (double)item.YesterdayHL,
                         Today = (DateTime)item.Today,
-                        Yesterday = (DateTime)item.Yesterday
-
+                        TodayOpen = (double)item.TodayOpen,
+                        TodayHL = (double)item.TodayHL,
+                        OrderType = item.OrderType
                     });
                 }
             }

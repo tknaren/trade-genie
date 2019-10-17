@@ -1311,10 +1311,10 @@ select top 100 * from Logs(nolock)
 where timestamp < '2019-10-15 15:30 +05:30'
 order by Id desc
 
-select top 1000 * from Logs(nolock) 
-where 
+select top 100 * from Logs(nolock) 
+--where 
 --Message like 'Time Periods to Calculate %'
-timestamp > '2019-10-17 14:15 +05:30' and timestamp < '2019-10-17 14:20 +05:30' 
+--timestamp > '2019-10-17 15:4 +05:30' and timestamp < '2019-10-17 14:20 +05:30' 
 --and Level = 'Error'
 order by Id desc
 

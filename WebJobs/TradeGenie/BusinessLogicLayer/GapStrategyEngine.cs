@@ -82,9 +82,84 @@ namespace BusinessLogicLayer
 
         public void RunGapStrategy()
         {
-            List<GapOpenedScripts> gapOpenedScripts = _dBMethods.GetRealTimeGapOpenedScripts();
+            List<GapOpenedScript> gapOpenedScripts = _dBMethods.GetRealTimeGapOpenedScripts();
 
+            foreach(GapOpenedScript script in gapOpenedScripts)
+            {
+                script.CMP = _upstoxInterface.GetCurrentMarketPrice(script.TradingSymbol);
+            }
             
+        }
+
+        private void CalculateSRLevels(GapOpenedScript script)
+        {
+            /*
+            GapDown
+            Resistance 1 - 1% from the order placed time
+            Resistance 2 - Open price for the day
+            Resistance 3 - High Price for the day (at the time of order placement, i.e., at 9:17)
+            Resistance 4 - Low Price for the Previous day
+            Resistance 5 - Close Price for the previous day.              
+
+            P1 - Today's Open
+            P2 - Today's High
+            P3 - Prev Low
+            P4 - Prev Close
+
+            R&R 1:2 so 05% (SL) vs 1% (Target)
+
+            Calculate varaince from CMP to various levels
+
+            R1 - 0.5% - 1%
+            R2 - 1% - 1.5%
+            R3 - 1.5% - 2%
+            R4 - > 2%
+
+            */
+
+
+            if (script.OrderType == AuxiliaryMethods.LONG)
+            {
+                script.Leveltype = LevelType.Resistance;
+
+                var p1 = script.TodayOpen;
+                var p2 = script.TodayHL;
+                var p3 = script.YesterdayHL;
+                var p4 = script.YesterdayClose;
+
+                var var1 = Math.Round(p1 - script.CMP, 2);
+                var var2 = Math.Round(p2 - script.CMP, 2);
+                var var3 = Math.Round(p2 - script.CMP, 2);
+                var var4 = Math.Round(p2 - script.CMP, 2);
+
+                
+            }
+        }
+
+        private void GetVariance(double variance)
+        {
+            if (variance >= 0.5 && variance < 1)
+            {
+
+            }
+            else if (variance >= 1 && variance < 1.5)
+            {
+
+            }
+            else if (variance >= 1.5 && variance < 2)
+            {
+
+            }
+            else if (variance >= 2)
+            {
+
+            }
+            else
+            {
+
+            }
+
+
         }
     }
 }

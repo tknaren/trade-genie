@@ -17,6 +17,7 @@ namespace Utilities
         double GapPercentage { get; }
         int PriceRangeHigh { get; }
         int PriceRangeLow { get; }
+        string Exchange { get; }
     }
     public class ConfigSettings : IConfigSettings
     {
@@ -27,6 +28,6 @@ namespace Utilities
         public double GapPercentage => Convert.ToDouble(CloudConfigurationManager.GetSetting("GapPercentage").ToString());
         public int PriceRangeHigh => Convert.ToInt32(CloudConfigurationManager.GetSetting("PriceRangeHigh").ToString());
         public int PriceRangeLow => Convert.ToInt32(CloudConfigurationManager.GetSetting("PriceRangeLow").ToString());
-
+        public string Exchange => CloudConfigurationManager.GetSetting("Exchange").ToString();
     }
 }

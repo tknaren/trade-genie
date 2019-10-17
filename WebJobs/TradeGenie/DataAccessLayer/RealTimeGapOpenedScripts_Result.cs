@@ -14,11 +14,15 @@ namespace DataAccessLayer
     public partial class RealTimeGapOpenedScripts_Result
     {
         public string TradingSymbol { get; set; }
-        public string Collection { get; set; }
+        public string NiftyIndex { get; set; }
         public Nullable<System.DateTime> Yesterday { get; set; }
-        public Nullable<double> PriceClose { get; set; }
+        public Nullable<double> YesterdayClose { get; set; }
+        public Nullable<double> YesterdayHL { get; set; }
+        public Nullable<decimal> TradedValue { get; set; }
         public Nullable<System.DateTime> Today { get; set; }
-        public Nullable<decimal> Open { get; set; }
+        public Nullable<decimal> TodayOpen { get; set; }
+        public Nullable<decimal> TodayHL { get; set; }
         public Nullable<double> GapPer { get; set; }
+        public string OrderType { get; set; }
     }
 }

@@ -59,36 +59,6 @@ namespace DataAccessLayer
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<ufn_CSVToTable_Result>("[SQLAZURECONNSTR_aztgsqldbEntities].[ufn_CSVToTable](@StringInput, @Delimiter)", stringInputParameter, delimiterParameter);
         }
     
-        public virtual ObjectResult<RealTimeGapOpenedScripts_Result> RealTimeGapOpenedScripts(Nullable<System.DateTime> yesterday, Nullable<System.DateTime> today, 
-            Nullable<double> targetPercentage, Nullable<double> gapPercentage, Nullable<int> priceRangeHigh, Nullable<int> priceRangeLow)
-        {
-            var yesterdayParameter = yesterday.HasValue ?
-                new ObjectParameter("yesterday", yesterday) :
-                new ObjectParameter("yesterday", typeof(System.DateTime));
-    
-            var todayParameter = today.HasValue ?
-                new ObjectParameter("today", today) :
-                new ObjectParameter("today", typeof(System.DateTime));
-    
-            var targetPercentageParameter = targetPercentage.HasValue ?
-                new ObjectParameter("targetPercentage", targetPercentage) :
-                new ObjectParameter("targetPercentage", typeof(double));
-    
-            var gapPercentageParameter = gapPercentage.HasValue ?
-                new ObjectParameter("gapPercentage", gapPercentage) :
-                new ObjectParameter("gapPercentage", typeof(double));
-    
-            var priceRangeHighParameter = priceRangeHigh.HasValue ?
-                new ObjectParameter("priceRangeHigh", priceRangeHigh) :
-                new ObjectParameter("priceRangeHigh", typeof(int));
-    
-            var priceRangeLowParameter = priceRangeLow.HasValue ?
-                new ObjectParameter("priceRangeLow", priceRangeLow) :
-                new ObjectParameter("priceRangeLow", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RealTimeGapOpenedScripts_Result>("RealTimeGapOpenedScripts", yesterdayParameter, todayParameter, targetPercentageParameter, gapPercentageParameter, priceRangeHighParameter, priceRangeLowParameter);
-        }
-    
         public virtual int spAddUpdateOrders()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spAddUpdateOrders");
@@ -333,6 +303,36 @@ namespace DataAccessLayer
         public virtual int spUpdateTickerElderIndicators()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateTickerElderIndicators");
+        }
+    
+        public virtual ObjectResult<RealTimeGapOpenedScripts_Result> RealTimeGapOpenedScripts(Nullable<System.DateTime> yesterday, Nullable<System.DateTime> today, 
+            Nullable<double> targetPercentage, Nullable<double> gapPercentage, Nullable<int> priceRangeHigh, Nullable<int> priceRangeLow)
+        {
+            var yesterdayParameter = yesterday.HasValue ?
+                new ObjectParameter("yesterday", yesterday) :
+                new ObjectParameter("yesterday", typeof(System.DateTime));
+    
+            var todayParameter = today.HasValue ?
+                new ObjectParameter("today", today) :
+                new ObjectParameter("today", typeof(System.DateTime));
+    
+            var targetPercentageParameter = targetPercentage.HasValue ?
+                new ObjectParameter("targetPercentage", targetPercentage) :
+                new ObjectParameter("targetPercentage", typeof(double));
+    
+            var gapPercentageParameter = gapPercentage.HasValue ?
+                new ObjectParameter("gapPercentage", gapPercentage) :
+                new ObjectParameter("gapPercentage", typeof(double));
+    
+            var priceRangeHighParameter = priceRangeHigh.HasValue ?
+                new ObjectParameter("priceRangeHigh", priceRangeHigh) :
+                new ObjectParameter("priceRangeHigh", typeof(int));
+    
+            var priceRangeLowParameter = priceRangeLow.HasValue ?
+                new ObjectParameter("priceRangeLow", priceRangeLow) :
+                new ObjectParameter("priceRangeLow", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RealTimeGapOpenedScripts_Result>("RealTimeGapOpenedScripts", yesterdayParameter, todayParameter, targetPercentageParameter, gapPercentageParameter, priceRangeHighParameter, priceRangeLowParameter);
         }
     }
 }

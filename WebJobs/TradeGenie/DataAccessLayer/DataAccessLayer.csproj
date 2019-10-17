@@ -133,6 +133,7 @@
     <Compile Include="MasterStockList.cs">
       <DependentUpon>TradeGenieModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\GapOpenedScripts.cs" />
     <Compile Include="MorningBreakout.cs">
       <DependentUpon>TradeGenieModel.tt</DependentUpon>
     </Compile>

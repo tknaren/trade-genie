@@ -10,10 +10,8 @@ namespace Utilities
 {
     public static class AuxiliaryMethods
     {
-        public const string TREND_UP = "UP";
-        public const string TREND_DOWN = "DOWN";
-        public const string TREND_CHANGE_UP = "CHANGE-UP";
-        public const string TREND_CHANGE_DOWN = "CHANGE-DOWN";
+        public const string LONG = "LONG";
+        public const string SHORT = "SHORT";
 
         public static DateTime ConvertUnixTimeStampToWindows(string unixTimeStamp)
         {
