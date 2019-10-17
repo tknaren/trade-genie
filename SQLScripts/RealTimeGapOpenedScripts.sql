@@ -13,8 +13,8 @@ GO
 CREATE PROC [dbo].[RealTimeGapOpenedScripts] ( 
 	@yesterday DATETIME,
 	@today DATETIME,
-	@targetPercentage INT,
-	@gapPercentage INT,
+	@targetPercentage FLOAT,
+	@gapPercentage FLOAT,
 	@priceRangeHigh INT,
 	@priceRangeLow INT
 ) AS

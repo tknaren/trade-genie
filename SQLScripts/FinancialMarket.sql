@@ -1311,8 +1311,9 @@ select top 100 * from Logs(nolock)
 where timestamp < '2019-10-15 15:30 +05:30'
 order by Id desc
 
-select top 100 * from Logs(nolock) 
+select top 1000 * from Logs(nolock) 
 --where 
+--Message like 'Time Periods to Calculate %'
 --timestamp > '2019-10-16 15:45 +05:30' and timestamp < '2019-10-16 15:50 +05:30' 
 --and Level = 'Error'
 order by Id desc
@@ -1359,4 +1360,8 @@ select * from MasterStockList
 
 
 exec RealTimeGapOpenedScripts '2019-10-16 09:15', '2019-10-17 09:15:00', 1, 2, 5000, 50 
+
+spGetTickerLatestData
+
+--CREATE NONCLUSTERED INDEX IDX_TICKERMIN_OHLC ON TickerMin ([DateTime]) INCLUDE ([Open],[High],[Low],[Close],[Volume])
 

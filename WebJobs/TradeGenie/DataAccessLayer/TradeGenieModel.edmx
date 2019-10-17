@@ -4,7 +4,32 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="aztgsqldbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="AzTGModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="GapStrategyPotentialOrders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StockCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Collection" Type="varchar" MaxLength="50" />
+          <Property Name="Yesterday" Type="date" />
+          <Property Name="YesterdayClose" Type="float" />
+          <Property Name="Today" Type="date" />
+          <Property Name="TodayOpen" Type="float" />
+          <Property Name="GapPer" Type="float" />
+          <Property Name="Position" Type="varchar" MaxLength="50" />
+          <Property Name="BuyTime" Type="datetime" />
+          <Property Name="SellTime" Type="datetime" />
+          <Property Name="StopLossTime" Type="datetime" />
+          <Property Name="BuyPrice" Type="float" />
+          <Property Name="SellPrice" Type="float" />
+          <Property Name="StopLoss" Type="float" />
+          <Property Name="Target" Type="float" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="MaxProfitAchieved" Type="float" />
+          <Property Name="MaxProfitCanBeAchieved" Type="float" />
+          <Property Name="PNL" Type="float" />
+        </EntityType>
         <EntityType Name="Instruments">
           <Key>
             <PropertyRef Name="InstrumentToken" />
@@ -56,6 +81,7 @@
           <Property Name="TradingSymbol" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="200" />
           <Property Name="Collection" Type="varchar" MaxLength="50" />
+          <Property Name="Industry" Type="varchar" MaxLength="100" />
           <Property Name="IsIncluded" Type="bit" />
         </EntityType>
         <EntityType Name="MorningBreakouts">
@@ -321,95 +347,6 @@
           <Property Name="Trend2" Type="varchar" MaxLength="15" />
           <Property Name="Trend3" Type="varchar" MaxLength="15" />
         </EntityType>
-        <EntityType Name="TickerRealTime">
-          <Key>
-            <PropertyRef Name="StockCode" />
-            <PropertyRef Name="TickerDate" />
-          </Key>
-          <Property Name="StockCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="TickerDate" Type="datetime" Nullable="false" />
-          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
-          <Property Name="Open" Type="float" />
-          <Property Name="High" Type="float" />
-          <Property Name="Low" Type="float" />
-          <Property Name="LTP" Type="float" />
-          <Property Name="Change" Type="float" />
-          <Property Name="ChangePercentage" Type="float" />
-          <Property Name="PreviousClose" Type="float" />
-          <Property Name="DayEndClose" Type="float" />
-          <Property Name="NetTurnOverInCr" Type="float" />
-          <Property Name="TradedVolume" Type="float" />
-          <Property Name="YearlyPercentageChange" Type="float" />
-          <Property Name="MonthlyPercentageChange" Type="float" />
-        </EntityType>
-        <EntityType Name="TickerRealTimeFO">
-          <Key>
-            <PropertyRef Name="StockCode" />
-            <PropertyRef Name="TickerDate" />
-          </Key>
-          <Property Name="StockCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="TickerDate" Type="datetime" Nullable="false" />
-          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
-          <Property Name="Open" Type="float" />
-          <Property Name="High" Type="float" />
-          <Property Name="Low" Type="float" />
-          <Property Name="LTP" Type="float" />
-          <Property Name="Change" Type="float" />
-          <Property Name="ChangePercentage" Type="float" />
-          <Property Name="PreviousClose" Type="float" />
-          <Property Name="DayEndClose" Type="float" />
-          <Property Name="NetTurnOverInCr" Type="float" />
-          <Property Name="TradedVolume" Type="float" />
-          <Property Name="YearlyPercentageChange" Type="float" />
-          <Property Name="MonthlyPercentageChange" Type="float" />
-        </EntityType>
-        <EntityType Name="TickerRealTimeIndex">
-          <Key>
-            <PropertyRef Name="IndexName" />
-            <PropertyRef Name="LastTickerTime" />
-          </Key>
-          <Property Name="IndexName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="LastTickerTime" Type="datetime" Nullable="false" />
-          <Property Name="Open" Type="float" />
-          <Property Name="High" Type="float" />
-          <Property Name="Low" Type="float" />
-          <Property Name="LTP" Type="float" />
-          <Property Name="Change" Type="float" />
-          <Property Name="ChgPercentage" Type="float" />
-          <Property Name="YearlyChange" Type="float" />
-          <Property Name="MonthlyChange" Type="float" />
-          <Property Name="YearlyHigh" Type="float" />
-          <Property Name="YearlyLow" Type="float" />
-          <Property Name="Advances" Type="int" />
-          <Property Name="Declines" Type="int" />
-          <Property Name="Unchanged" Type="int" />
-        </EntityType>
-        <EntityType Name="TickerRealTimeIndicators">
-          <Key>
-            <PropertyRef Name="TimePeriod" />
-            <PropertyRef Name="StockCode" />
-            <PropertyRef Name="PeriodDateTime" />
-          </Key>
-          <Property Name="TimePeriod" Type="int" Nullable="false" />
-          <Property Name="StockCode" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="PeriodDateTime" Type="datetime" Nullable="false" />
-          <Property Name="Prie" Type="float" />
-          <Property Name="ChangePercentage" Type="float" />
-          <Property Name="TradedVolume" Type="float" />
-          <Property Name="EMA1" Type="float" />
-          <Property Name="EMA2" Type="float" />
-          <Property Name="EMA3" Type="float" />
-          <Property Name="EMA4" Type="float" />
-          <Property Name="MACD" Type="float" />
-          <Property Name="Signal" Type="float" />
-          <Property Name="Histogram" Type="float" />
-          <Property Name="RSI1" Type="float" />
-          <Property Name="RSI2" Type="float" />
-          <Property Name="ForceIndex" Type="float" />
-          <Property Name="OBV" Type="float" />
-          <Property Name="ATR" Type="float" />
-          <Property Name="Impulse" Type="nvarchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="Trades">
           <Key>
             <PropertyRef Name="TradeId" />
@@ -444,7 +381,7 @@
           <Property Name="Status" Type="varchar" MaxLength="10" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctFOStocks' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'aztgsqldb-stage.dbo.GetDistinctFOStocks' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GetDistinctFOStocks">
           <Key>
             <PropertyRef Name="StockCode" />
@@ -452,7 +389,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctFOStocks' does not have a
           <Property Name="StockCode" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'aztgsqldb-stage.dbo.GetDistinctNiftyStocks' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GetDistinctNiftyStocks">
           <Key>
             <PropertyRef Name="StockCode" />
@@ -558,7 +495,8 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </CollectionType>
           </ReturnType>
         </Function>
-        <EntityContainer Name="aztgsqldbModelStoreContainer">
+        <EntityContainer Name="AzTGModelStoreContainer">
+          <EntitySet Name="GapStrategyPotentialOrders" EntityType="Self.GapStrategyPotentialOrders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Instruments" EntityType="Self.Instruments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Margins" EntityType="Self.Margins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MasterStockList" EntityType="Self.MasterStockList" Schema="dbo" store:Type="Tables" />
@@ -571,10 +509,6 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
           <EntitySet Name="TickerMinElderIndicators" EntityType="Self.TickerMinElderIndicators" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TickerMinEMAHA" EntityType="Self.TickerMinEMAHA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TickerMinSuperTrend" EntityType="Self.TickerMinSuperTrend" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TickerRealTime" EntityType="Self.TickerRealTime" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TickerRealTimeFO" EntityType="Self.TickerRealTimeFO" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TickerRealTimeIndex" EntityType="Self.TickerRealTimeIndex" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TickerRealTimeIndicators" EntityType="Self.TickerRealTimeIndicators" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Trades" EntityType="Self.Trades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GetDistinctFOStocks" EntityType="Self.GetDistinctFOStocks" store:Type="Views" store:Schema="dbo">
@@ -592,13 +526,39 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             <End Role="Instruments1" EntitySet="Instruments" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="aztgsqldbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="AzTGModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <ComplexType Name="ufn_CSVToTable_Result">
           <Property Name="String" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </ComplexType>
+        <EntityType Name="GapStrategyPotentialOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Collection" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Yesterday" Type="DateTime" Precision="0" />
+          <Property Name="YesterdayClose" Type="Double" />
+          <Property Name="Today" Type="DateTime" Precision="0" />
+          <Property Name="TodayOpen" Type="Double" />
+          <Property Name="GapPer" Type="Double" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BuyTime" Type="DateTime" Precision="3" />
+          <Property Name="SellTime" Type="DateTime" Precision="3" />
+          <Property Name="StopLossTime" Type="DateTime" Precision="3" />
+          <Property Name="BuyPrice" Type="Double" />
+          <Property Name="SellPrice" Type="Double" />
+          <Property Name="StopLoss" Type="Double" />
+          <Property Name="Target" Type="Double" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="MaxProfitAchieved" Type="Double" />
+          <Property Name="MaxProfitCanBeAchieved" Type="Double" />
+          <Property Name="PNL" Type="Double" />
+        </EntityType>
         <EntityType Name="Instrument">
           <Key>
             <PropertyRef Name="InstrumentToken" />
@@ -652,6 +612,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
           <Property Name="TradingSymbol" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Collection" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Industry" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="IsIncluded" Type="Boolean" />
         </EntityType>
         <EntityType Name="MorningBreakout">
@@ -917,95 +878,6 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
           <Property Name="Trend2" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Trend3" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="TickerRealTime">
-          <Key>
-            <PropertyRef Name="StockCode" />
-            <PropertyRef Name="TickerDate" />
-          </Key>
-          <Property Name="StockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TickerDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Open" Type="Double" />
-          <Property Name="High" Type="Double" />
-          <Property Name="Low" Type="Double" />
-          <Property Name="LTP" Type="Double" />
-          <Property Name="Change" Type="Double" />
-          <Property Name="ChangePercentage" Type="Double" />
-          <Property Name="PreviousClose" Type="Double" />
-          <Property Name="DayEndClose" Type="Double" />
-          <Property Name="NetTurnOverInCr" Type="Double" />
-          <Property Name="TradedVolume" Type="Double" />
-          <Property Name="YearlyPercentageChange" Type="Double" />
-          <Property Name="MonthlyPercentageChange" Type="Double" />
-        </EntityType>
-        <EntityType Name="TickerRealTimeFO">
-          <Key>
-            <PropertyRef Name="StockCode" />
-            <PropertyRef Name="TickerDate" />
-          </Key>
-          <Property Name="StockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TickerDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Open" Type="Double" />
-          <Property Name="High" Type="Double" />
-          <Property Name="Low" Type="Double" />
-          <Property Name="LTP" Type="Double" />
-          <Property Name="Change" Type="Double" />
-          <Property Name="ChangePercentage" Type="Double" />
-          <Property Name="PreviousClose" Type="Double" />
-          <Property Name="DayEndClose" Type="Double" />
-          <Property Name="NetTurnOverInCr" Type="Double" />
-          <Property Name="TradedVolume" Type="Double" />
-          <Property Name="YearlyPercentageChange" Type="Double" />
-          <Property Name="MonthlyPercentageChange" Type="Double" />
-        </EntityType>
-        <EntityType Name="TickerRealTimeIndex">
-          <Key>
-            <PropertyRef Name="IndexName" />
-            <PropertyRef Name="LastTickerTime" />
-          </Key>
-          <Property Name="IndexName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastTickerTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Open" Type="Double" />
-          <Property Name="High" Type="Double" />
-          <Property Name="Low" Type="Double" />
-          <Property Name="LTP" Type="Double" />
-          <Property Name="Change" Type="Double" />
-          <Property Name="ChgPercentage" Type="Double" />
-          <Property Name="YearlyChange" Type="Double" />
-          <Property Name="MonthlyChange" Type="Double" />
-          <Property Name="YearlyHigh" Type="Double" />
-          <Property Name="YearlyLow" Type="Double" />
-          <Property Name="Advances" Type="Int32" />
-          <Property Name="Declines" Type="Int32" />
-          <Property Name="Unchanged" Type="Int32" />
-        </EntityType>
-        <EntityType Name="TickerRealTimeIndicator">
-          <Key>
-            <PropertyRef Name="TimePeriod" />
-            <PropertyRef Name="StockCode" />
-            <PropertyRef Name="PeriodDateTime" />
-          </Key>
-          <Property Name="TimePeriod" Type="Int32" Nullable="false" />
-          <Property Name="StockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PeriodDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Prie" Type="Double" />
-          <Property Name="ChangePercentage" Type="Double" />
-          <Property Name="TradedVolume" Type="Double" />
-          <Property Name="EMA1" Type="Double" />
-          <Property Name="EMA2" Type="Double" />
-          <Property Name="EMA3" Type="Double" />
-          <Property Name="EMA4" Type="Double" />
-          <Property Name="MACD" Type="Double" />
-          <Property Name="Signal" Type="Double" />
-          <Property Name="Histogram" Type="Double" />
-          <Property Name="RSI1" Type="Double" />
-          <Property Name="RSI2" Type="Double" />
-          <Property Name="ForceIndex" Type="Double" />
-          <Property Name="OBV" Type="Double" />
-          <Property Name="ATR" Type="Double" />
-          <Property Name="Impulse" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="Trade">
           <Key>
             <PropertyRef Name="TradeId" />
@@ -1063,7 +935,8 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="aztgsqldbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SQLAZURECONNSTR_aztgsqldbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="GapStrategyPotentialOrders" EntityType="Self.GapStrategyPotentialOrder" />
           <EntitySet Name="Instruments" EntityType="Self.Instrument" />
           <EntitySet Name="Margins" EntityType="Self.Margin" />
           <EntitySet Name="MasterStockLists" EntityType="Self.MasterStockList" />
@@ -1076,10 +949,6 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
           <EntitySet Name="TickerMinElderIndicators" EntityType="Self.TickerMinElderIndicator" />
           <EntitySet Name="TickerMinEMAHAs" EntityType="Self.TickerMinEMAHA" />
           <EntitySet Name="TickerMinSuperTrends" EntityType="Self.TickerMinSuperTrend" />
-          <EntitySet Name="TickerRealTimes" EntityType="Self.TickerRealTime" />
-          <EntitySet Name="TickerRealTimeFOes" EntityType="Self.TickerRealTimeFO" />
-          <EntitySet Name="TickerRealTimeIndexes" EntityType="Self.TickerRealTimeIndex" />
-          <EntitySet Name="TickerRealTimeIndicators" EntityType="Self.TickerRealTimeIndicator" />
           <EntitySet Name="Trades" EntityType="Self.Trade" />
           <EntitySet Name="UserLogins" EntityType="Self.UserLogin" />
           <EntitySet Name="GetDistinctFOStocks" EntityType="Self.GetDistinctFOStock" />
@@ -1088,46 +957,73 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             <End Role="Instruments" EntitySet="Instruments" />
             <End Role="Instruments1" EntitySet="Instruments" />
           </AssociationSet>
-          <FunctionImport Name="ufn_CSVToTable" IsComposable="true" ReturnType="Collection(aztgsqldbModel.ufn_CSVToTable_Result)">
+          <FunctionImport Name="ufn_CSVToTable" IsComposable="true" ReturnType="Collection(AzTGModel.ufn_CSVToTable_Result)">
             <Parameter Name="StringInput" Mode="In" Type="String" />
             <Parameter Name="Delimiter" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="RealTimeGapOpenedScripts" ReturnType="Collection(AzTGModel.RealTimeGapOpenedScripts_Result)">
+            <Parameter Name="yesterday" Mode="In" Type="DateTime" />
+            <Parameter Name="today" Mode="In" Type="DateTime" />
+            <Parameter Name="targetPercentage" Mode="In" Type="Int32" />
+            <Parameter Name="gapPercentage" Mode="In" Type="Int32" />
+            <Parameter Name="priceRangeHigh" Mode="In" Type="Int32" />
+            <Parameter Name="priceRangeLow" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spAddUpdateOrders" />
           <FunctionImport Name="spGenerateOHLC">
             <Parameter Name="strDateTime" Mode="In" Type="String" />
             <Parameter Name="intMinuteBar" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="spGetScriptsForBackTest" ReturnType="Collection(aztgsqldbModel.spGetScriptsForBackTest_Result)">
+          <FunctionImport Name="spGetGapOpenedScripts" ReturnType="Collection(AzTGModel.spGetGapOpenedScripts_Result)">
+            <Parameter Name="yesterday" Mode="In" Type="DateTime" />
+            <Parameter Name="today" Mode="In" Type="DateTime" />
+            <Parameter Name="targetPercentage" Mode="In" Type="Int32" />
+            <Parameter Name="gapPercentage" Mode="In" Type="Int32" />
+            <Parameter Name="priceRangeHigh" Mode="In" Type="Int32" />
+            <Parameter Name="priceRangeLow" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetScriptsForBackTest" ReturnType="Collection(AzTGModel.spGetScriptsForBackTest_Result)">
             <Parameter Name="strCurrentDate" Mode="In" Type="DateTime" />
             <Parameter Name="strPrevDate" Mode="In" Type="DateTime" />
             <Parameter Name="strPrevToPrevDate" Mode="In" Type="DateTime" />
             <Parameter Name="intMinuteBar" Mode="In" Type="Int32" />
             <Parameter Name="position" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetStocksInMomentum" ReturnType="Collection(aztgsqldbModel.spGetStocksInMomentum_Result)">
+          <FunctionImport Name="spGetStocksInMomentum" ReturnType="Collection(AzTGModel.spGetStocksInMomentum_Result)">
             <Parameter Name="strCurrentDate" Mode="In" Type="DateTime" />
             <Parameter Name="strPrevDate" Mode="In" Type="DateTime" />
             <Parameter Name="strPrevToPrevDate" Mode="In" Type="DateTime" />
             <Parameter Name="intMinuteBar" Mode="In" Type="Int32" />
             <Parameter Name="position" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetTickerDataForIndicators" ReturnType="Collection(aztgsqldbModel.spGetTickerDataForIndicators_Result)">
+          <FunctionImport Name="spGetStocksWithGapOpening" ReturnType="Collection(AzTGModel.spGetStocksWithGapOpening_Result)">
+            <Parameter Name="yesterday" Mode="In" Type="DateTime" />
+            <Parameter Name="today" Mode="In" Type="DateTime" />
+            <Parameter Name="percentage" Mode="In" Type="Int32" />
+            <Parameter Name="stockPrice" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetTickerDataForIndicators" ReturnType="Collection(AzTGModel.spGetTickerDataForIndicators_Result)">
             <Parameter Name="InstrumentList" Mode="In" Type="String" />
             <Parameter Name="TimePeriods" Mode="In" Type="String" />
             <Parameter Name="DateFrom" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="spGetTickerElderForTimePeriod" ReturnType="Collection(aztgsqldbModel.spGetTickerElderForTimePeriod_Result)">
+          <FunctionImport Name="spGetTickerElderForTimePeriod" ReturnType="Collection(AzTGModel.spGetTickerElderForTimePeriod_Result)">
             <Parameter Name="InstrumentList" Mode="In" Type="String" />
             <Parameter Name="TimePeriods" Mode="In" Type="String" />
             <Parameter Name="StartTime" Mode="In" Type="DateTime" />
             <Parameter Name="EndTime" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="spImpulseMediumFrame" ReturnType="Collection(aztgsqldbModel.spImpulseMediumFrame_Result)">
+          <FunctionImport Name="spGetTickerLatestData" ReturnType="Collection(AzTGModel.spGetTickerLatestData_Result)">
+            <Parameter Name="InstrumentList" Mode="In" Type="String" />
+            <Parameter Name="DateTill" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spImpulseMediumFrame" ReturnType="Collection(AzTGModel.spImpulseMediumFrame_Result)">
             <Parameter Name="strCurrentDate" Mode="In" Type="DateTime" />
             <Parameter Name="strPrevDate" Mode="In" Type="DateTime" />
             <Parameter Name="intMinuteBar" Mode="In" Type="Int32" />
             <Parameter Name="position" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spMergeTicker" />
           <FunctionImport Name="spStockStatistics">
             <Parameter Name="strCurrentDate" Mode="In" Type="DateTime" />
             <Parameter Name="strPrevDate" Mode="In" Type="DateTime" />
@@ -1138,37 +1034,31 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
           <FunctionImport Name="spUpdateRealTimeFO" />
           <FunctionImport Name="spUpdateTicker" />
           <FunctionImport Name="spUpdateTickerElder">
-          <Parameter Name="timePeriod" Mode="In" Type="Int32" />
+            <Parameter Name="timePeriod" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spUpdateTickerElderIndicators" />
-          <FunctionImport Name="spGetGapOpenedScripts" ReturnType="Collection(aztgsqldbModel.spGetGapOpenedScripts_Result)">
-            <Parameter Name="yesterday" Mode="In" Type="DateTime" />
-            <Parameter Name="today" Mode="In" Type="DateTime" />
-            <Parameter Name="targetPercentage" Mode="In" Type="Int32" />
-            <Parameter Name="gapPercentage" Mode="In" Type="Int32" />
-            <Parameter Name="priceRangeHigh" Mode="In" Type="Int32" />
-            <Parameter Name="priceRangeLow" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spGetTickerLatestData" ReturnType="Collection(aztgsqldbModel.spGetTickerLatestData_Result)">
-            <Parameter Name="InstrumentList" Mode="In" Type="String" />
-            <Parameter Name="DateTill" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="spMergeTicker" />
-          <FunctionImport Name="RealTimeGapOpenedScripts" ReturnType="Collection(aztgsqldbModel.RealTimeGapOpenedScripts_Result)">
-            <Parameter Name="yesterday" Mode="In" Type="DateTime" />
-            <Parameter Name="today" Mode="In" Type="DateTime" />
-            <Parameter Name="targetPercentage" Mode="In" Type="Int32" />
-            <Parameter Name="gapPercentage" Mode="In" Type="Int32" />
-            <Parameter Name="priceRangeHigh" Mode="In" Type="Int32" />
-            <Parameter Name="priceRangeLow" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="spGetStocksWithGapOpening" ReturnType="Collection(aztgsqldbModel.spGetStocksWithGapOpening_Result)">
-            <Parameter Name="yesterday" Mode="In" Type="DateTime" />
-            <Parameter Name="today" Mode="In" Type="DateTime" />
-            <Parameter Name="percentage" Mode="In" Type="Int32" />
-            <Parameter Name="stockPrice" Mode="In" Type="Int32" />
-          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="RealTimeGapOpenedScripts_Result">
+          <Property Type="String" Name="TradingSymbol" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Collection" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="Yesterday" Nullable="true" />
+          <Property Type="Double" Name="PriceClose" Nullable="true" />
+          <Property Type="DateTime" Name="Today" Nullable="true" />
+          <Property Type="Decimal" Name="Open" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="Double" Name="GapPer" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetGapOpenedScripts_Result">
+          <Property Type="String" Name="StockCode" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Collection" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="Yesterday" Nullable="true" />
+          <Property Type="Double" Name="PriceClose" Nullable="true" />
+          <Property Type="DateTime" Name="Today" Nullable="true" />
+          <Property Type="Double" Name="PriceOpen" Nullable="true" />
+          <Property Type="Double" Name="GapPer" Nullable="true" />
+          <Property Type="Double" Name="Target" Nullable="true" />
+          <Property Type="Double" Name="Final" Nullable="true" />
+          <Property Type="String" Name="IsProfit" Nullable="false" MaxLength="5" />
+        </ComplexType>
         <ComplexType Name="spGetScriptsForBackTest_Result">
           <Property Type="DateTime" Name="TickerDateTime" Nullable="false" Precision="23" />
           <Property Type="String" Name="STOCKCODE" Nullable="false" MaxLength="15" />
@@ -1216,6 +1106,14 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
           <Property Type="Double" Name="PREVPRICEHIGH" Nullable="true" />
           <Property Type="Double" Name="PREVPREVPRICELOW" Nullable="true" />
           <Property Type="Double" Name="PREVPREVPRICEHIGH" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetStocksWithGapOpening_Result">
+          <Property Type="String" Name="StockCode" Nullable="false" MaxLength="15" />
+          <Property Type="DateTime" Name="Yesterday" Nullable="true" />
+          <Property Type="Double" Name="PriceClose" Nullable="true" />
+          <Property Type="DateTime" Name="Today" Nullable="true" />
+          <Property Type="Double" Name="PriceOpen" Nullable="true" />
+          <Property Type="Double" Name="GapPer" Nullable="true" />
         </ComplexType>
         <ComplexType Name="spGetTickerDataForIndicators_Result">
           <Property Type="String" Name="StockCode" Nullable="false" MaxLength="15" />
@@ -1326,6 +1224,16 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
           <Property Type="Double" Name="EMA1Dev" Nullable="true" />
           <Property Type="Double" Name="EMA2Dev" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="spGetTickerLatestData_Result">
+          <Property Type="Int32" Name="InstrumentToken" Nullable="false" />
+          <Property Type="String" Name="TradingSymbol" Nullable="false" MaxLength="15" />
+          <Property Type="DateTime" Name="DateTime" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="Open" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="Decimal" Name="High" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="Decimal" Name="Low" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="Decimal" Name="Close" Nullable="true" Precision="10" Scale="2" />
+          <Property Type="Int32" Name="Volume" Nullable="true" />
+        </ComplexType>
         <ComplexType Name="spImpulseMediumFrame_Result">
           <Property Type="DateTime" Name="TickerDateTime" Nullable="false" Precision="23" />
           <Property Type="String" Name="STOCKCODE" Nullable="false" MaxLength="15" />
@@ -1351,53 +1259,40 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
           <Property Type="Double" Name="RSI1" Nullable="true" />
           <Property Type="Double" Name="RSI2" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="spGetGapOpenedScripts_Result">
-          <Property Type="String" Name="StockCode" Nullable="false" MaxLength="15" />
-          <Property Type="String" Name="Collection" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="Yesterday" Nullable="true" />
-          <Property Type="Double" Name="PriceClose" Nullable="true" />
-          <Property Type="DateTime" Name="Today" Nullable="true" />
-          <Property Type="Double" Name="PriceOpen" Nullable="true" />
-          <Property Type="Double" Name="GapPer" Nullable="true" />
-          <Property Type="Double" Name="Target" Nullable="true" />
-          <Property Type="Double" Name="Final" Nullable="true" />
-          <Property Type="String" Name="IsProfit" Nullable="false" MaxLength="5" />
-        </ComplexType>
-        <ComplexType Name="spGetTickerLatestData_Result">
-          <Property Type="Int32" Name="InstrumentToken" Nullable="false" />
-          <Property Type="String" Name="TradingSymbol" Nullable="false" MaxLength="15" />
-          <Property Type="DateTime" Name="DateTime" Nullable="false" Precision="23" />
-          <Property Type="Decimal" Name="Open" Nullable="true" Precision="10" Scale="2" />
-          <Property Type="Decimal" Name="High" Nullable="true" Precision="10" Scale="2" />
-          <Property Type="Decimal" Name="Low" Nullable="true" Precision="10" Scale="2" />
-          <Property Type="Decimal" Name="Close" Nullable="true" Precision="10" Scale="2" />
-          <Property Type="Int32" Name="Volume" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="RealTimeGapOpenedScripts_Result">
-          <Property Type="String" Name="TradingSymbol" Nullable="false" MaxLength="15" />
-          <Property Type="String" Name="Collection" Nullable="true" MaxLength="50" />
-          <Property Type="DateTime" Name="Yesterday" Nullable="true" />
-          <Property Type="Double" Name="PriceClose" Nullable="true" />
-          <Property Type="DateTime" Name="Today" Nullable="true" />
-          <Property Type="Decimal" Name="Open" Nullable="true" Precision="10" Scale="2" />
-          <Property Type="Double" Name="GapPer" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="spGetStocksWithGapOpening_Result">
-          <Property Type="String" Name="StockCode" Nullable="false" MaxLength="15" />
-          <Property Type="DateTime" Name="Yesterday" Nullable="true" />
-          <Property Type="Double" Name="PriceClose" Nullable="true" />
-          <Property Type="DateTime" Name="Today" Nullable="true" />
-          <Property Type="Double" Name="PriceOpen" Nullable="true" />
-          <Property Type="Double" Name="GapPer" Nullable="true" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="aztgsqldbModelStoreContainer" CdmEntityContainer="aztgsqldbEntities">
+        <EntityContainerMapping StorageEntityContainer="AzTGModelStoreContainer" CdmEntityContainer="SQLAZURECONNSTR_aztgsqldbEntities">
+          <EntitySetMapping Name="GapStrategyPotentialOrders">
+            <EntityTypeMapping TypeName="AzTGModel.GapStrategyPotentialOrder">
+              <MappingFragment StoreEntitySet="GapStrategyPotentialOrders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
+                <ScalarProperty Name="Collection" ColumnName="Collection" />
+                <ScalarProperty Name="Yesterday" ColumnName="Yesterday" />
+                <ScalarProperty Name="YesterdayClose" ColumnName="YesterdayClose" />
+                <ScalarProperty Name="Today" ColumnName="Today" />
+                <ScalarProperty Name="TodayOpen" ColumnName="TodayOpen" />
+                <ScalarProperty Name="GapPer" ColumnName="GapPer" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="BuyTime" ColumnName="BuyTime" />
+                <ScalarProperty Name="SellTime" ColumnName="SellTime" />
+                <ScalarProperty Name="StopLossTime" ColumnName="StopLossTime" />
+                <ScalarProperty Name="BuyPrice" ColumnName="BuyPrice" />
+                <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+                <ScalarProperty Name="StopLoss" ColumnName="StopLoss" />
+                <ScalarProperty Name="Target" ColumnName="Target" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="MaxProfitAchieved" ColumnName="MaxProfitAchieved" />
+                <ScalarProperty Name="MaxProfitCanBeAchieved" ColumnName="MaxProfitCanBeAchieved" />
+                <ScalarProperty Name="PNL" ColumnName="PNL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Instruments">
-            <EntityTypeMapping TypeName="aztgsqldbModel.Instrument">
+            <EntityTypeMapping TypeName="AzTGModel.Instrument">
               <MappingFragment StoreEntitySet="Instruments">
                 <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
                 <ScalarProperty Name="ExchangeToken" ColumnName="ExchangeToken" />
@@ -1421,7 +1316,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Margins">
-            <EntityTypeMapping TypeName="aztgsqldbModel.Margin">
+            <EntityTypeMapping TypeName="AzTGModel.Margin">
               <MappingFragment StoreEntitySet="Margins">
                 <ScalarProperty Name="MarginDate" ColumnName="MarginDate" />
                 <ScalarProperty Name="Enabled" ColumnName="Enabled" />
@@ -1442,18 +1337,19 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MasterStockLists">
-            <EntityTypeMapping TypeName="aztgsqldbModel.MasterStockList">
+            <EntityTypeMapping TypeName="AzTGModel.MasterStockList">
               <MappingFragment StoreEntitySet="MasterStockList">
                 <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
                 <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Collection" ColumnName="Collection" />
+                <ScalarProperty Name="Industry" ColumnName="Industry" />
                 <ScalarProperty Name="IsIncluded" ColumnName="IsIncluded" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MorningBreakouts">
-            <EntityTypeMapping TypeName="aztgsqldbModel.MorningBreakout">
+            <EntityTypeMapping TypeName="AzTGModel.MorningBreakout">
               <MappingFragment StoreEntitySet="MorningBreakouts">
                 <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
                 <ScalarProperty Name="DateTimePeriod" ColumnName="DateTimePeriod" />
@@ -1481,7 +1377,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NetPositions">
-            <EntityTypeMapping TypeName="aztgsqldbModel.NetPosition">
+            <EntityTypeMapping TypeName="AzTGModel.NetPosition">
               <MappingFragment StoreEntitySet="NetPositions">
                 <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
                 <ScalarProperty Name="PositionDate" ColumnName="PositionDate" />
@@ -1513,7 +1409,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OHLCDatas">
-            <EntityTypeMapping TypeName="aztgsqldbModel.OHLCData">
+            <EntityTypeMapping TypeName="AzTGModel.OHLCData">
               <MappingFragment StoreEntitySet="OHLCData">
                 <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
                 <ScalarProperty Name="OHLCDate" ColumnName="OHLCDate" />
@@ -1528,7 +1424,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Orders">
-            <EntityTypeMapping TypeName="aztgsqldbModel.Order">
+            <EntityTypeMapping TypeName="AzTGModel.Order">
               <MappingFragment StoreEntitySet="Orders">
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="ExchangeOrderId" ColumnName="ExchangeOrderId" />
@@ -1559,7 +1455,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Quotes">
-            <EntityTypeMapping TypeName="aztgsqldbModel.Quote">
+            <EntityTypeMapping TypeName="AzTGModel.Quote">
               <MappingFragment StoreEntitySet="Quotes">
                 <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
                 <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
@@ -1579,7 +1475,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TickerMins">
-            <EntityTypeMapping TypeName="aztgsqldbModel.TickerMin">
+            <EntityTypeMapping TypeName="AzTGModel.TickerMin">
               <MappingFragment StoreEntitySet="TickerMin">
                 <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
                 <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
@@ -1593,7 +1489,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TickerMinElderIndicators">
-            <EntityTypeMapping TypeName="aztgsqldbModel.TickerMinElderIndicator">
+            <EntityTypeMapping TypeName="AzTGModel.TickerMinElderIndicator">
               <MappingFragment StoreEntitySet="TickerMinElderIndicators">
                 <ScalarProperty Name="StockCode" ColumnName="StockCode" />
                 <ScalarProperty Name="TickerDateTime" ColumnName="TickerDateTime" />
@@ -1629,7 +1525,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TickerMinEMAHAs">
-            <EntityTypeMapping TypeName="aztgsqldbModel.TickerMinEMAHA">
+            <EntityTypeMapping TypeName="AzTGModel.TickerMinEMAHA">
               <MappingFragment StoreEntitySet="TickerMinEMAHA">
                 <ScalarProperty Name="StockCode" ColumnName="StockCode" />
                 <ScalarProperty Name="TickerDateTime" ColumnName="TickerDateTime" />
@@ -1675,7 +1571,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TickerMinSuperTrends">
-            <EntityTypeMapping TypeName="aztgsqldbModel.TickerMinSuperTrend">
+            <EntityTypeMapping TypeName="AzTGModel.TickerMinSuperTrend">
               <MappingFragment StoreEntitySet="TickerMinSuperTrend">
                 <ScalarProperty Name="StockCode" ColumnName="StockCode" />
                 <ScalarProperty Name="TickerDateTime" ColumnName="TickerDateTime" />
@@ -1710,96 +1606,8 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TickerRealTimes">
-            <EntityTypeMapping TypeName="aztgsqldbModel.TickerRealTime">
-              <MappingFragment StoreEntitySet="TickerRealTime">
-                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
-                <ScalarProperty Name="TickerDate" ColumnName="TickerDate" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="Open" ColumnName="Open" />
-                <ScalarProperty Name="High" ColumnName="High" />
-                <ScalarProperty Name="Low" ColumnName="Low" />
-                <ScalarProperty Name="LTP" ColumnName="LTP" />
-                <ScalarProperty Name="Change" ColumnName="Change" />
-                <ScalarProperty Name="ChangePercentage" ColumnName="ChangePercentage" />
-                <ScalarProperty Name="PreviousClose" ColumnName="PreviousClose" />
-                <ScalarProperty Name="DayEndClose" ColumnName="DayEndClose" />
-                <ScalarProperty Name="NetTurnOverInCr" ColumnName="NetTurnOverInCr" />
-                <ScalarProperty Name="TradedVolume" ColumnName="TradedVolume" />
-                <ScalarProperty Name="YearlyPercentageChange" ColumnName="YearlyPercentageChange" />
-                <ScalarProperty Name="MonthlyPercentageChange" ColumnName="MonthlyPercentageChange" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TickerRealTimeFOes">
-            <EntityTypeMapping TypeName="aztgsqldbModel.TickerRealTimeFO">
-              <MappingFragment StoreEntitySet="TickerRealTimeFO">
-                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
-                <ScalarProperty Name="TickerDate" ColumnName="TickerDate" />
-                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
-                <ScalarProperty Name="Open" ColumnName="Open" />
-                <ScalarProperty Name="High" ColumnName="High" />
-                <ScalarProperty Name="Low" ColumnName="Low" />
-                <ScalarProperty Name="LTP" ColumnName="LTP" />
-                <ScalarProperty Name="Change" ColumnName="Change" />
-                <ScalarProperty Name="ChangePercentage" ColumnName="ChangePercentage" />
-                <ScalarProperty Name="PreviousClose" ColumnName="PreviousClose" />
-                <ScalarProperty Name="DayEndClose" ColumnName="DayEndClose" />
-                <ScalarProperty Name="NetTurnOverInCr" ColumnName="NetTurnOverInCr" />
-                <ScalarProperty Name="TradedVolume" ColumnName="TradedVolume" />
-                <ScalarProperty Name="YearlyPercentageChange" ColumnName="YearlyPercentageChange" />
-                <ScalarProperty Name="MonthlyPercentageChange" ColumnName="MonthlyPercentageChange" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TickerRealTimeIndexes">
-            <EntityTypeMapping TypeName="aztgsqldbModel.TickerRealTimeIndex">
-              <MappingFragment StoreEntitySet="TickerRealTimeIndex">
-                <ScalarProperty Name="IndexName" ColumnName="IndexName" />
-                <ScalarProperty Name="LastTickerTime" ColumnName="LastTickerTime" />
-                <ScalarProperty Name="Open" ColumnName="Open" />
-                <ScalarProperty Name="High" ColumnName="High" />
-                <ScalarProperty Name="Low" ColumnName="Low" />
-                <ScalarProperty Name="LTP" ColumnName="LTP" />
-                <ScalarProperty Name="Change" ColumnName="Change" />
-                <ScalarProperty Name="ChgPercentage" ColumnName="ChgPercentage" />
-                <ScalarProperty Name="YearlyChange" ColumnName="YearlyChange" />
-                <ScalarProperty Name="MonthlyChange" ColumnName="MonthlyChange" />
-                <ScalarProperty Name="YearlyHigh" ColumnName="YearlyHigh" />
-                <ScalarProperty Name="YearlyLow" ColumnName="YearlyLow" />
-                <ScalarProperty Name="Advances" ColumnName="Advances" />
-                <ScalarProperty Name="Declines" ColumnName="Declines" />
-                <ScalarProperty Name="Unchanged" ColumnName="Unchanged" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TickerRealTimeIndicators">
-            <EntityTypeMapping TypeName="aztgsqldbModel.TickerRealTimeIndicator">
-              <MappingFragment StoreEntitySet="TickerRealTimeIndicators">
-                <ScalarProperty Name="TimePeriod" ColumnName="TimePeriod" />
-                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
-                <ScalarProperty Name="PeriodDateTime" ColumnName="PeriodDateTime" />
-                <ScalarProperty Name="Prie" ColumnName="Prie" />
-                <ScalarProperty Name="ChangePercentage" ColumnName="ChangePercentage" />
-                <ScalarProperty Name="TradedVolume" ColumnName="TradedVolume" />
-                <ScalarProperty Name="EMA1" ColumnName="EMA1" />
-                <ScalarProperty Name="EMA2" ColumnName="EMA2" />
-                <ScalarProperty Name="EMA3" ColumnName="EMA3" />
-                <ScalarProperty Name="EMA4" ColumnName="EMA4" />
-                <ScalarProperty Name="MACD" ColumnName="MACD" />
-                <ScalarProperty Name="Signal" ColumnName="Signal" />
-                <ScalarProperty Name="Histogram" ColumnName="Histogram" />
-                <ScalarProperty Name="RSI1" ColumnName="RSI1" />
-                <ScalarProperty Name="RSI2" ColumnName="RSI2" />
-                <ScalarProperty Name="ForceIndex" ColumnName="ForceIndex" />
-                <ScalarProperty Name="OBV" ColumnName="OBV" />
-                <ScalarProperty Name="ATR" ColumnName="ATR" />
-                <ScalarProperty Name="Impulse" ColumnName="Impulse" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Trades">
-            <EntityTypeMapping TypeName="aztgsqldbModel.Trade">
+            <EntityTypeMapping TypeName="AzTGModel.Trade">
               <MappingFragment StoreEntitySet="Trades">
                 <ScalarProperty Name="TradeId" ColumnName="TradeId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
@@ -1817,7 +1625,7 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserLogins">
-            <EntityTypeMapping TypeName="aztgsqldbModel.UserLogin">
+            <EntityTypeMapping TypeName="AzTGModel.UserLogin">
               <MappingFragment StoreEntitySet="UserLogins">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Broker" ColumnName="Broker" />
@@ -1832,31 +1640,60 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GetDistinctFOStocks">
-            <EntityTypeMapping TypeName="aztgsqldbModel.GetDistinctFOStock">
+            <EntityTypeMapping TypeName="AzTGModel.GetDistinctFOStock">
               <MappingFragment StoreEntitySet="GetDistinctFOStocks">
                 <ScalarProperty Name="StockCode" ColumnName="StockCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GetDistinctNiftyStocks">
-            <EntityTypeMapping TypeName="aztgsqldbModel.GetDistinctNiftyStock">
+            <EntityTypeMapping TypeName="AzTGModel.GetDistinctNiftyStock">
               <MappingFragment StoreEntitySet="GetDistinctNiftyStocks">
                 <ScalarProperty Name="StockCode" ColumnName="StockCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionName="aztgsqldbModel.Store.ufn_CSVToTable" FunctionImportName="ufn_CSVToTable">
+          <FunctionImportMapping FunctionName="AzTGModel.Store.ufn_CSVToTable" FunctionImportName="ufn_CSVToTable">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.ufn_CSVToTable_Result">
+              <ComplexTypeMapping TypeName="AzTGModel.ufn_CSVToTable_Result">
                 <ScalarProperty Name="String" ColumnName="String" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spAddUpdateOrders" FunctionName="aztgsqldbModel.Store.spAddUpdateOrders" />
-          <FunctionImportMapping FunctionImportName="spGenerateOHLC" FunctionName="aztgsqldbModel.Store.spGenerateOHLC" />
-          <FunctionImportMapping FunctionImportName="spGetScriptsForBackTest" FunctionName="aztgsqldbModel.Store.spGetScriptsForBackTest">
+          <FunctionImportMapping FunctionImportName="RealTimeGapOpenedScripts" FunctionName="AzTGModel.Store.RealTimeGapOpenedScripts">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.spGetScriptsForBackTest_Result">
+              <ComplexTypeMapping TypeName="AzTGModel.RealTimeGapOpenedScripts_Result">
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="Collection" ColumnName="Collection" />
+                <ScalarProperty Name="Yesterday" ColumnName="Yesterday" />
+                <ScalarProperty Name="PriceClose" ColumnName="PriceClose" />
+                <ScalarProperty Name="Today" ColumnName="Today" />
+                <ScalarProperty Name="Open" ColumnName="Open" />
+                <ScalarProperty Name="GapPer" ColumnName="GapPer" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spAddUpdateOrders" FunctionName="AzTGModel.Store.spAddUpdateOrders" />
+          <FunctionImportMapping FunctionImportName="spGenerateOHLC" FunctionName="AzTGModel.Store.spGenerateOHLC" />
+          <FunctionImportMapping FunctionImportName="spGetGapOpenedScripts" FunctionName="AzTGModel.Store.spGetGapOpenedScripts">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AzTGModel.spGetGapOpenedScripts_Result">
+                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
+                <ScalarProperty Name="Collection" ColumnName="Collection" />
+                <ScalarProperty Name="Yesterday" ColumnName="Yesterday" />
+                <ScalarProperty Name="PriceClose" ColumnName="PriceClose" />
+                <ScalarProperty Name="Today" ColumnName="Today" />
+                <ScalarProperty Name="PriceOpen" ColumnName="PriceOpen" />
+                <ScalarProperty Name="GapPer" ColumnName="GapPer" />
+                <ScalarProperty Name="Target" ColumnName="Target" />
+                <ScalarProperty Name="Final" ColumnName="Final" />
+                <ScalarProperty Name="IsProfit" ColumnName="IsProfit" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetScriptsForBackTest" FunctionName="AzTGModel.Store.spGetScriptsForBackTest">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AzTGModel.spGetScriptsForBackTest_Result">
                 <ScalarProperty Name="TickerDateTime" ColumnName="TickerDateTime" />
                 <ScalarProperty Name="STOCKCODE" ColumnName="STOCKCODE" />
                 <ScalarProperty Name="PRICEOPEN" ColumnName="PRICEOPEN" />
@@ -1882,9 +1719,9 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetStocksInMomentum" FunctionName="aztgsqldbModel.Store.spGetStocksInMomentum">
+          <FunctionImportMapping FunctionImportName="spGetStocksInMomentum" FunctionName="AzTGModel.Store.spGetStocksInMomentum">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.spGetStocksInMomentum_Result">
+              <ComplexTypeMapping TypeName="AzTGModel.spGetStocksInMomentum_Result">
                 <ScalarProperty Name="TickerDateTime" ColumnName="TickerDateTime" />
                 <ScalarProperty Name="STOCKCODE" ColumnName="STOCKCODE" />
                 <ScalarProperty Name="PRICEOPEN" ColumnName="PRICEOPEN" />
@@ -1910,9 +1747,21 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetTickerDataForIndicators" FunctionName="aztgsqldbModel.Store.spGetTickerDataForIndicators">
+          <FunctionImportMapping FunctionImportName="spGetStocksWithGapOpening" FunctionName="AzTGModel.Store.spGetStocksWithGapOpening">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.spGetTickerDataForIndicators_Result">
+              <ComplexTypeMapping TypeName="AzTGModel.spGetStocksWithGapOpening_Result">
+                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
+                <ScalarProperty Name="Yesterday" ColumnName="Yesterday" />
+                <ScalarProperty Name="PriceClose" ColumnName="PriceClose" />
+                <ScalarProperty Name="Today" ColumnName="Today" />
+                <ScalarProperty Name="PriceOpen" ColumnName="PriceOpen" />
+                <ScalarProperty Name="GapPer" ColumnName="GapPer" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetTickerDataForIndicators" FunctionName="AzTGModel.Store.spGetTickerDataForIndicators">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AzTGModel.spGetTickerDataForIndicators_Result">
                 <ScalarProperty Name="StockCode" ColumnName="StockCode" />
                 <ScalarProperty Name="TickerDateTime" ColumnName="TickerDateTime" />
                 <ScalarProperty Name="TimePeriod" ColumnName="TimePeriod" />
@@ -1999,9 +1848,9 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetTickerElderForTimePeriod" FunctionName="aztgsqldbModel.Store.spGetTickerElderForTimePeriod">
+          <FunctionImportMapping FunctionImportName="spGetTickerElderForTimePeriod" FunctionName="AzTGModel.Store.spGetTickerElderForTimePeriod">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.spGetTickerElderForTimePeriod_Result">
+              <ComplexTypeMapping TypeName="AzTGModel.spGetTickerElderForTimePeriod_Result">
                 <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
                 <ScalarProperty Name="StockCode" ColumnName="StockCode" />
                 <ScalarProperty Name="TickerDateTime" ColumnName="TickerDateTime" />
@@ -2027,9 +1876,23 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spImpulseMediumFrame" FunctionName="aztgsqldbModel.Store.spImpulseMediumFrame">
+          <FunctionImportMapping FunctionImportName="spGetTickerLatestData" FunctionName="AzTGModel.Store.spGetTickerLatestData">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.spImpulseMediumFrame_Result">
+              <ComplexTypeMapping TypeName="AzTGModel.spGetTickerLatestData_Result">
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="Open" ColumnName="Open" />
+                <ScalarProperty Name="High" ColumnName="High" />
+                <ScalarProperty Name="Low" ColumnName="Low" />
+                <ScalarProperty Name="Close" ColumnName="Close" />
+                <ScalarProperty Name="Volume" ColumnName="Volume" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spImpulseMediumFrame" FunctionName="AzTGModel.Store.spImpulseMediumFrame">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AzTGModel.spImpulseMediumFrame_Result">
                 <ScalarProperty Name="TickerDateTime" ColumnName="TickerDateTime" />
                 <ScalarProperty Name="STOCKCODE" ColumnName="STOCKCODE" />
                 <ScalarProperty Name="PRICEOPEN" ColumnName="PRICEOPEN" />
@@ -2056,69 +1919,14 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spStockStatistics" FunctionName="aztgsqldbModel.Store.spStockStatistics" />
-          <FunctionImportMapping FunctionImportName="spUpdateOHLC" FunctionName="aztgsqldbModel.Store.spUpdateOHLC" />
-          <FunctionImportMapping FunctionImportName="spUpdateRealTime" FunctionName="aztgsqldbModel.Store.spUpdateRealTime" />
-          <FunctionImportMapping FunctionImportName="spUpdateRealTimeFO" FunctionName="aztgsqldbModel.Store.spUpdateRealTimeFO" />
-          <FunctionImportMapping FunctionImportName="spUpdateTicker" FunctionName="aztgsqldbModel.Store.spUpdateTicker" />
-          <FunctionImportMapping FunctionImportName="spUpdateTickerElder" FunctionName="aztgsqldbModel.Store.spUpdateTickerElder" />
-          <FunctionImportMapping FunctionImportName="spUpdateTickerElderIndicators" FunctionName="aztgsqldbModel.Store.spUpdateTickerElderIndicators" />
-          <FunctionImportMapping FunctionImportName="spGetGapOpenedScripts" FunctionName="aztgsqldbModel.Store.spGetGapOpenedScripts">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.spGetGapOpenedScripts_Result">
-                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
-                <ScalarProperty Name="Collection" ColumnName="Collection" />
-                <ScalarProperty Name="Yesterday" ColumnName="Yesterday" />
-                <ScalarProperty Name="PriceClose" ColumnName="PriceClose" />
-                <ScalarProperty Name="Today" ColumnName="Today" />
-                <ScalarProperty Name="PriceOpen" ColumnName="PriceOpen" />
-                <ScalarProperty Name="GapPer" ColumnName="GapPer" />
-                <ScalarProperty Name="Target" ColumnName="Target" />
-                <ScalarProperty Name="Final" ColumnName="Final" />
-                <ScalarProperty Name="IsProfit" ColumnName="IsProfit" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetTickerLatestData" FunctionName="aztgsqldbModel.Store.spGetTickerLatestData">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.spGetTickerLatestData_Result">
-                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
-                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
-                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
-                <ScalarProperty Name="Open" ColumnName="Open" />
-                <ScalarProperty Name="High" ColumnName="High" />
-                <ScalarProperty Name="Low" ColumnName="Low" />
-                <ScalarProperty Name="Close" ColumnName="Close" />
-                <ScalarProperty Name="Volume" ColumnName="Volume" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spMergeTicker" FunctionName="aztgsqldbModel.Store.spMergeTicker" />
-          <FunctionImportMapping FunctionImportName="RealTimeGapOpenedScripts" FunctionName="aztgsqldbModel.Store.RealTimeGapOpenedScripts">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.RealTimeGapOpenedScripts_Result">
-                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
-                <ScalarProperty Name="Collection" ColumnName="Collection" />
-                <ScalarProperty Name="Yesterday" ColumnName="Yesterday" />
-                <ScalarProperty Name="PriceClose" ColumnName="PriceClose" />
-                <ScalarProperty Name="Today" ColumnName="Today" />
-                <ScalarProperty Name="Open" ColumnName="Open" />
-                <ScalarProperty Name="GapPer" ColumnName="GapPer" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetStocksWithGapOpening" FunctionName="aztgsqldbModel.Store.spGetStocksWithGapOpening">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="aztgsqldbModel.spGetStocksWithGapOpening_Result">
-                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
-                <ScalarProperty Name="Yesterday" ColumnName="Yesterday" />
-                <ScalarProperty Name="PriceClose" ColumnName="PriceClose" />
-                <ScalarProperty Name="Today" ColumnName="Today" />
-                <ScalarProperty Name="PriceOpen" ColumnName="PriceOpen" />
-                <ScalarProperty Name="GapPer" ColumnName="GapPer" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spMergeTicker" FunctionName="AzTGModel.Store.spMergeTicker" />
+          <FunctionImportMapping FunctionImportName="spStockStatistics" FunctionName="AzTGModel.Store.spStockStatistics" />
+          <FunctionImportMapping FunctionImportName="spUpdateOHLC" FunctionName="AzTGModel.Store.spUpdateOHLC" />
+          <FunctionImportMapping FunctionImportName="spUpdateRealTime" FunctionName="AzTGModel.Store.spUpdateRealTime" />
+          <FunctionImportMapping FunctionImportName="spUpdateRealTimeFO" FunctionName="AzTGModel.Store.spUpdateRealTimeFO" />
+          <FunctionImportMapping FunctionImportName="spUpdateTicker" FunctionName="AzTGModel.Store.spUpdateTicker" />
+          <FunctionImportMapping FunctionImportName="spUpdateTickerElder" FunctionName="AzTGModel.Store.spUpdateTickerElder" />
+          <FunctionImportMapping FunctionImportName="spUpdateTickerElderIndicators" FunctionName="AzTGModel.Store.spUpdateTickerElderIndicators" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -2133,8 +1941,8 @@ warning 6002: The table/view 'aztgsqldb.dbo.GetDistinctNiftyStocks' does not hav
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

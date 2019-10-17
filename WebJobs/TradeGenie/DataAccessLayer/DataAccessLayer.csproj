@@ -115,17 +115,135 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBMethods.cs" />
+    <Compile Include="GapStrategyPotentialOrder.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetDistinctFOStock.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetDistinctNiftyStock.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Instrument.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Margin.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MasterStockList.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MorningBreakout.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="NetPosition.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OHLCData.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Order.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quote.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RealTimeGapOpenedScripts_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetGapOpenedScripts_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetScriptsForBackTest_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetStocksInMomentum_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetStocksWithGapOpening_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetTickerDataForIndicators_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetTickerElderForTimePeriod_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spGetTickerLatestData_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spImpulseMediumFrame_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TickerMin.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TickerMinElderIndicator.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TickerMinEMAHA.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TickerMinSuperTrend.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Trade.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TradeGenieModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TradeGenieModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TradeGenieModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TradeGenieModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TradeGenieModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ufn_CSVToTable_Result.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserLogin.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EntityDeploy Include="TradeGenieModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TradeGenieModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="TradeGenieModel.edmx.diagram">
+      <DependentUpon>TradeGenieModel.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{797B02B7-B950-41B8-911C-9CE514820FA9}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TradeGenieModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TradeGenieModel.edmx</DependentUpon>
+      <LastGenOutput>TradeGenieModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="TradeGenieModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TradeGenieModel.edmx</DependentUpon>
+      <LastGenOutput>TradeGenieModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

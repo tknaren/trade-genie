@@ -137,7 +137,7 @@ namespace BusinessLogicLayer
                         taskList.Add(stockHistoryTask);
                     }
 
-                    Log.Information("Waiting for batch-" + (pageIndex + 1).ToString() + " tasks to complete");
+                    //Log.Information("Waiting for batch-" + (pageIndex + 1).ToString() + " tasks to complete");
 
                     Task.WaitAll(taskList.ToArray());
 
@@ -155,11 +155,11 @@ namespace BusinessLogicLayer
                     AddToTickerDataTable(instrumentToken, tradingSymbol, entry.Value);
                 }
 
-                Log.Information("Load To DB START");
+                //Log.Information("Load To DB START");
 
                 UploadHistoryToDB();
 
-                Log.Information("Load To DB END");
+                Log.Information("Data loaded To DB");
 
                 histories.Clear();
 

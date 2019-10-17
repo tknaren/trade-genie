@@ -392,6 +392,7 @@ namespace BusinessLogicLayer
         {
             //OHLC Calculation
             int numberOfSets = (tkrDataForConsol.Count / timePeriod) + (tkrDataForConsol.Count % timePeriod == 0 ? 0 : 1);
+            DateTime dateTime = DateTime.Today;
 
             for (int setIndex = 0; setIndex < numberOfSets; setIndex++)
             {
@@ -406,10 +407,15 @@ namespace BusinessLogicLayer
                 double changePercent = Math.Round(((close - open) / open) * 100, 2);
                 decimal tradedValue = (decimal)Math.Round((((open + high + low + close) / 4) * volume), 2);
 
+                if (timePeriod != 375)
+                {
+                    dateTime = tickerBatchList.First().DateTime;
+                }
+
                 tickerList.Add(new TickerElderIndicatorsModel
                 {
                     StockCode = tickerBatchList.First().TradingSymbol,
-                    TickerDateTime = tickerBatchList.First().DateTime,
+                    TickerDateTime = dateTime,
                     TimePeriod = timePeriod,
                     PriceOpen = open,
                     PriceHigh = high,
