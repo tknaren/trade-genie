@@ -1226,7 +1226,7 @@ select * from GaPstrategyPotentialOrders
 where Id > 11 and Position in ('LONG','SHORT') and PNL > 0
 --truncate table GaPstrategyPotentialOrders
 
-exec RealTimeGapOpenedScripts '2019-10-04', '2019-10-07 09:15:00', 1, 2, 5000, 50 
+
 
 --select TradingSymbol, count(1) from TickerMin 
 --where Datetime > '2019-10-07'
@@ -1312,14 +1312,15 @@ where timestamp < '2019-10-15 15:30 +05:30'
 order by Id desc
 
 select top 100 * from Logs(nolock) 
-where 
-timestamp > '2019-10-16 15:45 +05:30' and timestamp < '2019-10-16 15:50 +05:30' 
+--where 
+--timestamp > '2019-10-16 15:45 +05:30' and timestamp < '2019-10-16 15:50 +05:30' 
 --and Level = 'Error'
 order by Id desc
 
 
 select * from TickerMinSuperTrend
-where StockCode = 'ACC' and TimePeriod = 375
+where TimePeriod = 375
+
 
 --truncate table Logs
 
@@ -1330,7 +1331,7 @@ where TradingSymbol = 'IBULHSGFIN'
 
 
 select stockcode, Timeperiod, count(1) from TickerMinElderIndicators 
-where TickerDatetime > '2019-10-15' 
+where TickerDatetime > '2019-10-17' 
 group by  stockcode, Timeperiod 
 order by Timeperiod 
 
@@ -1341,16 +1342,21 @@ HAOpen, HALow, HAHigh, HAClose, HAOCwEMA1, OCwEMA1, AllEMAsInNum
 from TickerMinEMAHA t1 
 inner join TickerMinElderIndicators t2 on t1.StockCode = t2.StockCode and t1.TickerDateTime = t2.TickerDateTime and t1.TimePeriod = t2.TimePeriod
 inner join TickerMinSuperTrend t3 on t1.StockCode = t3.StockCode and t1.TickerDateTime = t3.TickerDateTime and t1.TimePeriod = t3.TimePeriod
-where t1.TimePeriod = 15 and t1.TickerDateTime > '2019-10-16' --and t1.TickerDateTime < '2018-06-20'
+where t1.TimePeriod = 10 and t1.TickerDateTime > '2019-10-17' --and t1.TickerDateTime < '2018-06-20'
 and t1.StockCode = 'ACC'
 order by t1.TickerDateTime asc
 
 exec spGetTickerDataForIndicators 'ACC','375','2019-10-15 10:10'
 
 select tradingSymbol, count(1) from tickerMin
-where [DateTime] > '2019-10-16' 
+where [DateTime] > '2019-10-17' 
 group by  tradingSymbol
 
 
+select * from MasterStockList
 
+--truncate table MasterStockList
+
+
+exec RealTimeGapOpenedScripts '2019-10-16 09:15', '2019-10-17 09:15:00', 1, 2, 5000, 50 
 
