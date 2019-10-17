@@ -411,8 +411,8 @@ warning 6002: The table/view 'aztgsqldb-stage.dbo.GetDistinctNiftyStocks' does n
         <Function Name="RealTimeGapOpenedScripts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="yesterday" Type="datetime" Mode="In" />
           <Parameter Name="today" Type="datetime" Mode="In" />
-          <Parameter Name="targetPercentage" Type="int" Mode="In" />
-          <Parameter Name="gapPercentage" Type="int" Mode="In" />
+          <Parameter Name="targetPercentage" Type="float" Mode="In" />
+          <Parameter Name="gapPercentage" Type="float" Mode="In" />
           <Parameter Name="priceRangeHigh" Type="int" Mode="In" />
           <Parameter Name="priceRangeLow" Type="int" Mode="In" />
         </Function>
@@ -964,8 +964,8 @@ warning 6002: The table/view 'aztgsqldb-stage.dbo.GetDistinctNiftyStocks' does n
           <FunctionImport Name="RealTimeGapOpenedScripts" ReturnType="Collection(AzTGModel.RealTimeGapOpenedScripts_Result)">
             <Parameter Name="yesterday" Mode="In" Type="DateTime" />
             <Parameter Name="today" Mode="In" Type="DateTime" />
-            <Parameter Name="targetPercentage" Mode="In" Type="Int32" />
-            <Parameter Name="gapPercentage" Mode="In" Type="Int32" />
+            <Parameter Name="targetPercentage" Mode="In" Type="Double" />
+            <Parameter Name="gapPercentage" Mode="In" Type="Double" />
             <Parameter Name="priceRangeHigh" Mode="In" Type="Int32" />
             <Parameter Name="priceRangeLow" Mode="In" Type="Int32" />
           </FunctionImport>

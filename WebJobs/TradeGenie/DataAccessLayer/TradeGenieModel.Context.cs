@@ -59,7 +59,8 @@ namespace DataAccessLayer
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<ufn_CSVToTable_Result>("[SQLAZURECONNSTR_aztgsqldbEntities].[ufn_CSVToTable](@StringInput, @Delimiter)", stringInputParameter, delimiterParameter);
         }
     
-        public virtual ObjectResult<RealTimeGapOpenedScripts_Result> RealTimeGapOpenedScripts(Nullable<System.DateTime> yesterday, Nullable<System.DateTime> today, Nullable<int> targetPercentage, Nullable<int> gapPercentage, Nullable<int> priceRangeHigh, Nullable<int> priceRangeLow)
+        public virtual ObjectResult<RealTimeGapOpenedScripts_Result> RealTimeGapOpenedScripts(Nullable<System.DateTime> yesterday, Nullable<System.DateTime> today, 
+            Nullable<double> targetPercentage, Nullable<double> gapPercentage, Nullable<int> priceRangeHigh, Nullable<int> priceRangeLow)
         {
             var yesterdayParameter = yesterday.HasValue ?
                 new ObjectParameter("yesterday", yesterday) :
@@ -71,11 +72,11 @@ namespace DataAccessLayer
     
             var targetPercentageParameter = targetPercentage.HasValue ?
                 new ObjectParameter("targetPercentage", targetPercentage) :
-                new ObjectParameter("targetPercentage", typeof(int));
+                new ObjectParameter("targetPercentage", typeof(double));
     
             var gapPercentageParameter = gapPercentage.HasValue ?
                 new ObjectParameter("gapPercentage", gapPercentage) :
-                new ObjectParameter("gapPercentage", typeof(int));
+                new ObjectParameter("gapPercentage", typeof(double));
     
             var priceRangeHighParameter = priceRangeHigh.HasValue ?
                 new ObjectParameter("priceRangeHigh", priceRangeHigh) :

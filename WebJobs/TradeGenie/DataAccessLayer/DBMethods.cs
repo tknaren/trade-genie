@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace DataAccessLayer
 {
     public interface IDBMethods
     {
-        List<RealTimeGapOpenedScripts_Result> GetRealTimeGapOpenedScripts();
+        List<GapOpenedScripts> GetRealTimeGapOpenedScripts();
     }
 
     public class DBMethods : IDBMethods
@@ -21,9 +22,9 @@ namespace DataAccessLayer
             _configSettings = configSettings;
         }
 
-        public List<RealTimeGapOpenedScripts_Result> GetRealTimeGapOpenedScripts()
+        public List<GapOpenedScripts> GetRealTimeGapOpenedScripts()
         {
-            List<RealTimeGapOpenedScripts_Result> currentGapOpenedStocks = new List<RealTimeGapOpenedScripts_Result>();
+            List<GapOpenedScripts> currentGapOpenedStocks = new List<GapOpenedScripts>();
 
             DateTime yesterday = _configSettings.PreviousTradeDay;
             DateTime today = DateTime.Today.AddHours(9).AddMinutes(15);
@@ -34,7 +35,22 @@ namespace DataAccessLayer
 
             using (aztgsqldbEntities db = new aztgsqldbEntities())
             {
-                var result = db.RealTimeGapOpenedScripts()
+                var result = db.RealTimeGapOpenedScripts(yesterday, today, targetPercentage, gapPercentage, priceRangeHigh, priceRangeLow);
+
+                foreach(RealTimeGapOpenedScripts_Result item in result)
+                {
+                    currentGapOpenedStocks.Add(new GapOpenedScripts
+                    {
+                        TradingSymbol = item.TradingSymbol,
+                        Collection = item.Collection,
+                        GapPer = (double)item.GapPer,
+                        Open = (double)item.Open,
+                        PriceClose = (double)item.PriceClose,
+                        Today = (DateTime)item.Today,
+                        Yesterday = (DateTime)item.Yesterday
+
+                    });
+                }
             }
 
             return currentGapOpenedStocks;

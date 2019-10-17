@@ -21,12 +21,15 @@ CREATE PROC [dbo].[RealTimeGapOpenedScripts] (
 BEGIN
 	
 SELECT today.TradingSymbol, 
-	msl.[Collection], 
+	msl.[Collection] as 'NiftyIndex', 
 	CAST(yesterday.TickerDateTime AS DATE) AS 'Yesterday', 
-	yesterday.PriceClose, 
+	yesterday.PriceClose as 'YesterdayClose', 
+	yesterday.PriceLow as 'YesterdayHL',
 	CAST(today.[DateTime] AS DATE) AS 'Today', 
-	today.[Open], 
-	((today.[Open] - yesterday.PriceClose) / today.[Open]) * 100 AS GapPer
+	today.[Open] as 'TodayOpen', 
+	today.[High] as 'TodayHL',
+	((today.[Open] - yesterday.PriceClose) / today.[Open]) * 100 AS GapPer,
+	'SHORT' as 'OrderType'
 FROM TickerMinElderIndicators yesterday 
 INNER JOIN TickerMin today ON yesterday.StockCode = today.TradingSymbol 
 	AND today.[DateTime] = @today 
@@ -40,12 +43,15 @@ WHERE (((today.[Open] - yesterday.PriceClose) / today.[Open]) * 100  > @gapPerce
 UNION
 
 SELECT today.TradingSymbol, 
-	msl.[Collection], 
+	msl.[Collection]  as 'NiftyIndex', 
 	CAST(yesterday.TickerDateTime AS DATE) AS 'Yesterday', 
-	yesterday.PriceClose, 
+	yesterday.PriceClose as 'YesterdayClose', 
+	yesterday.PriceHigh as 'YesterdayHL',
 	CAST(today.[DateTime] AS DATE) AS 'Today', 
-	today.[Open], 
-	((today.[Open] - yesterday.PriceClose) / today.[Open]) * 100 AS GapPer
+	today.[Open] as 'TodayOpen', 
+	today.[Low] as 'TodayHL',
+	((today.[Open] - yesterday.PriceClose) / today.[Open]) * 100 AS GapPer,
+	'LONG' as 'OrderType'
 FROM TickerMinElderIndicators yesterday 
 INNER JOIN TickerMin today ON yesterday.StockCode = today.TradingSymbol 
 	AND today.[DateTime] = @today 

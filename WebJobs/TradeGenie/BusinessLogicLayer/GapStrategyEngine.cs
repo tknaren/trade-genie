@@ -1,5 +1,6 @@
 ﻿using APIInterfaceLayer;
 using DataAccessLayer;
+using DataAccessLayer.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,6 +80,11 @@ namespace BusinessLogicLayer
             _dBMethods = dBMethods;
         }
 
+        public void RunGapStrategy()
+        {
+            List<GapOpenedScripts> gapOpenedScripts = _dBMethods.GetRealTimeGapOpenedScripts();
 
+            
+        }
     }
 }

@@ -18,8 +18,9 @@ namespace DataAccessLayer
     public partial class aztgsqldbEntities : DbContext
     {
         public aztgsqldbEntities()
-            : base("name=aztgsqldbEntities")
+            : base("name=SQLAZURECONNSTR_aztgsqldbEntities")
         {
+            this.Database.CommandTimeout = 6000;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
