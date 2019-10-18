@@ -16,7 +16,7 @@
 --select * from MasterStockList
 
 --update MasterStockList
---set IsIncluded = 1
+--set IsIncluded = 0
 --where IsIncluded is null
 
 
@@ -1245,7 +1245,7 @@ order by TickerDateTime desc
 
 update MasterStockList
 set IsIncluded = 1
-where TradingSymbol = 'IBULHSGFIN'
+where TradingSymbol = 'RELIANCE'
 --where collection = 'Nifty 50'
 --where TradingSymbol in ('HDFC','HDFCBANK','HEROMOTOCO','HINDALCO','HINDUNILVR','HINDPETRO','HCLTECH') 
 
@@ -1336,15 +1336,27 @@ where TickerDatetime > '2019-10-17'
 group by  stockcode, Timeperiod 
 order by Timeperiod 
 
+
 select t1.StockCode, t1.TickerDateTime, t1.PriceOpen, t1.PriceHigh, t1.PriceLow, t1.PriceClose, t1.Volume, 
-EHEMA1, EHEMA2, EHEMA3, EHEMA4, EHEMA5,
-ST3, Trend1,Trend2, Trend3, RSI1, RSI2,
+Impulse, EMA1, EMA2, EMA3, EMA4, MACD, Signal, Histogram, HistIncDec,
+ST3, Trend1,Trend2, Trend3, RSI1, RSI2, ForceIndex1, ForceIndex2,
 HAOpen, HALow, HAHigh, HAClose, HAOCwEMA1, OCwEMA1, AllEMAsInNum
 from TickerMinEMAHA t1 
 inner join TickerMinElderIndicators t2 on t1.StockCode = t2.StockCode and t1.TickerDateTime = t2.TickerDateTime and t1.TimePeriod = t2.TimePeriod
 inner join TickerMinSuperTrend t3 on t1.StockCode = t3.StockCode and t1.TickerDateTime = t3.TickerDateTime and t1.TimePeriod = t3.TimePeriod
-where t1.TimePeriod = 10 and t1.TickerDateTime > '2019-10-17' --and t1.TickerDateTime < '2018-06-20'
-and t1.StockCode = 'ACC'
+where t1.TimePeriod = 25 and t1.TickerDateTime > '2019-10-18' --and t1.TickerDateTime < '2018-06-20'
+and t1.StockCode IN ('ASHOKLEY')
+order by t1.TickerDateTime asc
+
+select t1.StockCode, t1.TickerDateTime, t1.PriceOpen, t1.PriceHigh, t1.PriceLow, t1.PriceClose, t1.Volume, 
+Impulse, EMA1, EMA2, EMA3, EMA4, MACD, Signal, Histogram, HistIncDec,
+ST3, Trend1,Trend2, Trend3, RSI1, RSI2, ForceIndex1, ForceIndex2,
+HAOpen, HALow, HAHigh, HAClose, HAOCwEMA1, OCwEMA1, AllEMAsInNum
+from TickerMinEMAHA t1 
+inner join TickerMinElderIndicators t2 on t1.StockCode = t2.StockCode and t1.TickerDateTime = t2.TickerDateTime and t1.TimePeriod = t2.TimePeriod
+inner join TickerMinSuperTrend t3 on t1.StockCode = t3.StockCode and t1.TickerDateTime = t3.TickerDateTime and t1.TimePeriod = t3.TimePeriod
+where t1.TimePeriod = 5 and t1.TickerDateTime > '2019-10-17' --and t1.TickerDateTime < '2018-06-20'
+and t1.StockCode = 'RELIANCE'
 order by t1.TickerDateTime asc
 
 exec spGetTickerDataForIndicators 'ACC','375','2019-10-15 10:10'
@@ -1364,4 +1376,12 @@ exec RealTimeGapOpenedScripts '2019-10-17', '2019-10-18 09:15:00', 1, 2, 5000, 5
 spGetTickerLatestData
 
 --CREATE NONCLUSTERED INDEX IDX_TICKERMIN_OHLC ON TickerMin ([DateTime]) INCLUDE ([Open],[High],[Low],[Close],[Volume])
+
+delete from TickerMinelderIndicators
+where timePeriod in (5,25)
+delete from TickerMinEMAHA
+where timePeriod in (5,25)
+delete from TickerMinSuperTrend
+where timePeriod in (5,25)
+
 

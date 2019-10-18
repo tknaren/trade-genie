@@ -21,6 +21,7 @@ namespace Utilities
         string ApiKey { get; }
         string ApiSecret { get; }
         string RedirectUrl { get; }
+        string UpstoxBaseUri { get; }
     }
     public class ConfigSettings : IConfigSettings
     {
@@ -35,5 +36,6 @@ namespace Utilities
         public string ApiKey => CloudConfigurationManager.GetSetting("ApiKey").ToString();
         public string ApiSecret => CloudConfigurationManager.GetSetting("ApiSecret").ToString();
         public string RedirectUrl => CloudConfigurationManager.GetSetting("RedirectUrl").ToString();
+        public string UpstoxBaseUri => CloudConfigurationManager.GetSetting("UpstoxBaseUri").ToString();
     }
 }

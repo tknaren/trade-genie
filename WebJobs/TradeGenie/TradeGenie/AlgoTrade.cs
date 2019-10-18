@@ -33,7 +33,8 @@ namespace TradeGenie
             {
                 _accessToken = _dBMethods.GetLatestAccessToken();
 
-                _upstoxInterface.InitializeUpstox();
+                //_upstoxInterface.GetAccessToken("d8183297006b2e257c62cde52cee4ef92ca79ba4");
+                _upstoxInterface.GetAccessToken(_accessToken);
 
                 AlgoTradingMain();
             }
