@@ -12,6 +12,12 @@ namespace DataAccessLayer.Model
         Resistance
     }
 
+    public class Level
+    {
+        public string LevelName { get; set; }
+        public double Price { get; set; }
+    }
+
     public class GapOpenedScript
     {
         public string TradingSymbol { get; set; }
@@ -27,10 +33,7 @@ namespace DataAccessLayer.Model
         public string OrderType { get; set; }
 
         public LevelType Leveltype { get; set; }
-        public double Level1 { get; set; }
-        public double Level2 { get; set; }
-        public double Level3 { get; set; }
-        public double Level4 { get; set; }
+        public List<Level> PriceLevels { get; set; }
 
         public double CMP { get; set; }
     }

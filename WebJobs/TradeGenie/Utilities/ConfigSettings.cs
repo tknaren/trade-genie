@@ -18,6 +18,9 @@ namespace Utilities
         int PriceRangeHigh { get; }
         int PriceRangeLow { get; }
         string Exchange { get; }
+        string ApiKey { get; }
+        string ApiSecret { get; }
+        string RedirectUrl { get; }
     }
     public class ConfigSettings : IConfigSettings
     {
@@ -29,5 +32,8 @@ namespace Utilities
         public int PriceRangeHigh => Convert.ToInt32(CloudConfigurationManager.GetSetting("PriceRangeHigh").ToString());
         public int PriceRangeLow => Convert.ToInt32(CloudConfigurationManager.GetSetting("PriceRangeLow").ToString());
         public string Exchange => CloudConfigurationManager.GetSetting("Exchange").ToString();
+        public string ApiKey => CloudConfigurationManager.GetSetting("ApiKey").ToString();
+        public string ApiSecret => CloudConfigurationManager.GetSetting("ApiSecret").ToString();
+        public string RedirectUrl => CloudConfigurationManager.GetSetting("RedirectUrl").ToString();
     }
 }

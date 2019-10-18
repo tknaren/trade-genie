@@ -95,6 +95,8 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.4.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Security.AccessControl, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.AccessControl.4.5.0\lib\net461\System.Security.AccessControl.dll</HintPath>
     </Reference>
@@ -115,16 +117,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBMethods.cs" />
+    <Compile Include="ElderStrategyOrder.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="GapStrategyPotentialOrder.cs">
-      <DependentUpon>TradeGenieModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GetDistinctFOStock.cs">
-      <DependentUpon>TradeGenieModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GetDistinctNiftyStock.cs">
-      <DependentUpon>TradeGenieModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Instrument.cs">
       <DependentUpon>TradeGenieModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Margin.cs">
@@ -148,9 +144,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quote.cs">
-      <DependentUpon>TradeGenieModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RealTimeGapOpenedScripts_Result.cs">
       <DependentUpon>TradeGenieModel.tt</DependentUpon>
     </Compile>
     <Compile Include="spGetGapOpenedScripts_Result.cs">
@@ -184,6 +177,9 @@
       <DependentUpon>TradeGenieModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TickerMinEMAHA.cs">
+      <DependentUpon>TradeGenieModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TickerMinStage.cs">
       <DependentUpon>TradeGenieModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TickerMinSuperTrend.cs">
@@ -232,6 +228,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="TradeGenieModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>TradeGenieModel.edmx</DependentUpon>
@@ -242,9 +241,6 @@
       <DependentUpon>TradeGenieModel.edmx</DependentUpon>
       <LastGenOutput>TradeGenieModel.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

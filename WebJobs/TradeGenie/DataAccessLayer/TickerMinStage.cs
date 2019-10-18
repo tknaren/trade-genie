@@ -12,8 +12,15 @@ namespace DataAccessLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class GetDistinctNiftyStock
+    public partial class TickerMinStage
     {
-        public string StockCode { get; set; }
+        public int InstrumentToken { get; set; }
+        public string TradingSymbol { get; set; }
+        public System.DateTime DateTime { get; set; }
+        public Nullable<decimal> Open { get; set; }
+        public Nullable<decimal> High { get; set; }
+        public Nullable<decimal> Low { get; set; }
+        public Nullable<decimal> Close { get; set; }
+        public Nullable<int> Volume { get; set; }
     }
 }

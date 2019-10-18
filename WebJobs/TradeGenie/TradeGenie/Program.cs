@@ -35,8 +35,8 @@ namespace TradeGenie
 
                 Log.Information("START " + AuxiliaryMethods.GetCurrentIndianTimeStamp());
 
-                //ProcessOHLC processOHLC = new ProcessOHLC();
-                //processOHLC.StartEngine();
+                AlgoTrade trade = new AlgoTrade();
+                trade.StartTrading();
 
                 Log.Information("END " + AuxiliaryMethods.GetCurrentIndianTimeStamp());
             }

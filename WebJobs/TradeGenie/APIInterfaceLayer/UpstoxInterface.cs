@@ -13,7 +13,7 @@ namespace APIInterfaceLayer
     {
         string AccessToken { get; }
         bool IsLoggedIn { get; }
-        bool InitializeUpstox(string apiKey, string apiSecret, string redirectUrl);
+        bool InitializeUpstox();
         bool SetUpstoxAccessToken(string accesToken);
         double GetCurrentMarketPrice(string tradingSymbol);
     }
@@ -32,15 +32,19 @@ namespace APIInterfaceLayer
         public string AccessToken { get { return _upstox.Access_Token; } }
         public bool IsLoggedIn { get { return _upstox.Login_Status; } }
 
-        public bool InitializeUpstox(string apiKey, string apiSecret, string redirectUrl)
+        public bool InitializeUpstox()
         {
             bool isInitialized = false;
 
             try
             {
-                _upstox.Api_Key = apiKey;
-                _upstox.Api_Secret = apiSecret;
-                _upstox.Redirect_Url = redirectUrl;
+                _upstox.Api_Key = _configSettings.ApiKey;
+                _upstox.Api_Secret = _configSettings.ApiSecret;
+                _upstox.Redirect_Url = _configSettings.RedirectUrl;
+
+                bool loginStatus = _upstox.Login_Status;
+
+                _upstox.Login();
 
                 isInitialized = true;
             }

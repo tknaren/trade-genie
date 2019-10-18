@@ -1359,7 +1359,7 @@ select * from MasterStockList
 --truncate table MasterStockList
 
 
-exec RealTimeGapOpenedScripts '2019-10-16 09:15', '2019-10-17 09:15:00', 1, 2, 5000, 50 
+exec RealTimeGapOpenedScripts '2019-10-17', '2019-10-18 09:15:00', 1, 2, 5000, 50 
 
 spGetTickerLatestData
 

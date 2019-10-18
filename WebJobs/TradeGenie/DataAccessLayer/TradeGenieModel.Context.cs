@@ -15,9 +15,9 @@ namespace DataAccessLayer
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class aztgsqldbEntities : DbContext
+    public partial class SQLAZURECONNSTR_aztgsqldbEntities : DbContext
     {
-        public aztgsqldbEntities()
+        public SQLAZURECONNSTR_aztgsqldbEntities()
             : base("name=SQLAZURECONNSTR_aztgsqldbEntities")
         {
         }
@@ -27,8 +27,8 @@ namespace DataAccessLayer
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<ElderStrategyOrder> ElderStrategyOrders { get; set; }
         public virtual DbSet<GapStrategyPotentialOrder> GapStrategyPotentialOrders { get; set; }
-        public virtual DbSet<Instrument> Instruments { get; set; }
         public virtual DbSet<Margin> Margins { get; set; }
         public virtual DbSet<MasterStockList> MasterStockLists { get; set; }
         public virtual DbSet<MorningBreakout> MorningBreakouts { get; set; }
@@ -42,8 +42,7 @@ namespace DataAccessLayer
         public virtual DbSet<TickerMinSuperTrend> TickerMinSuperTrends { get; set; }
         public virtual DbSet<Trade> Trades { get; set; }
         public virtual DbSet<UserLogin> UserLogins { get; set; }
-        public virtual DbSet<GetDistinctFOStock> GetDistinctFOStocks { get; set; }
-        public virtual DbSet<GetDistinctNiftyStock> GetDistinctNiftyStocks { get; set; }
+        public virtual DbSet<TickerMinStage> TickerMinStages { get; set; }
     
         [DbFunction("SQLAZURECONNSTR_aztgsqldbEntities", "ufn_CSVToTable")]
         public virtual IQueryable<ufn_CSVToTable_Result> ufn_CSVToTable(string stringInput, string delimiter)
@@ -57,6 +56,35 @@ namespace DataAccessLayer
                 new ObjectParameter("Delimiter", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<ufn_CSVToTable_Result>("[SQLAZURECONNSTR_aztgsqldbEntities].[ufn_CSVToTable](@StringInput, @Delimiter)", stringInputParameter, delimiterParameter);
+        }
+    
+        public virtual int RealTimeGapOpenedScripts(Nullable<System.DateTime> yesterday, Nullable<System.DateTime> today, Nullable<double> targetPercentage, Nullable<double> gapPercentage, Nullable<int> priceRangeHigh, Nullable<int> priceRangeLow)
+        {
+            var yesterdayParameter = yesterday.HasValue ?
+                new ObjectParameter("yesterday", yesterday) :
+                new ObjectParameter("yesterday", typeof(System.DateTime));
+    
+            var todayParameter = today.HasValue ?
+                new ObjectParameter("today", today) :
+                new ObjectParameter("today", typeof(System.DateTime));
+    
+            var targetPercentageParameter = targetPercentage.HasValue ?
+                new ObjectParameter("targetPercentage", targetPercentage) :
+                new ObjectParameter("targetPercentage", typeof(double));
+    
+            var gapPercentageParameter = gapPercentage.HasValue ?
+                new ObjectParameter("gapPercentage", gapPercentage) :
+                new ObjectParameter("gapPercentage", typeof(double));
+    
+            var priceRangeHighParameter = priceRangeHigh.HasValue ?
+                new ObjectParameter("priceRangeHigh", priceRangeHigh) :
+                new ObjectParameter("priceRangeHigh", typeof(int));
+    
+            var priceRangeLowParameter = priceRangeLow.HasValue ?
+                new ObjectParameter("priceRangeLow", priceRangeLow) :
+                new ObjectParameter("priceRangeLow", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RealTimeGapOpenedScripts", yesterdayParameter, todayParameter, targetPercentageParameter, gapPercentageParameter, priceRangeHighParameter, priceRangeLowParameter);
         }
     
         public virtual int spAddUpdateOrders()
@@ -303,36 +331,6 @@ namespace DataAccessLayer
         public virtual int spUpdateTickerElderIndicators()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateTickerElderIndicators");
-        }
-    
-        public virtual ObjectResult<RealTimeGapOpenedScripts_Result> RealTimeGapOpenedScripts(Nullable<System.DateTime> yesterday, Nullable<System.DateTime> today, 
-            Nullable<double> targetPercentage, Nullable<double> gapPercentage, Nullable<int> priceRangeHigh, Nullable<int> priceRangeLow)
-        {
-            var yesterdayParameter = yesterday.HasValue ?
-                new ObjectParameter("yesterday", yesterday) :
-                new ObjectParameter("yesterday", typeof(System.DateTime));
-    
-            var todayParameter = today.HasValue ?
-                new ObjectParameter("today", today) :
-                new ObjectParameter("today", typeof(System.DateTime));
-    
-            var targetPercentageParameter = targetPercentage.HasValue ?
-                new ObjectParameter("targetPercentage", targetPercentage) :
-                new ObjectParameter("targetPercentage", typeof(double));
-    
-            var gapPercentageParameter = gapPercentage.HasValue ?
-                new ObjectParameter("gapPercentage", gapPercentage) :
-                new ObjectParameter("gapPercentage", typeof(double));
-    
-            var priceRangeHighParameter = priceRangeHigh.HasValue ?
-                new ObjectParameter("priceRangeHigh", priceRangeHigh) :
-                new ObjectParameter("priceRangeHigh", typeof(int));
-    
-            var priceRangeLowParameter = priceRangeLow.HasValue ?
-                new ObjectParameter("priceRangeLow", priceRangeLow) :
-                new ObjectParameter("priceRangeLow", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<RealTimeGapOpenedScripts_Result>("RealTimeGapOpenedScripts", yesterdayParameter, todayParameter, targetPercentageParameter, gapPercentageParameter, priceRangeHighParameter, priceRangeLowParameter);
         }
     }
 }

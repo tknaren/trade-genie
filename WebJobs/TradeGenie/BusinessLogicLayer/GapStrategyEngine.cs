@@ -65,6 +65,8 @@ namespace BusinessLogicLayer
             Resistance 5 - Close Price for the previous day.         
          
          */
+
+        void RunGapStrategy();
     }
 
     public class GapStrategyEngine : IGapStrategyEngine
@@ -72,6 +74,8 @@ namespace BusinessLogicLayer
         private readonly IConfigSettings _settings;
         private readonly IUpstoxInterface _upstoxInterface;
         private readonly IDBMethods _dBMethods;
+
+        
 
         public GapStrategyEngine(IConfigSettings settings, IUpstoxInterface upstoxInterface, IDBMethods dBMethods)
         {
@@ -84,11 +88,11 @@ namespace BusinessLogicLayer
         {
             List<GapOpenedScript> gapOpenedScripts = _dBMethods.GetRealTimeGapOpenedScripts();
 
-            foreach(GapOpenedScript script in gapOpenedScripts)
+            foreach (GapOpenedScript script in gapOpenedScripts)
             {
                 script.CMP = _upstoxInterface.GetCurrentMarketPrice(script.TradingSymbol);
             }
-            
+
         }
 
         private void CalculateSRLevels(GapOpenedScript script)
@@ -122,43 +126,67 @@ namespace BusinessLogicLayer
             {
                 script.Leveltype = LevelType.Resistance;
 
-                var p1 = script.TodayOpen;
-                var p2 = script.TodayHL;
-                var p3 = script.YesterdayHL;
-                var p4 = script.YesterdayClose;
+                Dictionary<string, double> priceLevels = new Dictionary<string, double>();
 
-                var var1 = Math.Round(p1 - script.CMP, 2);
-                var var2 = Math.Round(p2 - script.CMP, 2);
-                var var3 = Math.Round(p2 - script.CMP, 2);
-                var var4 = Math.Round(p2 - script.CMP, 2);
+                string level = DetermineResistanceName(script.TodayOpen, script.CMP);
 
-                
+                if (!priceLevels.ContainsKey(level))
+                    priceLevels.Add(level, script.CMP);
+                else
+                {
+                    double val = 0.0;
+                    if (priceLevels.TryGetValue(level, out val))
+                    {
+                        //val
+                    }
+
+                }
+
+
+                //List <Level> priceLevels = new List<Level>
+                //{
+                //    new Level { Price = script.TodayOpen },
+                //    new Level { Price = script.TodayHL },
+                //    new Level { Price = script.YesterdayHL },
+                //    new Level { Price = script.YesterdayClose }
+                //};
+
+                //foreach(Level level in priceLevels)
+                //{
+                //    level.LevelName = DetermineResistanceName(level.Price, script.CMP);
+                //}
+
+
             }
         }
 
-        private void GetVariance(double variance)
+        private string DetermineResistanceName(double price, double cmp)
         {
-            if (variance >= 0.5 && variance < 1)
-            {
+            double percentDeviation = Math.Round(((price - cmp) / cmp * 100), 2);
+            string levelName = string.Empty;
 
+            if (percentDeviation >= 0.5 && percentDeviation < 1)
+            {
+                levelName = "R1";
             }
-            else if (variance >= 1 && variance < 1.5)
+            else if (percentDeviation >= 1 && percentDeviation < 1.5)
             {
-
+                levelName = "R2";
             }
-            else if (variance >= 1.5 && variance < 2)
+            else if (percentDeviation >= 1.5 && percentDeviation < 2)
             {
-
+                levelName = "R3";
             }
-            else if (variance >= 2)
+            else if (percentDeviation >= 2)
             {
-
+                levelName = "R4";
             }
             else
             {
-
+                levelName = "R0";
             }
 
+            return levelName;
 
         }
     }
