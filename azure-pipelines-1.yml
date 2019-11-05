@@ -10,7 +10,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '/WebJobs/OHLCProcessor/OHLCProcessor.sln'
+  solution: '"$(build.artifactStagingDirectory)"/WebJobs/OHLCProcessor/OHLCProcessor.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
