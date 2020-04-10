@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c9a159a7d035483bbd6ccca7ccd6fd01" Name="Diagram1" ZoomLevel="92">
+        <EntityTypeShape EntityType="TickerModel.MasterStockList" PointX="10.75" PointY="3.375" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickerModel.TickerMin" PointX="10.75" PointY="0.5" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickerModel.TickerRealTime" PointX="4.75" PointY="0.5" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TickerModel.TickerMinElderIndicator" PointX="2.75" PointY="0.5" Width="1.5" />
+        <EntityTypeShape EntityType="TickerModel.ElderBackTesting" PointX="8.75" PointY="0.5" Width="1.5" />
+        <EntityTypeShape EntityType="TickerModel.TickerMinEMAHA" PointX="6.75" PointY="0.5" Width="1.5" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

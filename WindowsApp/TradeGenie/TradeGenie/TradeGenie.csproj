@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DC94CC6C-85C0-4C20-9830-1747C71582C5}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>TradeGenie</RootNamespace>
+    <AssemblyName>TradeGenie</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="KiteConnect, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tech.Zerodha.KiteConnect.3.0.0\lib\KiteConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CamarillaStrategy.cs" />
+    <Compile Include="CamarillaStrategy.Designer.cs">
+      <DependentUpon>CamarillaStrategy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ElderImpulseStrategy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ElderImpulseStrategy.Designer.cs">
+      <DependentUpon>ElderImpulseStrategy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\CamarillaStrategyOrder.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ElderBackTesting.cs">
+      <DependentUpon>TickerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\ElderStrategyOrder.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Instrument.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Margin.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\MasterStockList.cs">
+      <DependentUpon>TickerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\MorningBreakout.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\NetPosition.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\OHLCData.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Order.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Quote.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\spGetOrders_Result.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\spGetTickerElderForTimePeriod_Result.cs">
+      <DependentUpon>TickerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TickerDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TickerDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TickerDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TickerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TickerDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TickerDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TickerElderIndicator.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TickerMin.cs">
+      <DependentUpon>TickerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TickerMinElderIndicator.cs">
+      <DependentUpon>TickerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TickerMinEMAHA.cs">
+      <DependentUpon>TickerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TickerRealTime.cs">
+      <DependentUpon>TickerDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Trade.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\UserLogin.cs">
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BusinessLogic.cs" />
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Master.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Master.Designer.cs">
+      <DependentUpon>Master.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MorningBreakoutStrategy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MorningBreakoutStrategy.Designer.cs">
+      <DependentUpon>MorningBreakoutStrategy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\RepositoryMethods.cs" />
+    <Compile Include="Repository\TradeGenieDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TradeGenieDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TradeGenieDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TradeGenieDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\TradeGenieDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TradeGenieDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="TickerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TickerForm.Designer.cs">
+      <DependentUpon>TickerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TradeGenieForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TradeGenieMaster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TradeGenieMaster.Designer.cs">
+      <DependentUpon>TradeGenieMaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\DataProcessor.cs" />
+    <Compile Include="Utilities\ElderBusinessLogic.cs" />
+    <Compile Include="Utilities\Logger.cs" />
+    <Compile Include="Utilities\MarginCalculator.cs" />
+    <Compile Include="Utilities\UserConfiguration.cs" />
+    <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="ViewModels\Structures.cs" />
+    <EmbeddedResource Include="CamarillaStrategy.resx">
+      <DependentUpon>CamarillaStrategy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Master.resx">
+      <DependentUpon>Master.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ElderImpulseStrategy.resx">
+      <DependentUpon>ElderImpulseStrategy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MorningBreakoutStrategy.resx">
+      <DependentUpon>MorningBreakoutStrategy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TickerForm.resx">
+      <DependentUpon>TickerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TradeGenieMaster.resx">
+      <DependentUpon>TradeGenieMaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EntityDeploy Include="Repository\TradeGenieDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TradeGenieDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="Repository\TickerDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TickerDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Repository\TickerDB.edmx.diagram">
+      <DependentUpon>TickerDB.edmx</DependentUpon>
+    </None>
+    <None Include="Repository\TradeGenieDB.edmx.diagram">
+      <DependentUpon>TradeGenieDB.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="refresh1.jpg" />
+    <Content Include="Repository\DBScript.sql" />
+    <Content Include="Repository\DBUpdateStatements.txt" />
+    <Content Include="Repository\ElderBackTesting.sql" />
+    <Content Include="Repository\ElderSQLBackTesting.sql" />
+    <Content Include="Repository\ElderStrategyOrders_tbl.sql" />
+    <Content Include="Repository\ElderStrategyOrderType.sql" />
+    <Content Include="Repository\FinancialMarket.sql" />
+    <Content Include="Repository\FinancialMarketAllScripts.sql" />
+    <Content Include="Repository\MarginType.sql" />
+    <Content Include="Repository\NetPositionType.sql" />
+    <Content Include="Repository\OHLCData_tbl.sql" />
+    <Content Include="Repository\Orders_tbl.sql" />
+    <Content Include="Repository\OrderType.sql" />
+    <Content Include="Repository\spAddUpdateNetPositions.sql" />
+    <Content Include="Repository\spAddUpdateOrders.sql" />
+    <Content Include="Repository\spAddUpdateTrades.sql" />
+    <Content Include="Repository\spGetOrders.sql" />
+    <Content Include="Repository\spGetTickerElderForTimePeriod.sql" />
+    <Content Include="Repository\spUpdateTickerElder.sql" />
+    <Content Include="Repository\TickerDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TickerDB.edmx</DependentUpon>
+      <LastGenOutput>TickerDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Repository\TickerDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TickerDB.edmx</DependentUpon>
+      <LastGenOutput>TickerDB.cs</LastGenOutput>
+    </Content>
+    <Content Include="Repository\TradeGenieAllScripts.sql" />
+    <Content Include="Repository\TradeGenieDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TradeGenieDB.Context.cs</LastGenOutput>
+      <DependentUpon>TradeGenieDB.edmx</DependentUpon>
+    </Content>
+    <Content Include="Repository\TradeGenieDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TradeGenieDB.edmx</DependentUpon>
+      <LastGenOutput>TradeGenieDB.cs</LastGenOutput>
+    </Content>
+    <Content Include="Repository\TradeGenieQueries.sql" />
+    <Content Include="Repository\TradeType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
