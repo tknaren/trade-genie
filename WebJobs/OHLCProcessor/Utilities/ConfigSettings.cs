@@ -261,5 +261,25 @@ namespace Utilities
         {
             get { return CloudConfigurationManager.GetSetting("RedisCachePassword").ToString(); }
         }
+
+        public string KiteAPIKey
+        {
+            get { return CloudConfigurationManager.GetSetting("KiteAPIKey").ToString(); }
+        }
+
+        public string KiteAPISecret
+        {
+            get { return CloudConfigurationManager.GetSetting("KiteAPISecret").ToString(); }
+        }
+
+        public string KiteUserID
+        {
+            get { return CloudConfigurationManager.GetSetting("KiteUserID").ToString(); }
+        }
+
+        public string Platform
+        {
+            get { return CloudConfigurationManager.GetSetting("Platform").ToString(); }
+        }
     }
 }

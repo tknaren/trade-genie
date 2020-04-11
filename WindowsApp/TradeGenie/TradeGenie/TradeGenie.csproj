@@ -309,6 +309,7 @@
       <LastGenOutput>TradeGenieDB.cs</LastGenOutput>
     </Content>
     <Content Include="Repository\TradeGenieQueries.sql" />
+    <Content Include="Repository\TradeGenie_SQLExp_11Apr20.sql" />
     <Content Include="Repository\TradeType.sql" />
   </ItemGroup>
   <ItemGroup>

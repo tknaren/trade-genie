@@ -1384,4 +1384,6 @@ where timePeriod in (5,25)
 delete from TickerMinSuperTrend
 where timePeriod in (5,25)
 
+select top 10 * from TickerMinelderIndicators where timePeriod in (5) and TickerDateTime > '2019-11-04 10:00:00.000' and TradedValue > 60000000
+select top 10 * from TickerMinEMAHA
 
