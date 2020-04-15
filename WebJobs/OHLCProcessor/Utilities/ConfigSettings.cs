@@ -9,6 +9,11 @@ using Microsoft.Azure;
 
 namespace Utilities
 {
+    public enum PLATFORM
+    {
+        KITE,
+        UPSTOX
+    }
     public class ConfigSettings : IConfigSettings
     {
         public TimeSpan StartingTime
@@ -260,6 +265,41 @@ namespace Utilities
         public string RedisCachePassword
         {
             get { return CloudConfigurationManager.GetSetting("RedisCachePassword").ToString(); }
+        }
+
+        public string KiteAPIKey
+        {
+            get { return CloudConfigurationManager.GetSetting("KiteAPIKey").ToString(); }
+        }
+
+        public string KiteAPISecret
+        {
+            get { return CloudConfigurationManager.GetSetting("KiteAPISecret").ToString(); }
+        }
+
+        public string KiteUserID
+        {
+            get { return CloudConfigurationManager.GetSetting("KiteUserID").ToString(); }
+        }
+
+        public PLATFORM Platform
+        {
+            get 
+            { 
+                if (string.Compare(CloudConfigurationManager.GetSetting("Platform").ToString(),"Kite") == 0)
+                {
+                    return PLATFORM.KITE;
+                } 
+                else
+                {
+                    return PLATFORM.UPSTOX;
+                }
+            }
+        }
+
+        public string KiteInterval
+        {
+            get { return CloudConfigurationManager.GetSetting("KiteInterval").ToString(); }
         }
     }
 }

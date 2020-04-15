@@ -56,5 +56,11 @@ namespace Utilities
         DateTime IndicatorLoadDateFrom { get; }
         string RedisCacheName { get; }
         string RedisCachePassword { get; }
+        string KiteAPIKey { get; }
+        string KiteAPISecret { get; }
+        string KiteUserID { get; }
+        PLATFORM Platform { get; }
+        string KiteInterval { get; }
+
     }
 }

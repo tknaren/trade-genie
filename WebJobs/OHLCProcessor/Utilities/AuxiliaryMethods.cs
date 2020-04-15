@@ -33,6 +33,11 @@ namespace Utilities
             return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
         }
 
+        public static DateTime ToIndianTimeStamp(this DateTime dateTime)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(dateTime.ToUniversalTime(), TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+        }
+
         public static List<TimeSpan> MinuteTimer(string timerString)
         {
             List<string> minList = timerString.Split(',').ToList();
@@ -47,6 +52,38 @@ namespace Utilities
             }
 
             return minTimeSpanList;
+        }
+
+        public static double ToMinute(this string KiteInterval)
+        {
+            double minute = 0.0;
+
+            switch (KiteInterval)
+            {
+                case "minute":
+                    minute = 1;
+                    break;
+                case "3minute":
+                    minute = 3;
+                    break;
+                case "5minute":
+                    minute = 5;
+                    break;
+                case "10minute":
+                    minute = 10;
+                    break;
+                case "15minute":
+                    minute = 15;
+                    break;
+                case "30minute":
+                    minute = 30;
+                    break;
+                case "60minute":
+                    minute = 60;
+                    break;
+            }
+
+            return minute;
         }
 
         public static DataTable ToDataTable<T>(this List<T> iList)

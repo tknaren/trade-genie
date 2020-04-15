@@ -32,10 +32,12 @@ namespace BusinessLogicLayer
     {
         private readonly IConfigSettings _settings;
         private readonly IUpstoxInterface _upstoxInterface;
+        private readonly IKiteConnectInterface _kiteConnectInterface;
         private readonly IDBMethods _dBMethods;
         private readonly object tickerLock = new object();
 
         private static string accessToken;
+        private static string requestToken;
 
         private TickerMinDataTable dtHistoryData;
         private IList<TickerMin> tickerData;
@@ -44,10 +46,11 @@ namespace BusinessLogicLayer
 
         public bool IsUserLoggedIn { get { if (!string.IsNullOrEmpty(accessToken)) return true; else return false; } }
 
-        public HistoryLoaderEngine(IConfigSettings settings, IUpstoxInterface upstoxInterface, IDBMethods dBMethods)
+        public HistoryLoaderEngine(IConfigSettings settings, IUpstoxInterface upstoxInterface, IKiteConnectInterface kiteConnectInterface, IDBMethods dBMethods)
         {
             _settings = settings;
             _upstoxInterface = upstoxInterface;
+            _kiteConnectInterface = kiteConnectInterface;
             _dBMethods = dBMethods;
             dtHistoryData = new TickerMinDataTable();
             tickerData = new List<TickerMin>();
@@ -56,12 +59,88 @@ namespace BusinessLogicLayer
 
         public void LoadHistory(bool downloadDayHistory = false)
         {
-            DownloadHistory(downloadDayHistory);
+            //Kite or upstox switch
+            if (_settings.Platform.Equals(PLATFORM.KITE))
+            {
+                DownloadHistoryFromKite(downloadDayHistory);
+            }
+            else if (_settings.Platform.Equals(PLATFORM.UPSTOX))
+            {
+                DownloadHistoryFromUpstox(downloadDayHistory);
+            }
+
+            if (downloadDayHistory)
+            {
+
+            }
 
             //UploadHistoryToDB(downloadDayHistory);
         }
 
-        private void DownloadHistory(bool downloadDayHistory = false)
+        private void DownloadHistoryFromKite(bool downloadDayHistory = false)
+        {
+            //Get the history from the Kite using history download
+            //download the 1 minute data and the 
+
+            List<MasterStockList> masterStockLists = null;
+
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                dynamic response = _dBMethods.GetLatestAccessToken();
+
+                accessToken = response.GetType().GetProperty("AccessToken").GetValue(response, null);
+                requestToken = response.GetType().GetProperty("RequestToken").GetValue(response, null);
+            }
+
+            _kiteConnectInterface.InitializeKiteConnect(requestToken, accessToken);
+
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                masterStockLists = _dBMethods.GetMasterStockList();
+
+                string instrumentList = string.Join(",", from item in masterStockLists select item.TradingSymbol);
+
+                List<Task> taskList = new List<Task>();
+
+                Log.Information("Parallel threads started to get Stock History");
+
+                //Task lastHistoryEntry = Task.Run(() => GetLatestTickerMins(instrumentList));
+                //taskList.Add(lastHistoryEntry);
+
+                GetLatestTickerMins(instrumentList);
+
+                int batchSize = _settings.HistoryAPICallBatchSize;
+                int numberOfPages = (masterStockLists.Count / batchSize) + (masterStockLists.Count % batchSize == 0 ? 0 : 1);
+
+                for (int pageIndex = 0; pageIndex < numberOfPages; pageIndex++)
+                {
+                    foreach (MasterStockList stock in masterStockLists.Skip(pageIndex * batchSize).Take(batchSize))
+                    {
+                        Task stockHistoryTask = Task.Run(() => GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol));
+                        taskList.Add(stockHistoryTask);
+                        //GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol);
+                    }
+
+                    Log.Information("Waiting for batch-" + (pageIndex + 1).ToString() + " tasks to complete");
+
+                    Task.WaitAll(taskList.ToArray());
+
+                    Log.Information("Batch-" + (pageIndex + 1).ToString() + " tasks completed");
+
+                    taskList.Clear();
+                }
+                
+            }
+
+            Log.Information("History fetch completed");
+
+            UploadHistoryToDB();
+
+            Log.Information("History Load completed");
+
+        }
+
+        private void DownloadHistoryFromUpstox(bool downloadDayHistory = false)
         {
             List<MasterStockList> masterStockLists = null;
 
@@ -181,17 +260,56 @@ namespace BusinessLogicLayer
         {
             try
             {
-                string historyKey = string.Join(",", instrumentToken.ToString(), tradingSymbol);
+                if (_settings.Platform.Equals(PLATFORM.UPSTOX))
+                {
 
-                string uri = _upstoxInterface.BuildHistoryUri(tradingSymbol);
+                    string historyKey = string.Join(",", instrumentToken.ToString(), tradingSymbol);
 
-                Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
+                    string uri = _upstoxInterface.BuildHistoryUri(tradingSymbol);
 
-                histories.Add(new KeyValuePair<string, Historical>(historyKey, historial));
-                //Log.Information("History retreived for " + tradingSymbol);
+                    Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
 
-                //AddToTickerObject(instrumentToken, tradingSymbol, historial);
-                //AddToTickerDataTable(instrumentToken, tradingSymbol, historial);
+                    histories.Add(new KeyValuePair<string, Historical>(historyKey, historial));
+                    //Log.Information("History retreived for " + tradingSymbol);
+
+                    //AddToTickerObject(instrumentToken, tradingSymbol, historial);
+                    //AddToTickerDataTable(instrumentToken, tradingSymbol, historial);
+                }
+                else if(_settings.Platform.Equals(PLATFORM.KITE))
+                {
+                    TickerMin tickerMin = null;
+                    //DateTime fromDateTime = DateTime.Today.AddDays(-1);
+                    DateTime fromDateTime = DateTime.Today;
+
+                    if (tickerLatestMins.Count > 0)
+                    {
+                        tickerMin = (from tick in tickerLatestMins
+                                 where tick.TradingSymbol == tradingSymbol
+                                 select tick).FirstOrDefault();
+
+                        if (tickerMin != null && tickerMin.DateTime != null)
+                        {
+                            fromDateTime = tickerMin.DateTime.AddMinutes(_settings.KiteInterval.ToMinute());
+                        }
+                    }
+
+                    List<KiteConnect.Historical> historical = _kiteConnectInterface.GetHistory(instrumentToken, fromDateTime);
+
+                    foreach (KiteConnect.Historical history in historical)
+                    {
+                        tickerData.Add(new TickerMin
+                        {
+                            InstrumentToken = instrumentToken,
+                            TradingSymbol = tradingSymbol,
+                            DateTime = history.TimeStamp.ToIndianTimeStamp(),
+                            Open = history.Open,
+                            High = history.High,
+                            Low = history.Low,
+                            Close = history.Close,
+                            Volume = Int32.Parse(history.Volume.ToString())
+                        });
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -1,0 +1,1174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TradeGenieModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'aztgsqldb-stage.dbo.CamarillaStrategyOrders' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CamarillaStrategyOrders">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="TradingSymbol" />
+            <PropertyRef Name="TradeDate" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="TradingSymbol" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TradeDate" Type="date" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="EntryPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ExitPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SLPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BOTargetValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BOSLValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BOTSLValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="EntryTime" Type="datetime" />
+          <Property Name="ExitTime" Type="datetime" />
+          <Property Name="SLHitTime" Type="datetime" />
+          <Property Name="PositionType" Type="varchar" MaxLength="50" />
+          <Property Name="OrderVariety" Type="varchar" MaxLength="50" />
+          <Property Name="isRealOrderPlaced" Type="bit" />
+          <Property Name="PositionStatus" Type="varchar" MaxLength="50" />
+          <Property Name="SLOrderStatus" Type="varchar" MaxLength="50" />
+          <Property Name="TargetOrderStatus" Type="varchar" MaxLength="50" />
+          <Property Name="OrderId" Type="int" />
+          <Property Name="SLOrderId" Type="int" />
+          <Property Name="TargetOrderId" Type="int" />
+          <Property Name="ProfitLoss" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PLAfterBrok" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Camarilla" Type="varchar" MaxLength="50" />
+          <Property Name="H1" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="H2" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="H3" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="H4" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="H5" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="H6" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="L1" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="L2" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="L3" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="L4" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="L5" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="L6" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PDClose" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PDHigh" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PDLow" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CDOpen" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="ElderStrategyOrders">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="TradingSymbol" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TradeDate" Type="date" Nullable="false" />
+          <Property Name="EntryPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ExitPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StopLoss" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="ProfitLoss" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="EntryTime" Type="datetime" />
+          <Property Name="ExitTime" Type="datetime" />
+          <Property Name="StopLossHitTime" Type="datetime" />
+          <Property Name="PositionType" Type="varchar" MaxLength="10" />
+          <Property Name="OrderVariety" Type="varchar" MaxLength="10" />
+          <Property Name="isRealOrderPlaced" Type="bit" />
+          <Property Name="PositionStatus" Type="varchar" MaxLength="25" />
+          <Property Name="SLOrderStatus" Type="varchar" MaxLength="25" />
+          <Property Name="TargetOrderStatus" Type="varchar" MaxLength="25" />
+          <Property Name="OrderId" Type="varchar" MaxLength="50" />
+          <Property Name="SLOrderId" Type="varchar" MaxLength="50" />
+          <Property Name="TargetOrderId" Type="varchar" MaxLength="50" />
+          <Property Name="StockTrend" Type="varchar" MaxLength="10" />
+          <Property Name="CurrHistogramMovement" Type="varchar" MaxLength="10" />
+          <Property Name="PrevHistogramMovement" Type="varchar" MaxLength="10" />
+          <Property Name="CurrImpulse" Type="varchar" MaxLength="10" />
+          <Property Name="PrevImpulse" Type="varchar" MaxLength="10" />
+          <Property Name="CurrOpen" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CurrHigh" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CurrLow" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CurrClose" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PrevOpen" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PrevHigh" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PrevLow" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PrevClose" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ShortEMA" Type="float" />
+          <Property Name="LongEMA" Type="float" />
+          <Property Name="ShortEMADev" Type="float" />
+          <Property Name="LongEMADev" Type="float" />
+          <Property Name="ForceIndex" Type="float" />
+        </EntityType>
+        <EntityType Name="Instruments">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+          </Key>
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="ExchangeToken" Type="int" />
+          <Property Name="TradingSymbol" Type="varchar" MaxLength="50" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="LastPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TickSize" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Expiry" Type="varchar" MaxLength="50" />
+          <Property Name="InstrumentType" Type="varchar" MaxLength="50" />
+          <Property Name="Segment" Type="varchar" MaxLength="50" />
+          <Property Name="Exchange" Type="varchar" MaxLength="50" />
+          <Property Name="Strike" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LotSize" Type="int" />
+          <Property Name="Margin" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="COLower" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MISMultiplier" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="COUpper" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="NRMLMargin" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="MISMargin" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Margins">
+          <Key>
+            <PropertyRef Name="MarginDate" />
+          </Key>
+          <Property Name="MarginDate" Type="date" Nullable="false" />
+          <Property Name="Enabled" Type="bit" />
+          <Property Name="Net" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AdhocMargin" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Collateral" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IntradayPayin" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Cash" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="M2MUnrealised" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="M2MRealised" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Debits" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Span" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Payout" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="OptionPremium" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="HoldingSales" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Exposure" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Turnover" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="MasterStockList">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+          </Key>
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="TradingSymbol" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" />
+          <Property Name="Collection" Type="varchar" MaxLength="50" />
+          <Property Name="IsIncluded" Type="bit" />
+        </EntityType>
+        <EntityType Name="MorningBreakouts">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="DateTimePeriod" />
+          </Key>
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="DateTimePeriod" Type="datetime" Nullable="false" />
+          <Property Name="TradingSymbol" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Open" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="High" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Low" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Close" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LTP" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CandleSize" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DayHigh" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DayLow" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Entry" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="EntryTime" Type="datetime" />
+          <Property Name="Exit" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ExitTime" Type="datetime" />
+          <Property Name="StopLoss" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StopLossHitTime" Type="datetime" />
+          <Property Name="ProfitLoss" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="RAGStatus" Type="varchar" MaxLength="50" />
+          <Property Name="Movement" Type="varchar" MaxLength="50" />
+          <Property Name="isRealOrderPlaced" Type="bit" />
+        </EntityType>
+        <EntityType Name="NetPositions">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="PositionDate" />
+            <PropertyRef Name="Product" />
+          </Key>
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="PositionDate" Type="date" Nullable="false" />
+          <Property Name="TradingSymbol" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AveragePrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BuyM2M" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BuyPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BuyQuantity" Type="int" />
+          <Property Name="BuyValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ClosePrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Exchange" Type="varchar" MaxLength="10" />
+          <Property Name="LastPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="M2M" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Multiplier" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="NetBuyAmountM2M" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="NetSellAmountM2M" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="OvernightQuantity" Type="int" />
+          <Property Name="PNL" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Product" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Realised" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SellM2M" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SellPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SellQuantity" Type="int" />
+          <Property Name="SellValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Unrealised" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Value" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="OHLCData">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="OHLCDate" />
+          </Key>
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="OHLCDate" Type="date" Nullable="false" />
+          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+          <Property Name="TradingSymbol" Type="varchar" MaxLength="50" />
+          <Property Name="PreviousClose" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Open" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="High" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Low" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LastPrice" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderId" />
+            <PropertyRef Name="ExchangeOrderId" />
+          </Key>
+          <Property Name="OrderId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ExchangeOrderId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentOrderId" Type="varchar" MaxLength="50" />
+          <Property Name="InstrumentToken" Type="int" />
+          <Property Name="Exchange" Type="nchar" MaxLength="10" />
+          <Property Name="OrderTimestamp" Type="datetime" />
+          <Property Name="ExchangeTimestamp" Type="datetime" />
+          <Property Name="OrderType" Type="varchar" MaxLength="50" />
+          <Property Name="Tradingsymbol" Type="varchar" MaxLength="50" />
+          <Property Name="TransactionType" Type="varchar" MaxLength="50" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="CancelledQuantity" Type="int" />
+          <Property Name="DisclosedQuantity" Type="int" />
+          <Property Name="FilledQuantity" Type="int" />
+          <Property Name="PendingQuantity" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TriggerPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AveragePrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Product" Type="varchar" MaxLength="50" />
+          <Property Name="PlacedBy" Type="varchar" MaxLength="50" />
+          <Property Name="Validity" Type="varchar" MaxLength="50" />
+          <Property Name="Variety" Type="varchar" MaxLength="50" />
+          <Property Name="Tag" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="StatusMessage" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Quotes">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="LastUpdatedTime" />
+          </Key>
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedTime" Type="datetime" Nullable="false" />
+          <Property Name="Volume" Type="int" />
+          <Property Name="LastQuantity" Type="int" />
+          <Property Name="Change" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="ChangePercent" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="OpenInterest" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="BuyQuantity" Type="int" />
+          <Property Name="SellQuantity" Type="int" />
+          <Property Name="LastPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Open" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Close" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="High" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Low" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="TickerElderIndicators">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="TickerDateTime" />
+            <PropertyRef Name="TimePeriod" />
+          </Key>
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="TickerDateTime" Type="datetime" Nullable="false" />
+          <Property Name="TimePeriod" Type="int" Nullable="false" />
+          <Property Name="TradingSymbol" Type="varchar" MaxLength="50" />
+          <Property Name="PriceOpen" Type="float" />
+          <Property Name="PriceHigh" Type="float" />
+          <Property Name="PriceLow" Type="float" />
+          <Property Name="PriceClose" Type="float" />
+          <Property Name="Volume" Type="int" />
+          <Property Name="IsCalculated" Type="bit" />
+          <Property Name="EMA1" Type="float" />
+          <Property Name="EMA2" Type="float" />
+          <Property Name="EMA3" Type="float" />
+          <Property Name="EMA4" Type="float" />
+          <Property Name="MACD" Type="float" />
+          <Property Name="Signal" Type="float" Nullable="false" />
+          <Property Name="Histogram" Type="float" />
+          <Property Name="AG1" Type="float" />
+          <Property Name="AL1" Type="float" />
+          <Property Name="RSI1" Type="float" />
+          <Property Name="AG2" Type="float" />
+          <Property Name="AL2" Type="float" />
+          <Property Name="RSI2" Type="float" />
+          <Property Name="ForceIndex" Type="float" />
+          <Property Name="OBV" Type="float" />
+          <Property Name="ATR" Type="float" />
+          <Property Name="Impulse" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Trades">
+          <Key>
+            <PropertyRef Name="TradeId" />
+            <PropertyRef Name="OrderId" />
+            <PropertyRef Name="ExchangeOrderId" />
+          </Key>
+          <Property Name="TradeId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OrderId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ExchangeOrderId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TradingSymbol" Type="varchar" MaxLength="50" />
+          <Property Name="Exchange" Type="varchar" MaxLength="50" />
+          <Property Name="InstrumentToken" Type="int" Nullable="false" />
+          <Property Name="TransactionType" Type="varchar" MaxLength="50" />
+          <Property Name="Product" Type="varchar" MaxLength="50" />
+          <Property Name="AveragePrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="OrderTimestamp" Type="datetime" />
+          <Property Name="ExchangeTimestamp" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserLogins">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Broker" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ClientId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="LoginDateTime" Type="datetime" Nullable="false" />
+          <Property Name="LogoutDateTime" Type="datetime" Nullable="false" />
+          <Property Name="RequestToken" Type="varchar" MaxLength="100" />
+          <Property Name="AccessToken" Type="varchar" MaxLength="100" />
+          <Property Name="PublicToken" Type="varchar" MaxLength="100" />
+          <Property Name="Status" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityContainer Name="TradeGenieModelStoreContainer">
+          <EntitySet Name="ElderStrategyOrders" EntityType="Self.ElderStrategyOrders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Instruments" EntityType="Self.Instruments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Margins" EntityType="Self.Margins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MasterStockList" EntityType="Self.MasterStockList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MorningBreakouts" EntityType="Self.MorningBreakouts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NetPositions" EntityType="Self.NetPositions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OHLCData" EntityType="Self.OHLCData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Quotes" EntityType="Self.Quotes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TickerElderIndicators" EntityType="Self.TickerElderIndicators" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trades" EntityType="Self.Trades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CamarillaStrategyOrders" EntityType="Self.CamarillaStrategyOrders" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CamarillaStrategyOrders].[ID] AS [ID], 
+    [CamarillaStrategyOrders].[InstrumentToken] AS [InstrumentToken], 
+    [CamarillaStrategyOrders].[TradingSymbol] AS [TradingSymbol], 
+    [CamarillaStrategyOrders].[TradeDate] AS [TradeDate], 
+    [CamarillaStrategyOrders].[Quantity] AS [Quantity], 
+    [CamarillaStrategyOrders].[EntryPrice] AS [EntryPrice], 
+    [CamarillaStrategyOrders].[ExitPrice] AS [ExitPrice], 
+    [CamarillaStrategyOrders].[SLPrice] AS [SLPrice], 
+    [CamarillaStrategyOrders].[BOTargetValue] AS [BOTargetValue], 
+    [CamarillaStrategyOrders].[BOSLValue] AS [BOSLValue], 
+    [CamarillaStrategyOrders].[BOTSLValue] AS [BOTSLValue], 
+    [CamarillaStrategyOrders].[EntryTime] AS [EntryTime], 
+    [CamarillaStrategyOrders].[ExitTime] AS [ExitTime], 
+    [CamarillaStrategyOrders].[SLHitTime] AS [SLHitTime], 
+    [CamarillaStrategyOrders].[PositionType] AS [PositionType], 
+    [CamarillaStrategyOrders].[OrderVariety] AS [OrderVariety], 
+    [CamarillaStrategyOrders].[isRealOrderPlaced] AS [isRealOrderPlaced], 
+    [CamarillaStrategyOrders].[PositionStatus] AS [PositionStatus], 
+    [CamarillaStrategyOrders].[SLOrderStatus] AS [SLOrderStatus], 
+    [CamarillaStrategyOrders].[TargetOrderStatus] AS [TargetOrderStatus], 
+    [CamarillaStrategyOrders].[OrderId] AS [OrderId], 
+    [CamarillaStrategyOrders].[SLOrderId] AS [SLOrderId], 
+    [CamarillaStrategyOrders].[TargetOrderId] AS [TargetOrderId], 
+    [CamarillaStrategyOrders].[ProfitLoss] AS [ProfitLoss], 
+    [CamarillaStrategyOrders].[PLAfterBrok] AS [PLAfterBrok], 
+    [CamarillaStrategyOrders].[Camarilla] AS [Camarilla], 
+    [CamarillaStrategyOrders].[H1] AS [H1], 
+    [CamarillaStrategyOrders].[H2] AS [H2], 
+    [CamarillaStrategyOrders].[H3] AS [H3], 
+    [CamarillaStrategyOrders].[H4] AS [H4], 
+    [CamarillaStrategyOrders].[H5] AS [H5], 
+    [CamarillaStrategyOrders].[H6] AS [H6], 
+    [CamarillaStrategyOrders].[L1] AS [L1], 
+    [CamarillaStrategyOrders].[L2] AS [L2], 
+    [CamarillaStrategyOrders].[L3] AS [L3], 
+    [CamarillaStrategyOrders].[L4] AS [L4], 
+    [CamarillaStrategyOrders].[L5] AS [L5], 
+    [CamarillaStrategyOrders].[L6] AS [L6], 
+    [CamarillaStrategyOrders].[PDClose] AS [PDClose], 
+    [CamarillaStrategyOrders].[PDHigh] AS [PDHigh], 
+    [CamarillaStrategyOrders].[PDLow] AS [PDLow], 
+    [CamarillaStrategyOrders].[CDOpen] AS [CDOpen]
+    FROM [dbo].[CamarillaStrategyOrders] AS [CamarillaStrategyOrders]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TradeGenieModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TradeGenieEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="spGetOrders" ReturnType="Collection(TradeGenieModel.spGetOrders_Result)">
+          <Parameter Name="dtDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="ElderStrategyOrders" EntityType="TradeGenieModel.ElderStrategyOrder" />
+          <EntitySet Name="Instruments" EntityType="TradeGenieModel.Instrument" />
+          <EntitySet Name="Margins" EntityType="TradeGenieModel.Margin" />
+          <EntitySet Name="MasterStockLists" EntityType="TradeGenieModel.MasterStockList" />
+          <EntitySet Name="MorningBreakouts" EntityType="TradeGenieModel.MorningBreakout" />
+          <EntitySet Name="NetPositions" EntityType="TradeGenieModel.NetPosition" />
+          <EntitySet Name="OHLCDatas" EntityType="TradeGenieModel.OHLCData" />
+          <EntitySet Name="Orders" EntityType="TradeGenieModel.Order" />
+          <EntitySet Name="Quotes" EntityType="TradeGenieModel.Quote" />
+          <EntitySet Name="TickerElderIndicators" EntityType="TradeGenieModel.TickerElderIndicator" />
+          <EntitySet Name="Trades" EntityType="TradeGenieModel.Trade" />
+          <EntitySet Name="CamarillaStrategyOrders" EntityType="TradeGenieModel.CamarillaStrategyOrder" />
+          <EntitySet Name="UserLogins" EntityType="TradeGenieModel.UserLogin" />
+        </EntityContainer>
+        <ComplexType Name="spGetOrders_Result">
+          <Property Type="String" Name="OrderId" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ExchangeOrderId" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ParentOrderId" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="InstrumentToken" Nullable="true" />
+          <Property Type="String" Name="Exchange" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="OrderTimestamp" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="ExchangeTimestamp" Nullable="true" Precision="23" />
+          <Property Type="String" Name="OrderType" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Tradingsymbol" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TransactionType" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="Quantity" Nullable="true" />
+          <Property Type="Int32" Name="CancelledQuantity" Nullable="true" />
+          <Property Type="Int32" Name="DisclosedQuantity" Nullable="true" />
+          <Property Type="Int32" Name="FilledQuantity" Nullable="true" />
+          <Property Type="Int32" Name="PendingQuantity" Nullable="true" />
+          <Property Type="Decimal" Name="Price" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="TriggerPrice" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AveragePrice" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="Product" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PlacedBy" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Validity" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Variety" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Tag" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="StatusMessage" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="ElderStrategyOrder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="TradingSymbol" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TradeDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EntryPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ExitPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StopLoss" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="ProfitLoss" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EntryTime" Type="DateTime" Precision="3" />
+          <Property Name="ExitTime" Type="DateTime" Precision="3" />
+          <Property Name="StopLossHitTime" Type="DateTime" Precision="3" />
+          <Property Name="PositionType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="OrderVariety" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="isRealOrderPlaced" Type="Boolean" />
+          <Property Name="PositionStatus" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="SLOrderStatus" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="TargetOrderStatus" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="OrderId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SLOrderId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TargetOrderId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StockTrend" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CurrHistogramMovement" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PrevHistogramMovement" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CurrImpulse" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PrevImpulse" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CurrOpen" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CurrHigh" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CurrLow" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CurrClose" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PrevOpen" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PrevHigh" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PrevLow" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PrevClose" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ShortEMA" Type="Double" />
+          <Property Name="LongEMA" Type="Double" />
+          <Property Name="ShortEMADev" Type="Double" />
+          <Property Name="LongEMADev" Type="Double" />
+          <Property Name="ForceIndex" Type="Double" />
+        </EntityType>
+        <EntityType Name="Instrument">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+          </Key>
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="ExchangeToken" Type="Int32" />
+          <Property Name="TradingSymbol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TickSize" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Expiry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InstrumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Segment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Exchange" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Strike" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LotSize" Type="Int32" />
+          <Property Name="Margin" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="COLower" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MISMultiplier" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="COUpper" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NRMLMargin" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="MISMargin" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Margin">
+          <Key>
+            <PropertyRef Name="MarginDate" />
+          </Key>
+          <Property Name="MarginDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Enabled" Type="Boolean" />
+          <Property Name="Net" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AdhocMargin" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Collateral" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IntradayPayin" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Cash" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="M2MUnrealised" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="M2MRealised" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Debits" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Span" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Payout" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OptionPremium" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="HoldingSales" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Exposure" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Turnover" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="MasterStockList">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+          </Key>
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="TradingSymbol" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Collection" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsIncluded" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="MorningBreakout">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="DateTimePeriod" />
+          </Key>
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="DateTimePeriod" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TradingSymbol" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Open" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="High" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Low" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Close" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LTP" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CandleSize" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DayHigh" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DayLow" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Entry" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EntryTime" Type="DateTime" Precision="3" />
+          <Property Name="Exit" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ExitTime" Type="DateTime" Precision="3" />
+          <Property Name="StopLoss" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StopLossHitTime" Type="DateTime" Precision="3" />
+          <Property Name="ProfitLoss" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="RAGStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Movement" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isRealOrderPlaced" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="NetPosition">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="PositionDate" />
+            <PropertyRef Name="Product" />
+          </Key>
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="PositionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TradingSymbol" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AveragePrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BuyM2M" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BuyPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BuyQuantity" Type="Int32" />
+          <Property Name="BuyValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ClosePrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Exchange" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LastPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="M2M" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Multiplier" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NetBuyAmountM2M" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NetSellAmountM2M" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OvernightQuantity" Type="Int32" />
+          <Property Name="PNL" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Product" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Realised" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SellM2M" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SellPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SellQuantity" Type="Int32" />
+          <Property Name="SellValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Unrealised" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Value" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="OHLCData">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="OHLCDate" />
+          </Key>
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="OHLCDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TradingSymbol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PreviousClose" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Open" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="High" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Low" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LastPrice" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderId" />
+            <PropertyRef Name="ExchangeOrderId" />
+          </Key>
+          <Property Name="OrderId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ExchangeOrderId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParentOrderId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InstrumentToken" Type="Int32" />
+          <Property Name="Exchange" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="OrderTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="ExchangeTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="OrderType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Tradingsymbol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TransactionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="CancelledQuantity" Type="Int32" />
+          <Property Name="DisclosedQuantity" Type="Int32" />
+          <Property Name="FilledQuantity" Type="Int32" />
+          <Property Name="PendingQuantity" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TriggerPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AveragePrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Product" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PlacedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Validity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Variety" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Tag" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StatusMessage" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Quote">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="LastUpdatedTime" />
+          </Key>
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="LastUpdatedTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Volume" Type="Int32" />
+          <Property Name="LastQuantity" Type="Int32" />
+          <Property Name="Change" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="ChangePercent" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="OpenInterest" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="BuyQuantity" Type="Int32" />
+          <Property Name="SellQuantity" Type="Int32" />
+          <Property Name="LastPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Open" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Close" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="High" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Low" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="TickerElderIndicator">
+          <Key>
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="TickerDateTime" />
+            <PropertyRef Name="TimePeriod" />
+          </Key>
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="TickerDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimePeriod" Type="Int32" Nullable="false" />
+          <Property Name="TradingSymbol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PriceOpen" Type="Double" />
+          <Property Name="PriceHigh" Type="Double" />
+          <Property Name="PriceLow" Type="Double" />
+          <Property Name="PriceClose" Type="Double" />
+          <Property Name="Volume" Type="Int32" />
+          <Property Name="IsCalculated" Type="Boolean" />
+          <Property Name="EMA1" Type="Double" />
+          <Property Name="EMA2" Type="Double" />
+          <Property Name="EMA3" Type="Double" />
+          <Property Name="EMA4" Type="Double" />
+          <Property Name="MACD" Type="Double" />
+          <Property Name="Signal" Type="Double" Nullable="false" />
+          <Property Name="Histogram" Type="Double" />
+          <Property Name="AG1" Type="Double" />
+          <Property Name="AL1" Type="Double" />
+          <Property Name="RSI1" Type="Double" />
+          <Property Name="AG2" Type="Double" />
+          <Property Name="AL2" Type="Double" />
+          <Property Name="RSI2" Type="Double" />
+          <Property Name="ForceIndex" Type="Double" />
+          <Property Name="OBV" Type="Double" />
+          <Property Name="ATR" Type="Double" />
+          <Property Name="Impulse" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Trade">
+          <Key>
+            <PropertyRef Name="TradeId" />
+            <PropertyRef Name="OrderId" />
+            <PropertyRef Name="ExchangeOrderId" />
+          </Key>
+          <Property Name="TradeId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrderId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ExchangeOrderId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TradingSymbol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Exchange" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="TransactionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Product" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AveragePrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="OrderTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="ExchangeTimestamp" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="CamarillaStrategyOrder">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="InstrumentToken" />
+            <PropertyRef Name="TradingSymbol" />
+            <PropertyRef Name="TradeDate" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InstrumentToken" Type="Int32" Nullable="false" />
+          <Property Name="TradingSymbol" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TradeDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="EntryPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ExitPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SLPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BOTargetValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BOSLValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BOTSLValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EntryTime" Type="DateTime" Precision="3" />
+          <Property Name="ExitTime" Type="DateTime" Precision="3" />
+          <Property Name="SLHitTime" Type="DateTime" Precision="3" />
+          <Property Name="PositionType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrderVariety" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isRealOrderPlaced" Type="Boolean" />
+          <Property Name="PositionStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SLOrderStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TargetOrderStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OrderId" Type="Int32" />
+          <Property Name="SLOrderId" Type="Int32" />
+          <Property Name="TargetOrderId" Type="Int32" />
+          <Property Name="ProfitLoss" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PLAfterBrok" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Camarilla" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="H1" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="H2" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="H3" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="H4" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="H5" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="H6" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="L1" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="L2" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="L3" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="L4" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="L5" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="L6" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PDClose" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PDHigh" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PDLow" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CDOpen" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Broker" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ClientId" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LoginDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LogoutDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RequestToken" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AccessToken" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PublicToken" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TradeGenieModelStoreContainer" CdmEntityContainer="TradeGenieEntities">
+          <EntitySetMapping Name="ElderStrategyOrders">
+            <EntityTypeMapping TypeName="TradeGenieModel.ElderStrategyOrder">
+              <MappingFragment StoreEntitySet="ElderStrategyOrders">
+                <ScalarProperty Name="ForceIndex" ColumnName="ForceIndex" />
+                <ScalarProperty Name="LongEMADev" ColumnName="LongEMADev" />
+                <ScalarProperty Name="ShortEMADev" ColumnName="ShortEMADev" />
+                <ScalarProperty Name="LongEMA" ColumnName="LongEMA" />
+                <ScalarProperty Name="ShortEMA" ColumnName="ShortEMA" />
+                <ScalarProperty Name="PrevClose" ColumnName="PrevClose" />
+                <ScalarProperty Name="PrevLow" ColumnName="PrevLow" />
+                <ScalarProperty Name="PrevHigh" ColumnName="PrevHigh" />
+                <ScalarProperty Name="PrevOpen" ColumnName="PrevOpen" />
+                <ScalarProperty Name="CurrClose" ColumnName="CurrClose" />
+                <ScalarProperty Name="CurrLow" ColumnName="CurrLow" />
+                <ScalarProperty Name="CurrHigh" ColumnName="CurrHigh" />
+                <ScalarProperty Name="CurrOpen" ColumnName="CurrOpen" />
+                <ScalarProperty Name="PrevImpulse" ColumnName="PrevImpulse" />
+                <ScalarProperty Name="CurrImpulse" ColumnName="CurrImpulse" />
+                <ScalarProperty Name="PrevHistogramMovement" ColumnName="PrevHistogramMovement" />
+                <ScalarProperty Name="CurrHistogramMovement" ColumnName="CurrHistogramMovement" />
+                <ScalarProperty Name="StockTrend" ColumnName="StockTrend" />
+                <ScalarProperty Name="TargetOrderId" ColumnName="TargetOrderId" />
+                <ScalarProperty Name="SLOrderId" ColumnName="SLOrderId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="TargetOrderStatus" ColumnName="TargetOrderStatus" />
+                <ScalarProperty Name="SLOrderStatus" ColumnName="SLOrderStatus" />
+                <ScalarProperty Name="PositionStatus" ColumnName="PositionStatus" />
+                <ScalarProperty Name="isRealOrderPlaced" ColumnName="isRealOrderPlaced" />
+                <ScalarProperty Name="OrderVariety" ColumnName="OrderVariety" />
+                <ScalarProperty Name="PositionType" ColumnName="PositionType" />
+                <ScalarProperty Name="StopLossHitTime" ColumnName="StopLossHitTime" />
+                <ScalarProperty Name="ExitTime" ColumnName="ExitTime" />
+                <ScalarProperty Name="EntryTime" ColumnName="EntryTime" />
+                <ScalarProperty Name="ProfitLoss" ColumnName="ProfitLoss" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="StopLoss" ColumnName="StopLoss" />
+                <ScalarProperty Name="ExitPrice" ColumnName="ExitPrice" />
+                <ScalarProperty Name="EntryPrice" ColumnName="EntryPrice" />
+                <ScalarProperty Name="TradeDate" ColumnName="TradeDate" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instruments">
+            <EntityTypeMapping TypeName="TradeGenieModel.Instrument">
+              <MappingFragment StoreEntitySet="Instruments">
+                <ScalarProperty Name="MISMargin" ColumnName="MISMargin" />
+                <ScalarProperty Name="NRMLMargin" ColumnName="NRMLMargin" />
+                <ScalarProperty Name="COUpper" ColumnName="COUpper" />
+                <ScalarProperty Name="MISMultiplier" ColumnName="MISMultiplier" />
+                <ScalarProperty Name="COLower" ColumnName="COLower" />
+                <ScalarProperty Name="Margin" ColumnName="Margin" />
+                <ScalarProperty Name="LotSize" ColumnName="LotSize" />
+                <ScalarProperty Name="Strike" ColumnName="Strike" />
+                <ScalarProperty Name="Exchange" ColumnName="Exchange" />
+                <ScalarProperty Name="Segment" ColumnName="Segment" />
+                <ScalarProperty Name="InstrumentType" ColumnName="InstrumentType" />
+                <ScalarProperty Name="Expiry" ColumnName="Expiry" />
+                <ScalarProperty Name="TickSize" ColumnName="TickSize" />
+                <ScalarProperty Name="LastPrice" ColumnName="LastPrice" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="ExchangeToken" ColumnName="ExchangeToken" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Margins">
+            <EntityTypeMapping TypeName="TradeGenieModel.Margin">
+              <MappingFragment StoreEntitySet="Margins">
+                <ScalarProperty Name="Turnover" ColumnName="Turnover" />
+                <ScalarProperty Name="Exposure" ColumnName="Exposure" />
+                <ScalarProperty Name="HoldingSales" ColumnName="HoldingSales" />
+                <ScalarProperty Name="OptionPremium" ColumnName="OptionPremium" />
+                <ScalarProperty Name="Payout" ColumnName="Payout" />
+                <ScalarProperty Name="Span" ColumnName="Span" />
+                <ScalarProperty Name="Debits" ColumnName="Debits" />
+                <ScalarProperty Name="M2MRealised" ColumnName="M2MRealised" />
+                <ScalarProperty Name="M2MUnrealised" ColumnName="M2MUnrealised" />
+                <ScalarProperty Name="Cash" ColumnName="Cash" />
+                <ScalarProperty Name="IntradayPayin" ColumnName="IntradayPayin" />
+                <ScalarProperty Name="Collateral" ColumnName="Collateral" />
+                <ScalarProperty Name="AdhocMargin" ColumnName="AdhocMargin" />
+                <ScalarProperty Name="Net" ColumnName="Net" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="MarginDate" ColumnName="MarginDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MasterStockLists">
+            <EntityTypeMapping TypeName="TradeGenieModel.MasterStockList">
+              <MappingFragment StoreEntitySet="MasterStockList">
+                <ScalarProperty Name="IsIncluded" ColumnName="IsIncluded" />
+                <ScalarProperty Name="Collection" ColumnName="Collection" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MorningBreakouts">
+            <EntityTypeMapping TypeName="TradeGenieModel.MorningBreakout">
+              <MappingFragment StoreEntitySet="MorningBreakouts">
+                <ScalarProperty Name="isRealOrderPlaced" ColumnName="isRealOrderPlaced" />
+                <ScalarProperty Name="Movement" ColumnName="Movement" />
+                <ScalarProperty Name="RAGStatus" ColumnName="RAGStatus" />
+                <ScalarProperty Name="ProfitLoss" ColumnName="ProfitLoss" />
+                <ScalarProperty Name="StopLossHitTime" ColumnName="StopLossHitTime" />
+                <ScalarProperty Name="StopLoss" ColumnName="StopLoss" />
+                <ScalarProperty Name="ExitTime" ColumnName="ExitTime" />
+                <ScalarProperty Name="Exit" ColumnName="Exit" />
+                <ScalarProperty Name="EntryTime" ColumnName="EntryTime" />
+                <ScalarProperty Name="Entry" ColumnName="Entry" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="DayLow" ColumnName="DayLow" />
+                <ScalarProperty Name="DayHigh" ColumnName="DayHigh" />
+                <ScalarProperty Name="CandleSize" ColumnName="CandleSize" />
+                <ScalarProperty Name="LTP" ColumnName="LTP" />
+                <ScalarProperty Name="Close" ColumnName="Close" />
+                <ScalarProperty Name="Low" ColumnName="Low" />
+                <ScalarProperty Name="High" ColumnName="High" />
+                <ScalarProperty Name="Open" ColumnName="Open" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="DateTimePeriod" ColumnName="DateTimePeriod" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NetPositions">
+            <EntityTypeMapping TypeName="TradeGenieModel.NetPosition">
+              <MappingFragment StoreEntitySet="NetPositions">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Unrealised" ColumnName="Unrealised" />
+                <ScalarProperty Name="SellValue" ColumnName="SellValue" />
+                <ScalarProperty Name="SellQuantity" ColumnName="SellQuantity" />
+                <ScalarProperty Name="SellPrice" ColumnName="SellPrice" />
+                <ScalarProperty Name="SellM2M" ColumnName="SellM2M" />
+                <ScalarProperty Name="Realised" ColumnName="Realised" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="PNL" ColumnName="PNL" />
+                <ScalarProperty Name="OvernightQuantity" ColumnName="OvernightQuantity" />
+                <ScalarProperty Name="NetSellAmountM2M" ColumnName="NetSellAmountM2M" />
+                <ScalarProperty Name="NetBuyAmountM2M" ColumnName="NetBuyAmountM2M" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="M2M" ColumnName="M2M" />
+                <ScalarProperty Name="LastPrice" ColumnName="LastPrice" />
+                <ScalarProperty Name="Exchange" ColumnName="Exchange" />
+                <ScalarProperty Name="ClosePrice" ColumnName="ClosePrice" />
+                <ScalarProperty Name="BuyValue" ColumnName="BuyValue" />
+                <ScalarProperty Name="BuyQuantity" ColumnName="BuyQuantity" />
+                <ScalarProperty Name="BuyPrice" ColumnName="BuyPrice" />
+                <ScalarProperty Name="BuyM2M" ColumnName="BuyM2M" />
+                <ScalarProperty Name="AveragePrice" ColumnName="AveragePrice" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="PositionDate" ColumnName="PositionDate" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OHLCDatas">
+            <EntityTypeMapping TypeName="TradeGenieModel.OHLCData">
+              <MappingFragment StoreEntitySet="OHLCData">
+                <ScalarProperty Name="LastPrice" ColumnName="LastPrice" />
+                <ScalarProperty Name="Low" ColumnName="Low" />
+                <ScalarProperty Name="High" ColumnName="High" />
+                <ScalarProperty Name="Open" ColumnName="Open" />
+                <ScalarProperty Name="PreviousClose" ColumnName="PreviousClose" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="OHLCDate" ColumnName="OHLCDate" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="TradeGenieModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="StatusMessage" ColumnName="StatusMessage" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Tag" ColumnName="Tag" />
+                <ScalarProperty Name="Variety" ColumnName="Variety" />
+                <ScalarProperty Name="Validity" ColumnName="Validity" />
+                <ScalarProperty Name="PlacedBy" ColumnName="PlacedBy" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="AveragePrice" ColumnName="AveragePrice" />
+                <ScalarProperty Name="TriggerPrice" ColumnName="TriggerPrice" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PendingQuantity" ColumnName="PendingQuantity" />
+                <ScalarProperty Name="FilledQuantity" ColumnName="FilledQuantity" />
+                <ScalarProperty Name="DisclosedQuantity" ColumnName="DisclosedQuantity" />
+                <ScalarProperty Name="CancelledQuantity" ColumnName="CancelledQuantity" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="Tradingsymbol" ColumnName="Tradingsymbol" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="ExchangeTimestamp" ColumnName="ExchangeTimestamp" />
+                <ScalarProperty Name="OrderTimestamp" ColumnName="OrderTimestamp" />
+                <ScalarProperty Name="Exchange" ColumnName="Exchange" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+                <ScalarProperty Name="ParentOrderId" ColumnName="ParentOrderId" />
+                <ScalarProperty Name="ExchangeOrderId" ColumnName="ExchangeOrderId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Quotes">
+            <EntityTypeMapping TypeName="TradeGenieModel.Quote">
+              <MappingFragment StoreEntitySet="Quotes">
+                <ScalarProperty Name="Low" ColumnName="Low" />
+                <ScalarProperty Name="High" ColumnName="High" />
+                <ScalarProperty Name="Close" ColumnName="Close" />
+                <ScalarProperty Name="Open" ColumnName="Open" />
+                <ScalarProperty Name="LastPrice" ColumnName="LastPrice" />
+                <ScalarProperty Name="SellQuantity" ColumnName="SellQuantity" />
+                <ScalarProperty Name="BuyQuantity" ColumnName="BuyQuantity" />
+                <ScalarProperty Name="OpenInterest" ColumnName="OpenInterest" />
+                <ScalarProperty Name="ChangePercent" ColumnName="ChangePercent" />
+                <ScalarProperty Name="Change" ColumnName="Change" />
+                <ScalarProperty Name="LastQuantity" ColumnName="LastQuantity" />
+                <ScalarProperty Name="Volume" ColumnName="Volume" />
+                <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TickerElderIndicators">
+            <EntityTypeMapping TypeName="TradeGenieModel.TickerElderIndicator">
+              <MappingFragment StoreEntitySet="TickerElderIndicators">
+                <ScalarProperty Name="Impulse" ColumnName="Impulse" />
+                <ScalarProperty Name="ATR" ColumnName="ATR" />
+                <ScalarProperty Name="OBV" ColumnName="OBV" />
+                <ScalarProperty Name="ForceIndex" ColumnName="ForceIndex" />
+                <ScalarProperty Name="RSI2" ColumnName="RSI2" />
+                <ScalarProperty Name="AL2" ColumnName="AL2" />
+                <ScalarProperty Name="AG2" ColumnName="AG2" />
+                <ScalarProperty Name="RSI1" ColumnName="RSI1" />
+                <ScalarProperty Name="AL1" ColumnName="AL1" />
+                <ScalarProperty Name="AG1" ColumnName="AG1" />
+                <ScalarProperty Name="Histogram" ColumnName="Histogram" />
+                <ScalarProperty Name="Signal" ColumnName="Signal" />
+                <ScalarProperty Name="MACD" ColumnName="MACD" />
+                <ScalarProperty Name="EMA4" ColumnName="EMA4" />
+                <ScalarProperty Name="EMA3" ColumnName="EMA3" />
+                <ScalarProperty Name="EMA2" ColumnName="EMA2" />
+                <ScalarProperty Name="EMA1" ColumnName="EMA1" />
+                <ScalarProperty Name="IsCalculated" ColumnName="IsCalculated" />
+                <ScalarProperty Name="Volume" ColumnName="Volume" />
+                <ScalarProperty Name="PriceClose" ColumnName="PriceClose" />
+                <ScalarProperty Name="PriceLow" ColumnName="PriceLow" />
+                <ScalarProperty Name="PriceHigh" ColumnName="PriceHigh" />
+                <ScalarProperty Name="PriceOpen" ColumnName="PriceOpen" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="TimePeriod" ColumnName="TimePeriod" />
+                <ScalarProperty Name="TickerDateTime" ColumnName="TickerDateTime" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trades">
+            <EntityTypeMapping TypeName="TradeGenieModel.Trade">
+              <MappingFragment StoreEntitySet="Trades">
+                <ScalarProperty Name="ExchangeTimestamp" ColumnName="ExchangeTimestamp" />
+                <ScalarProperty Name="OrderTimestamp" ColumnName="OrderTimestamp" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="AveragePrice" ColumnName="AveragePrice" />
+                <ScalarProperty Name="Product" ColumnName="Product" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+                <ScalarProperty Name="Exchange" ColumnName="Exchange" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="ExchangeOrderId" ColumnName="ExchangeOrderId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="TradeId" ColumnName="TradeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CamarillaStrategyOrders">
+            <EntityTypeMapping TypeName="TradeGenieModel.CamarillaStrategyOrder">
+              <MappingFragment StoreEntitySet="CamarillaStrategyOrders">
+                <ScalarProperty Name="CDOpen" ColumnName="CDOpen" />
+                <ScalarProperty Name="PDLow" ColumnName="PDLow" />
+                <ScalarProperty Name="PDHigh" ColumnName="PDHigh" />
+                <ScalarProperty Name="PDClose" ColumnName="PDClose" />
+                <ScalarProperty Name="L6" ColumnName="L6" />
+                <ScalarProperty Name="L5" ColumnName="L5" />
+                <ScalarProperty Name="L4" ColumnName="L4" />
+                <ScalarProperty Name="L3" ColumnName="L3" />
+                <ScalarProperty Name="L2" ColumnName="L2" />
+                <ScalarProperty Name="L1" ColumnName="L1" />
+                <ScalarProperty Name="H6" ColumnName="H6" />
+                <ScalarProperty Name="H5" ColumnName="H5" />
+                <ScalarProperty Name="H4" ColumnName="H4" />
+                <ScalarProperty Name="H3" ColumnName="H3" />
+                <ScalarProperty Name="H2" ColumnName="H2" />
+                <ScalarProperty Name="H1" ColumnName="H1" />
+                <ScalarProperty Name="Camarilla" ColumnName="Camarilla" />
+                <ScalarProperty Name="PLAfterBrok" ColumnName="PLAfterBrok" />
+                <ScalarProperty Name="ProfitLoss" ColumnName="ProfitLoss" />
+                <ScalarProperty Name="TargetOrderId" ColumnName="TargetOrderId" />
+                <ScalarProperty Name="SLOrderId" ColumnName="SLOrderId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="TargetOrderStatus" ColumnName="TargetOrderStatus" />
+                <ScalarProperty Name="SLOrderStatus" ColumnName="SLOrderStatus" />
+                <ScalarProperty Name="PositionStatus" ColumnName="PositionStatus" />
+                <ScalarProperty Name="isRealOrderPlaced" ColumnName="isRealOrderPlaced" />
+                <ScalarProperty Name="OrderVariety" ColumnName="OrderVariety" />
+                <ScalarProperty Name="PositionType" ColumnName="PositionType" />
+                <ScalarProperty Name="SLHitTime" ColumnName="SLHitTime" />
+                <ScalarProperty Name="ExitTime" ColumnName="ExitTime" />
+                <ScalarProperty Name="EntryTime" ColumnName="EntryTime" />
+                <ScalarProperty Name="BOTSLValue" ColumnName="BOTSLValue" />
+                <ScalarProperty Name="BOSLValue" ColumnName="BOSLValue" />
+                <ScalarProperty Name="BOTargetValue" ColumnName="BOTargetValue" />
+                <ScalarProperty Name="SLPrice" ColumnName="SLPrice" />
+                <ScalarProperty Name="ExitPrice" ColumnName="ExitPrice" />
+                <ScalarProperty Name="EntryPrice" ColumnName="EntryPrice" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="TradeDate" ColumnName="TradeDate" />
+                <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
+                <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="TradeGenieModel.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogins">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PublicToken" ColumnName="PublicToken" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="RequestToken" ColumnName="RequestToken" />
+                <ScalarProperty Name="LogoutDateTime" ColumnName="LogoutDateTime" />
+                <ScalarProperty Name="LoginDateTime" ColumnName="LoginDateTime" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="Broker" ColumnName="Broker" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
