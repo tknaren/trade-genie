@@ -6,7 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="TradeGenieModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
-warning 6002: The table/view 'TradeGenie.dbo.CamarillaStrategyOrders' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'aztgsqldb-stage.dbo.CamarillaStrategyOrders' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CamarillaStrategyOrders">
           <Key>
             <PropertyRef Name="ID" />
@@ -340,11 +340,14 @@ warning 6002: The table/view 'TradeGenie.dbo.CamarillaStrategyOrders' does not h
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Broker" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="ClientId" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="LoginDate" Type="date" Nullable="false" />
-          <Property Name="RequestToken" Type="varchar" MaxLength="50" />
-          <Property Name="AccessToken" Type="varchar" MaxLength="50" />
-          <Property Name="PublicToken" Type="varchar" MaxLength="50" />
+          <Property Name="LoginDateTime" Type="datetime" Nullable="false" />
+          <Property Name="LogoutDateTime" Type="datetime" Nullable="false" />
+          <Property Name="RequestToken" Type="varchar" MaxLength="100" />
+          <Property Name="AccessToken" Type="varchar" MaxLength="100" />
+          <Property Name="PublicToken" Type="varchar" MaxLength="100" />
+          <Property Name="Status" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityContainer Name="TradeGenieModelStoreContainer">
           <EntitySet Name="ElderStrategyOrders" EntityType="Self.ElderStrategyOrders" Schema="dbo" store:Type="Tables" />
@@ -425,8 +428,8 @@ warning 6002: The table/view 'TradeGenie.dbo.CamarillaStrategyOrders' does not h
           <EntitySet Name="Quotes" EntityType="TradeGenieModel.Quote" />
           <EntitySet Name="TickerElderIndicators" EntityType="TradeGenieModel.TickerElderIndicator" />
           <EntitySet Name="Trades" EntityType="TradeGenieModel.Trade" />
-          <EntitySet Name="UserLogins" EntityType="TradeGenieModel.UserLogin" />
           <EntitySet Name="CamarillaStrategyOrders" EntityType="TradeGenieModel.CamarillaStrategyOrder" />
+          <EntitySet Name="UserLogins" EntityType="TradeGenieModel.UserLogin" />
         </EntityContainer>
         <ComplexType Name="spGetOrders_Result">
           <Property Type="String" Name="OrderId" Nullable="false" MaxLength="50" />
@@ -733,17 +736,6 @@ warning 6002: The table/view 'TradeGenie.dbo.CamarillaStrategyOrders' does not h
           <Property Name="OrderTimestamp" Type="DateTime" Precision="3" />
           <Property Name="ExchangeTimestamp" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="UserLogin">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientId" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="RequestToken" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="AccessToken" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PublicToken" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="CamarillaStrategyOrder">
           <Key>
             <PropertyRef Name="ID" />
@@ -793,6 +785,20 @@ warning 6002: The table/view 'TradeGenie.dbo.CamarillaStrategyOrders' does not h
           <Property Name="PDHigh" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PDLow" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="CDOpen" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Broker" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ClientId" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LoginDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LogoutDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RequestToken" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AccessToken" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PublicToken" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1079,18 +1085,6 @@ warning 6002: The table/view 'TradeGenie.dbo.CamarillaStrategyOrders' does not h
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserLogins">
-            <EntityTypeMapping TypeName="TradeGenieModel.UserLogin">
-              <MappingFragment StoreEntitySet="UserLogins">
-                <ScalarProperty Name="PublicToken" ColumnName="PublicToken" />
-                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
-                <ScalarProperty Name="RequestToken" ColumnName="RequestToken" />
-                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CamarillaStrategyOrders">
             <EntityTypeMapping TypeName="TradeGenieModel.CamarillaStrategyOrder">
               <MappingFragment StoreEntitySet="CamarillaStrategyOrders">
@@ -1135,6 +1129,21 @@ warning 6002: The table/view 'TradeGenie.dbo.CamarillaStrategyOrders' does not h
                 <ScalarProperty Name="TradeDate" ColumnName="TradeDate" />
                 <ScalarProperty Name="TradingSymbol" ColumnName="TradingSymbol" />
                 <ScalarProperty Name="InstrumentToken" ColumnName="InstrumentToken" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="TradeGenieModel.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogins">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PublicToken" ColumnName="PublicToken" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="RequestToken" ColumnName="RequestToken" />
+                <ScalarProperty Name="LogoutDateTime" ColumnName="LogoutDateTime" />
+                <ScalarProperty Name="LoginDateTime" ColumnName="LoginDateTime" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="Broker" ColumnName="Broker" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

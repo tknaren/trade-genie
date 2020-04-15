@@ -9,6 +9,11 @@ using Microsoft.Azure;
 
 namespace Utilities
 {
+    public enum PLATFORM
+    {
+        KITE,
+        UPSTOX
+    }
     public class ConfigSettings : IConfigSettings
     {
         public TimeSpan StartingTime
@@ -277,9 +282,24 @@ namespace Utilities
             get { return CloudConfigurationManager.GetSetting("KiteUserID").ToString(); }
         }
 
-        public string Platform
+        public PLATFORM Platform
         {
-            get { return CloudConfigurationManager.GetSetting("Platform").ToString(); }
+            get 
+            { 
+                if (string.Compare(CloudConfigurationManager.GetSetting("Platform").ToString(),"Kite") == 0)
+                {
+                    return PLATFORM.KITE;
+                } 
+                else
+                {
+                    return PLATFORM.UPSTOX;
+                }
+            }
+        }
+
+        public string KiteInterval
+        {
+            get { return CloudConfigurationManager.GetSetting("KiteInterval").ToString(); }
         }
     }
 }

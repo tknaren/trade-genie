@@ -17,6 +17,7 @@ namespace OHLCProcessor
     {
         private readonly IConfigSettings _configSettings;
         private readonly IUpstoxInterface _upstoxInterface;
+        private readonly IKiteConnectInterface _kiteConnectInterface;
         private readonly IDBMethods _dBMethods;
         private readonly IHistoryLoaderEngine _historyLoaderEngine;
         private readonly IConsolidatorEngine _consolidatorEngine;
@@ -26,8 +27,9 @@ namespace OHLCProcessor
         {
             _configSettings = new ConfigSettings();
             _upstoxInterface = new UpstoxInterface(_configSettings);
+            _kiteConnectInterface = new KiteConnectInterface(_configSettings);
             _dBMethods = new DBMethods(_configSettings);
-            _historyLoaderEngine = new HistoryLoaderEngine(_configSettings, _upstoxInterface, _dBMethods);
+            _historyLoaderEngine = new HistoryLoaderEngine(_configSettings, _upstoxInterface, _kiteConnectInterface, _dBMethods);
             _consolidatorEngine = new ConsolidatorEngine(_configSettings, _dBMethods);
             _indicatorEngine = new IndicatorEngine(_configSettings, _dBMethods);
         }
@@ -140,6 +142,7 @@ namespace OHLCProcessor
                 while (true)
                 {
                     if (TradingTime())
+                    //if (true)
                     {
                         ProcessOHLCMain();
                         Thread.Sleep(GetSleepTime());

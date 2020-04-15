@@ -557,11 +557,14 @@ namespace TradeGenie.Repository
             {
                 tradeGenie.UserLogins.Add(new UserLogin
                 {
-                    LoginDate = userLogin.LoginDate,
+                    LoginDateTime = userLogin.LoginDate,
+                    LogoutDateTime = DateTime.Now,
                     AccessToken = userLogin.AccessToken,
                     PublicToken = userLogin.PublicToken,
                     RequestToken = userLogin.RequestToken,
-                    ClientId = userLogin.ClientId
+                    ClientId = userLogin.ClientId,
+                    Broker = "Kite",
+                    Status = "IN"
                 });
 
                 tradeGenie.SaveChanges();
@@ -580,12 +583,12 @@ namespace TradeGenie.Repository
             {
 
                 var loginInfo = tradeGenie.UserLogins.Where(sel => sel.ClientId == UserConfiguration.UserId
-                                                    && sel.LoginDate == DateTime.Today).OrderByDescending(or => or.ID).First();
+                                                    && sel.LoginDateTime == DateTime.Today).OrderByDescending(or => or.ID).First();
 
                 if (loginInfo != null)
                 {
                     userLogin.ID = loginInfo.ID;
-                    userLogin.LoginDate = loginInfo.LoginDate;
+                    userLogin.LoginDate = loginInfo.LoginDateTime;
                     userLogin.ClientId = loginInfo.ClientId;
                     userLogin.AccessToken = loginInfo.AccessToken;
                     userLogin.RequestToken = loginInfo.RequestToken;
@@ -603,7 +606,7 @@ namespace TradeGenie.Repository
 
         public void InvalidateLoginInformation()
         {
-            tradeGenie.UserLogins.RemoveRange(tradeGenie.UserLogins.Where(sel => sel.LoginDate == DateTime.Today).ToList());
+            tradeGenie.UserLogins.RemoveRange(tradeGenie.UserLogins.Where(sel => sel.LoginDateTime == DateTime.Today).ToList());
 
             tradeGenie.SaveChanges();
         }

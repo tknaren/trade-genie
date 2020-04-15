@@ -13,7 +13,7 @@ namespace DataAccessLayer
 {
     public interface IDBMethods
     {
-        string GetLatestAccessToken();
+        dynamic GetLatestAccessToken();
 
         List<MasterStockList> GetMasterStockList();
 
@@ -51,9 +51,10 @@ namespace DataAccessLayer
             _configSettings = configSettings;
         }
 
-        public string GetLatestAccessToken()
+        public dynamic GetLatestAccessToken()
         {
             string accessToken = string.Empty;
+            string requestToken = string.Empty;
             DateTime logInDateTime = new DateTime();
             DateTime currentDateTime = AuxiliaryMethods.GetCurrentIndianTimeStamp().Date;
             string status = string.Empty;
@@ -67,6 +68,7 @@ namespace DataAccessLayer
                 if (latestLogin != null)
                 {
                     accessToken = latestLogin.AccessToken;
+                    requestToken = latestLogin.RequestToken;
                     logInDateTime = latestLogin.LoginDateTime;
                     status = latestLogin.Status;
 
@@ -78,7 +80,7 @@ namespace DataAccessLayer
                 }
             }
 
-            return accessToken;
+            return new { AccessToken = accessToken, RequestToken = requestToken };
         }
 
         public List<MasterStockList> GetMasterStockList()
@@ -423,6 +425,7 @@ namespace DataAccessLayer
             //    fromTimeToFetch = DateTime.Today;
             //}
 
+            //DateTime fromTimeToFetch = DateTime.Today.AddDays(-1);
             DateTime fromTimeToFetch = DateTime.Today;
 
             using (aztgsqldbEntities db = new aztgsqldbEntities())

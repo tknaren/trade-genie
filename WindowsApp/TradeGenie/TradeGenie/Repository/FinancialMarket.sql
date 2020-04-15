@@ -944,8 +944,8 @@ where TradingSymbol in
 	where dateTime > '2019-04-02')
 
 --update MasterStockList
---set IsIncluded = 0
---where Collection
+--set IsIncluded = 1
+--where TradingSymbol like 'N%'
 
 select * from MasterStockList
 where IsIncluded = 1 
@@ -957,3 +957,38 @@ sp_helptext spGetTickerDataForIndicators
 sp_helptext spGenerateOHLC
 
 exec spGetScriptsForBackTest '2018-07-06 09:45:00.000', '2018-07-05', '2018-07-04',5,'LONG'
+
+select * from UserLogins 
+select * from UserLogins_old
+
+select * from Instruments
+select * from MasterStockList
+select * from TickerMin order by tradingSymbol, [dateTime] desc
+
+--sp_help TickerMin
+--truncate table Logs 
+select * from Logs order by Timestamp desc
+
+
+select count(1) from TickerMin
+select count(1) from TickerMinElderIndicators
+
+select * from TickerMinElderIndicators
+
+--d
+--truncate table TickerMinElderIndicators
+--truncate table TickerMinEMAHA
+--truncate table TickerMinSuperTrend
+
+--delete from UserLogins 
+--where LoginDateTime < getDate()
+
+sp_help UserLogins_old
+
+--truncate table UserLogins 
+
+select * from MasterStockList
+select * from Instruments
+
+--ALTER TABLE [TickerMin] REBUILD WITH (IGNORE_DUP_KEY = ON)
+

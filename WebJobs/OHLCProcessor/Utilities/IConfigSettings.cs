@@ -59,6 +59,8 @@ namespace Utilities
         string KiteAPIKey { get; }
         string KiteAPISecret { get; }
         string KiteUserID { get; }
-        string Platform { get; }
+        PLATFORM Platform { get; }
+        string KiteInterval { get; }
+
     }
 }

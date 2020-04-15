@@ -38,8 +38,8 @@ namespace TradeGenie.Repository
         public virtual DbSet<Quote> Quotes { get; set; }
         public virtual DbSet<TickerElderIndicator> TickerElderIndicator { get; set; }
         public virtual DbSet<Trade> Trades { get; set; }
-        public virtual DbSet<UserLogin> UserLogins { get; set; }
         public virtual DbSet<CamarillaStrategyOrder> CamarillaStrategyOrders { get; set; }
+        public virtual DbSet<UserLogin> UserLogins { get; set; }
     
         public virtual ObjectResult<spGetOrders_Result> spGetOrders(Nullable<System.DateTime> dtDate)
         {
