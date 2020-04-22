@@ -31,7 +31,7 @@ namespace OHLCProcessor
             _dBMethods = new DBMethods(_configSettings);
             _historyLoaderEngine = new HistoryLoaderEngine(_configSettings, _upstoxInterface, _kiteConnectInterface, _dBMethods);
             _consolidatorEngine = new ConsolidatorEngine(_configSettings, _dBMethods);
-            _indicatorEngine = new IndicatorEngine(_configSettings, _dBMethods);
+            _indicatorEngine = new IndicatorEngine(_configSettings, _dBMethods, _kiteConnectInterface);
         }
 
         public void Dispose()
@@ -50,12 +50,13 @@ namespace OHLCProcessor
 
             try
             {
-                if (HistoryFetchTime() && _configSettings.IsHistoryFetchReq)
-                {
-                    Log.Information("History Fetch Start");
-                    _historyLoaderEngine.LoadHistory();
-                    Log.Information("History Fetch End");
-                }
+                #region commented history loader and consolidator
+                //if (HistoryFetchTime() && _configSettings.IsHistoryFetchReq)
+                //{
+                //    Log.Information("History Fetch Start");
+                //    _historyLoaderEngine.LoadHistory();
+                //    Log.Information("History Fetch End");
+                //}
 
                 //if (_historyLoaderEngine.IsUserLoggedIn && _configSettings.IsConsolidatorReq)
                 //{
@@ -64,15 +65,20 @@ namespace OHLCProcessor
                 //    Log.Information("Consolidator End");
                 //}
 
-                if (IsDayHistoryTime() && _configSettings.IsDayHistoryFetchReq)
-                {
-                    Log.Information("Day History Fetch Start");
-                    _historyLoaderEngine.LoadHistory(true);
-                    Log.Information("Day History Fetch End");
-                    loadIndicators = true;
-                }
+                //if (IsDayHistoryTime() && _configSettings.IsDayHistoryFetchReq)
+                //{
+                //    Log.Information("Day History Fetch Start");
+                //    _historyLoaderEngine.LoadHistory(true);
+                //    Log.Information("Day History Fetch End");
+                //    loadIndicators = true;
+                //}
 
                 //if (loadIndicators && _configSettings.IsIndicatorReq)
+                #endregion
+
+                //New Logic - 22-Apr-2020, This part calls the history, calculates the indicators, and loads the data to DB.
+                //                          History and consolidator logic are not required now.
+
                 if (_configSettings.IsIndicatorReq)
                 {
                     Log.Information("Indicators Start");

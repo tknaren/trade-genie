@@ -937,11 +937,11 @@ exec spGetTickerDataForIndicators
 --where dateTime < '2019-04-02'
 
 
-update MasterStockList
-set IsIncluded = 0
-where TradingSymbol in 
-	(select distinct TRadingSymbol from TickerMin 
-	where dateTime > '2019-04-02')
+--update MasterStockList
+--set IsIncluded = 0
+--where TradingSymbol in 
+--	(select distinct TRadingSymbol from TickerMin 
+--	where dateTime > '2019-04-02')
 
 --update MasterStockList
 --set IsIncluded = 1
@@ -963,19 +963,31 @@ select * from UserLogins_old
 
 select * from Instruments
 select * from MasterStockList
-select * from TickerMin order by tradingSymbol, [dateTime] desc
+
+select * from TickerMin where tradingSymbol = 'ESCORTS'
+order by tradingSymbol, [dateTime] desc
 
 --sp_help TickerMin
 --truncate table Logs 
 select * from Logs order by Timestamp desc
 
+sp_helptext spUpdateTickerElder
+
+
 
 select count(1) from TickerMin
 select count(1) from TickerMinElderIndicators
 
-select * from TickerMinElderIndicators
+select top 1 * from TickerMinElderIndicators where Timeperiod = 3 and StockCode = 'NATCOPHARM' order by TickerdateTime desc
+select top 1 * from TickerMinElderIndicators where Timeperiod = 5 and StockCode = 'NATCOPHARM' order by TickerdateTime desc
+select top 1 * from TickerMinElderIndicators where Timeperiod = 10 and StockCode = 'NATCOPHARM' order by TickerdateTime desc
+select top 1 * from TickerMinElderIndicators where Timeperiod = 15 and StockCode = 'NATCOPHARM' order by TickerdateTime desc
+exec spGetTickerDataForIndicators 'NATCOPHARM','3,5,10,15','2020-04-22 00:00'
+--exec spGetTickerDataForIndicators 'NAM-INDIA,NATCOPHARM,NATIONALUM,NLCINDIA,NAUKRI,NBCC','5','2020-04-22 00:00'
 
---d
+SELECT DISTINCT TickerdateTime from TickerMinElderIndicators where Timeperiod = 5  order by  TickerdateTime asc
+
+--truncate table TickerMin
 --truncate table TickerMinElderIndicators
 --truncate table TickerMinEMAHA
 --truncate table TickerMinSuperTrend
@@ -991,4 +1003,8 @@ select * from MasterStockList
 select * from Instruments
 
 --ALTER TABLE [TickerMin] REBUILD WITH (IGNORE_DUP_KEY = ON)
+
+sp_helptext spGetTickerDataForIndicators
+
+select * from MAsterStockList
 

@@ -8,6 +8,7 @@ namespace DataAccessLayer.Models
 {
     public class TickerElderIndicatorsModel
     {
+        public string InstrumentToken { get; set; }
         public string StockCode { get; set; }
         public DateTime TickerDateTime { get; set; }
         public int? TimePeriod { get; set; }

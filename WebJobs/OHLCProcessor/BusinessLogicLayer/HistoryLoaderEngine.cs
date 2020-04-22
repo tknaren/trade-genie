@@ -116,9 +116,9 @@ namespace BusinessLogicLayer
                 {
                     foreach (MasterStockList stock in masterStockLists.Skip(pageIndex * batchSize).Take(batchSize))
                     {
-                        Task stockHistoryTask = Task.Run(() => GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol));
-                        taskList.Add(stockHistoryTask);
-                        //GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol);
+                        //Task stockHistoryTask = Task.Run(() => GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol));
+                        //taskList.Add(stockHistoryTask);
+                        GetIndividualStockHistory(stock.InstrumentToken, stock.TradingSymbol);
                     }
 
                     Log.Information("Waiting for batch-" + (pageIndex + 1).ToString() + " tasks to complete");
@@ -270,10 +270,7 @@ namespace BusinessLogicLayer
                     Historical historial = _upstoxInterface.GetHistory(accessToken, uri);
 
                     histories.Add(new KeyValuePair<string, Historical>(historyKey, historial));
-                    //Log.Information("History retreived for " + tradingSymbol);
 
-                    //AddToTickerObject(instrumentToken, tradingSymbol, historial);
-                    //AddToTickerDataTable(instrumentToken, tradingSymbol, historial);
                 }
                 else if(_settings.Platform.Equals(PLATFORM.KITE))
                 {
@@ -293,7 +290,7 @@ namespace BusinessLogicLayer
                         }
                     }
 
-                    List<KiteConnect.Historical> historical = _kiteConnectInterface.GetHistory(instrumentToken, fromDateTime);
+                    List<KiteConnect.Historical> historical = _kiteConnectInterface.GetHistory(instrumentToken, fromDateTime, 1);
 
                     foreach (KiteConnect.Historical history in historical)
                     {

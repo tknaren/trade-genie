@@ -9,6 +9,7 @@ using DataAccessLayer.Models;
 using Utilities;
 using Serilog;
 using Serilog.Exceptions;
+using APIInterfaceLayer;
 
 namespace BusinessLogicLayer
 {
@@ -21,19 +22,40 @@ namespace BusinessLogicLayer
     {
         private readonly IConfigSettings _settings;
         private readonly IDBMethods _dBMethods;
+        private readonly IKiteConnectInterface _kiteConnectInterface;
+
+        private static string accessToken;
+        private static string requestToken;
 
         List<MasterStockList> mslList = new List<MasterStockList>();
         List<TickerElderIndicatorsModel> tickerListMaster = new List<TickerElderIndicatorsModel>();
 
-        public IndicatorEngine(IConfigSettings settings, IDBMethods dBMethods)
+        public IndicatorEngine(IConfigSettings settings, IDBMethods dBMethods, IKiteConnectInterface kiteConnectInterface)
         {
             _settings = settings;
             _dBMethods = dBMethods;
+            _kiteConnectInterface = kiteConnectInterface;
         }
 
         public void IndicatorEngineLogic(bool isDayHistoryCall = false)
         {
-            //string[] timePeriodsToCalculate = _settings.TimePeriodsToCalculate.Split(',');
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                dynamic response = _dBMethods.GetLatestAccessToken();
+
+                accessToken = response.GetType().GetProperty("AccessToken").GetValue(response, null);
+                requestToken = response.GetType().GetProperty("RequestToken").GetValue(response, null);
+            }
+
+            _kiteConnectInterface.InitializeKiteConnect(requestToken, accessToken);
+
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                Log.Information("Not Logged in for today. Login to proceed.");
+                return;
+            }
+
+                //string[] timePeriodsToCalculate = _settings.TimePeriodsToCalculate.Split(',');
             string[] timePeriodsToCalculate = GetTimePeriodsToCalculate(isDayHistoryCall);
 
             if (timePeriodsToCalculate.Length > 0)
@@ -47,9 +69,6 @@ namespace BusinessLogicLayer
                 return;
             }
 
-            List<Task> taskList = new List<Task>();
-            List<TickerMin> tkrDataForConsol = new List<TickerMin>();
-            List<TickerMin> tkrAllData = new List<TickerMin>();
             List<TickerElderIndicatorsModel> tickerListElder = new List<TickerElderIndicatorsModel>();
 
             mslList = _dBMethods.GetMasterStockList();
@@ -57,14 +76,22 @@ namespace BusinessLogicLayer
             string instrumentList = string.Join(",", from item in mslList select item.TradingSymbol);
             string timePeriodsList = string.Join(",", timePeriodsToCalculate);
 
-            Log.Information("Indicators - Get Time Periods");
-            Log.Information("Indicators - Get All Ticker Data");
-
-            Task<List<TickerElderIndicatorsModel>> tickerListMasterTask = 
-                Task.Run(() => _dBMethods.GetTickerDataForIndicators(instrumentList, timePeriodsList));
             //tickerListMaster = _dBMethods.GetTickerDataForIndicators(instrumentList, _settings.TimePeriodsToCalculate);
+            tickerListMaster = _dBMethods.GetTickerDataForIndicators(instrumentList, timePeriodsList);
 
-            taskList.Add(tickerListMasterTask);
+            #region commented
+
+            //List<Task> taskList = new List<Task>();
+            //List<TickerMin> tkrDataForConsol = new List<TickerMin>();
+            //List<TickerMin> tkrAllData = new List<TickerMin>();
+            //Log.Information("Indicators - Get Time Periods");
+            //Log.Information("Indicators - Get All Ticker Data");
+
+            //Task<List<TickerElderIndicatorsModel>> tickerListMasterTask =
+            //    Task.Run(() => _dBMethods.GetTickerDataForIndicators(instrumentList, timePeriodsList));
+
+
+            //taskList.Add(tickerListMasterTask);
 
             //int maxTimePeriod = 0;
 
@@ -83,19 +110,21 @@ namespace BusinessLogicLayer
             //if (maxTimePeriod == 0)
             //    maxTimePeriod = 60;
 
-            Task<List<TickerMin>> tkrAllDataTask =
-                Task.Run(() => _dBMethods.GetTickerDataForConsolidation());
-            //Task.Run(() => _dBMethods.GetTickerDataForConsolidation(maxTimePeriod));
+            //Task<List<TickerMin>> tkrAllDataTask =
+            //    Task.Run(() => _dBMethods.GetTickerDataForConsolidation());
+            ////Task.Run(() => _dBMethods.GetTickerDataForConsolidation(maxTimePeriod));
 
-            taskList.Add(tkrAllDataTask);
+            //taskList.Add(tkrAllDataTask);
 
-            Task.WaitAll(taskList.ToArray());
+            //Task.WaitAll(taskList.ToArray());
 
-            tickerListMaster = tickerListMasterTask.Result;
-            tkrAllData = tkrAllDataTask.Result;
+            //tickerListMaster = tickerListMasterTask.Result;
+            //tkrAllData = tkrAllDataTask.Result;
 
             // tkrAllData = _dBMethods.GetTickerDataForConsolidation(msl.TradingSymbol, DateTime.Today);
             // tkrAllData = _dBMethods.GetTickerDataForConsolidation();
+
+            #endregion
 
             Log.Information("Indicators - Start Calculation");
 
@@ -104,105 +133,119 @@ namespace BusinessLogicLayer
             // else get entire records greater than fromDate configuration
             // Once after the OHLC, Volume, Change and TradedValue calculation is done, load the data to tickerListMaster 
             //  to facilitate the further calculation of the indicators
-            foreach (MasterStockList msl in mslList)
+            for (int iTimePeriod = 0; iTimePeriod < timePeriodsToCalculate.Length; iTimePeriod++)
             {
-                for (int iTimePeriod = 0; iTimePeriod < timePeriodsToCalculate.Length; iTimePeriod++)
+                tickerListElder.Clear();
+
+                foreach (MasterStockList msl in mslList)
                 {
-                    int timePeriod = Convert.ToInt32(timePeriodsToCalculate[iTimePeriod]);
-
-                    DateTime tickerDateFrom = DateTime.MinValue;
-
-                    TickerElderIndicatorsModel tickeLastRecordedData = 
-                                                (from tle in tickerListMaster
-                                                 where tle.StockCode == msl.TradingSymbol
-                                                    && tle.TimePeriod == timePeriod
-                                                 select tle).FirstOrDefault();
-
-                    if (tickeLastRecordedData != null && timePeriod != 375)
+                    try
                     {
-                        // Pull the data from TickerMin greater than the last datetime
-                        tickerDateFrom = tickeLastRecordedData.TickerDateTime.AddMinutes(timePeriod - 1);
 
-                        tickerListElder.Add(tickeLastRecordedData);
+                        int timePeriod = Convert.ToInt32(timePeriodsToCalculate[iTimePeriod]);
+
+                        DateTime tickerDateFrom = DateTime.MinValue;
+
+                        TickerElderIndicatorsModel tickeLastRecordedData =
+                                                    (from tle in tickerListMaster
+                                                     where tle.StockCode == msl.TradingSymbol
+                                                        && tle.TimePeriod == timePeriod
+                                                     select tle).FirstOrDefault();
+
+                        if (tickeLastRecordedData != null && timePeriod != 375)
+                        {
+                            // Pull the data from TickerMin greater than the last datetime
+                            tickerDateFrom = tickeLastRecordedData.TickerDateTime.AddMinutes(timePeriod);
+
+                            tickerListElder.Add(tickeLastRecordedData);
+                        }
+                        else if (tickeLastRecordedData != null && timePeriod == 375)
+                        {
+                            tickerDateFrom = DateTime.Today;
+
+                            tickerListElder.Add(tickeLastRecordedData);
+                        }
+                        else
+                        {
+                            // Pull the data from the TickerMin greater than the DateFrom date
+                            // tickerDateFrom = _settings.IndicatorLoadDateFrom;
+                            tickerDateFrom = DateTime.Today;
+                        }
+
+                        //tkrDataForConsol = (from tkr in tkrAllData
+                        //                    where tkr.TradingSymbol == msl.TradingSymbol
+                        //                        && tkr.DateTime > tickerDateFrom
+                        //                    select tkr).ToList<TickerMin>();
+
+                        //OHLC Calculation
+                        //CalculateOHLC(tkrDataForConsol, timePeriod, tickerListElder);
+
+                        //Get the history information here and load it in tickerListElder
+                        //Calculate the Change, Change% and Traded Value
+                        GetHistory(msl, tickerDateFrom, timePeriod, tickerListElder);
+
+                        //EMA Calculation
+                        AllEMACalculation(tickerListElder);
+
+                        //RSI Calculation
+                        AllRSICalculation(tickerListElder);
+
+                        //MACD Calculation
+                        MACDCalculation(tickerListElder);
+
+                        //Force Index Calculation
+                        AllForceIndexCalculation(tickerListElder);
+
+                        //True Range
+                        AllTrueRangeCalculation(tickerListElder);
+
+                        //Super Trend
+                        AllSuperTrendCalculation(tickerListElder);
+
+                        //Impulse Indicator
+                        ImpulseIndicator(tickerListElder);
+
+                        //EMA Deviation
+                        CalculateEMADeviation(tickerListElder);
+
+                        //HeikinAshi 
+                        HeikinAshiCalculation(tickerListElder);
+
+                        //EMA Variance
+                        EMAVarianceCalculation(tickerListElder);
+
+                        //Price Variance
+                        PriceVarianceCalculation(tickerListElder);
+
+                        //HA with EMA
+                        CompareHAWithEMA(tickerListElder);
+
+                        //OC with EMA
+                        CompareOCWithEMA(tickerListElder);
+
+                        //EMA with EMA
+                        CompareEMAWithEMA(tickerListElder);
+
+                        //AllVWMACalculation(tickerListElder);
+                        tickerListElder.Remove(tickeLastRecordedData);
                     }
-                    else if (tickeLastRecordedData != null && timePeriod == 375)
+                    catch(Exception ex)
                     {
-                        tickerDateFrom = DateTime.Today;
-
-                        tickerListElder.Add(tickeLastRecordedData);
+                        Log.Error(ex, "Error occurred during calculation");
                     }
-                    else
-                    {
-                        // Pull the data from the TickerMin greater than the DateFrom date
-                        // tickerDateFrom = _settings.IndicatorLoadDateFrom;
-                        tickerDateFrom = DateTime.Today;
-                    }
-
-                    tkrDataForConsol = (from tkr in tkrAllData
-                                        where tkr.TradingSymbol == msl.TradingSymbol
-                                            && tkr.DateTime > tickerDateFrom
-                                        select tkr).ToList<TickerMin>();
-
-                    //OHLC Calculation
-                    CalculateOHLC(tkrDataForConsol, timePeriod, tickerListElder);
-
-                    //EMA Calculation
-                    AllEMACalculation(tickerListElder);
-
-                    //RSI Calculation
-                    AllRSICalculation(tickerListElder);
-
-                    //MACD Calculation
-                    MACDCalculation(tickerListElder);
-
-                    //Force Index Calculation
-                    AllForceIndexCalculation(tickerListElder);
-
-                    //True Range
-                    AllTrueRangeCalculation(tickerListElder);
-
-                    //Super Trend
-                    AllSuperTrendCalculation(tickerListElder);
-
-                    //Impulse Indicator
-                    ImpulseIndicator(tickerListElder);
-
-                    //EMA Deviation
-                    CalculateEMADeviation(tickerListElder);
-
-                    //HeikinAshi 
-                    HeikinAshiCalculation(tickerListElder);
-
-                    //EMA Variance
-                    EMAVarianceCalculation(tickerListElder);
-
-                    //Price Variance
-                    PriceVarianceCalculation(tickerListElder);
-
-                    //HA with EMA
-                    CompareHAWithEMA(tickerListElder);
-
-                    //OC with EMA
-                    CompareOCWithEMA(tickerListElder);
-
-                    //EMA with EMA
-                    CompareEMAWithEMA(tickerListElder);
-
-                    //AllVWMACalculation(tickerListElder);
-                    tickerListElder.Remove(tickeLastRecordedData);
                 }
-            }
 
-            Log.Information("Indicators - Insert into DB");
+                Log.Information("Indicators - Insert into DB");
 
-            if (timePeriodsList.Contains("375"))
-            {
-                DataTable masterTable = tickerListElder.ToDataTable();
-                _dBMethods.UpdateTickerElderDataTable(masterTable);
-            }
-            else
-            {
-                UploadToIndicatorTables(tickerListElder);
+                if (timePeriodsList.Contains("375"))
+                {
+                    DataTable masterTable = tickerListElder.ToDataTable();
+                    _dBMethods.UpdateTickerElderDataTable(masterTable);
+                }
+                else
+                {
+                    UploadToIndicatorTables(tickerListElder);
+                }
             }
         }
 
@@ -427,6 +470,50 @@ namespace BusinessLogicLayer
                     TradedValue = tradedValue
                 });
             }
+        }
+
+        private void GetHistory(MasterStockList msl, DateTime fromDateTime, int timePeriod, 
+            List<TickerElderIndicatorsModel> tickerListElder)
+        {
+            //double change = Math.Round(close - open, 2);
+            //double changePercent = Math.Round(((close - open) / open) * 100, 2);
+            //decimal tradedValue = (decimal)Math.Round((((open + high + low + close) / 4) * volume), 2);
+
+            List<KiteConnect.Historical> historical = _kiteConnectInterface.GetHistory(msl.InstrumentToken, fromDateTime, timePeriod);
+
+            foreach (KiteConnect.Historical history in historical)
+            {
+                double open = Convert.ToDouble(history.Open);
+                double high = Convert.ToDouble(history.High);
+                double low = Convert.ToDouble(history.Low);
+                double close = Convert.ToDouble(history.Close);
+                int volume = Convert.ToInt32(history.Volume);
+
+                tickerListElder.Add(new TickerElderIndicatorsModel
+                {
+                    StockCode = msl.TradingSymbol,
+                    TickerDateTime = history.TimeStamp.ToIndianTimeStamp(),
+                    TimePeriod = timePeriod,
+                    PriceOpen = open,
+                    PriceHigh = high,
+                    PriceLow = low,
+                    PriceClose = close,
+                    Volume = volume,
+                    Change = Math.Round(close - open, 2),
+                    ChangePercent = Math.Round(((close - open) / open) * 100, 2),
+                    TradedValue = (decimal)Math.Round((((open + high + low + close) / 4) * volume), 2)
+                });
+            }
+
+            DateTime preMarketTime = DateTime.Today;
+
+            if (fromDateTime.TimeOfDay.Hours == 0 && fromDateTime.TimeOfDay.Minutes == 0)
+            {
+                preMarketTime = preMarketTime.AddHours(9).AddMinutes(15);
+            }
+
+            //remove the pre market records
+            tickerListElder.RemoveAll(t => t.TickerDateTime < preMarketTime);
         }
 
         private void HeikinAshiCalculation(List<TickerElderIndicatorsModel> tickerList)

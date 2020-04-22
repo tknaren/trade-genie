@@ -38,6 +38,38 @@ namespace Utilities
             return TimeZoneInfo.ConvertTimeFromUtc(dateTime.ToUniversalTime(), TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
         }
 
+        public static string ToKiteInternal(this int timePeriod)
+        {
+            string timePeriodText = string.Empty;
+
+            switch (timePeriod)
+            {
+                case 1:
+                    timePeriodText = "minute";
+                    break;
+                case 3:
+                    timePeriodText = "3minute";
+                    break;
+                case 5:
+                    timePeriodText = "5minute";
+                    break;
+                case 10:
+                    timePeriodText = "10minute";
+                    break;
+                case 15:
+                    timePeriodText = "15minute";
+                    break;
+                case 30:
+                    timePeriodText = "30minute";
+                    break;
+                case 60:
+                    timePeriodText = "60minute";
+                    break;
+            }
+
+            return timePeriodText;
+        }
+
         public static List<TimeSpan> MinuteTimer(string timerString)
         {
             List<string> minList = timerString.Split(',').ToList();
